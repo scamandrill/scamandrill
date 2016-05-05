@@ -7,6 +7,5 @@ github:
   author: dzsessona
   project: scamandrill
 
-source: ./jekyll
 markdown: kramdown
 highlighter: rouge
