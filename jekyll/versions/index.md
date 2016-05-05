@@ -8,4 +8,3 @@ title: Scamandrill - versions
 First release (only scala 2.10).
 
 [Maven central for scala 2.10 link](http://central.maven.org/maven2/com/github/dzsessona/scamandrill_2.10/1.0.0/)
-

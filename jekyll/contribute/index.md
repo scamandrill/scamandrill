@@ -26,7 +26,7 @@ If you have an idea to make this project better and more useful, simply leave a 
 
 <div class="row">
   <div class="col-md-3">
-    <img src="http://blockchain.info/qr?data=1EP8UunVJdDMoJAcee2BMR5ou6qxQEgPcF&amp;size=200" class="img-thumbnail">
+    <img src="https://blockchain.info/qr?data=1EP8UunVJdDMoJAcee2BMR5ou6qxQEgPcF&amp;size=200" class="img-thumbnail">
     </div>
     <div class="col-md-8"><p>So if you can't or don't want to write code, didn't find any bug, but you still like the plugin and
 you think that it is useful you can support by sending a small contribute. <br/><br/> You can do so by using my bitcoin address below or scanning the qr code on the side. Obviously I am not expecting to 
