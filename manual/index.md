@@ -42,7 +42,7 @@ Mandrill {
 }
 ```
 
-If you look at the output of the [tests for users calls](https://github.com/dzsessona/scamandrill/blob/master/src/test/scala/com/joypeg/scamandrill/client/UserCallsTest.scala) for example 
+If you look at the output of the [tests for users calls](https://github.com/scamandrill/scamandrill/blob/master/src/test/scala/com/joypeg/scamandrill/client/UserCallsTest.scala) for example 
 you will see that if you will get an error message from mandrill if the key is not passed to method, or if a configuration file is not defined. Btw I choose this 
 approach to alllow the user to override the default key for each call (specifying it when building your request object). Note that the same is valid for all calls: 
 

@@ -4,7 +4,7 @@ url: https://scamandrill.github.io
 baseurl: /scamandrill
 
 github:
-  author: dzsessona
+  author: scamandrill
   project: scamandrill
 
 markdown: kramdown
