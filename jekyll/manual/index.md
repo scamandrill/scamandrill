@@ -16,7 +16,7 @@ in your build definition **libraryDependencies** as follow:
 ``` "com.github.dzsessona"     %% "scamandrill"          % "version"  ```
 
 Replace **version** with the last version of this project (1.0.0 at the time of writing this document). 
-All versions for this plugin can be found [here]({{ site.url }}/versions). In case you are confused about the difference
+All versions for this plugin can be found [here]({{ site.baseurl }}/versions). In case you are confused about the difference
  between build.sbt and Build.scala read [this](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html).
 
 <h4 id="configuration" style="margin-top: 20px;">Configuration</h4>
@@ -46,7 +46,7 @@ If you look at the output of the [tests for users calls](https://github.com/dzse
 you will see that if you will get an error message from mandrill if the key is not passed to method, or if a configuration file is not defined. Btw I choose this 
 approach to alllow the user to override the default key for each call (specifying it when building your request object). Note that the same is valid for all calls: 
 
-<img src="{{ site.url }}/assets/img/usertest.png" width="600">
+<img src="{{ site.baseurl }}/assets/img/usertest.png" width="600">
 
 
 <h2 id="calls">Calls and usage</h2>

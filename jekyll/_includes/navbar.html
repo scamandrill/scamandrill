@@ -7,17 +7,17 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
          </button>
-         <a class="navbar-brand" style="padding:0 10px" href="/scamandrill/"><img src="{{ site.url }}/assets/img/logo.png"/></a>
+         <a class="navbar-brand" style="padding:0 10px" href="/scamandrill/"><img src="{{ site.baseurl }}/assets/img/logo.png"/></a>
       </div>
       <div class="navbar-collapse collapse">
          <ul class="nav navbar-nav" style="margin-left:60px">
-            <li {% if include.active == 'home' %} class="active" {% endif %}><a href="{{ site.url }}/">Home</a></li>
+            <li {% if include.active == 'home' %} class="active" {% endif %}><a href="{{ site.baseurl }}/">Home</a></li>
             <li class="dropdown {% if include.active == 'manual' %} active {% endif %}">
-               <a href="{{ site.url }}/manual" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
+               <a href="{{ site.baseurl }}/manual" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li><a href="{{ site.url }}/manual/#installation">Installation</a></li>
-                  <li><a href="{{ site.url }}/manual/#tasks">Tasks</a></li>
-                  <li><a href="{{ site.url }}/manual/#settings">Settings</a></li>
+                  <li><a href="{{ site.baseurl }}/manual/#installation">Installation</a></li>
+                  <li><a href="{{ site.baseurl }}/manual/#tasks">Tasks</a></li>
+                  <li><a href="{{ site.baseurl }}/manual/#settings">Settings</a></li>
                   <li class="divider"></li>
                   <li class="dropdown-header">Usage</li>
                   <li><a href="#">Separated link</a></li>
@@ -25,8 +25,8 @@
                   <li class="dropdown-header">Example</li>
                </ul>
             </li>
-            <li {% if include.active == 'contribute' %} class="active" {% endif %}><a href="{{ site.url }}/contribute">Contribute</a></li>
-            <li {% if include.active == 'versions' %} class="active" {% endif %}><a href="{{ site.url }}/versions">Versions</a></li>
+            <li {% if include.active == 'contribute' %} class="active" {% endif %}><a href="{{ site.baseurl }}/contribute">Contribute</a></li>
+            <li {% if include.active == 'versions' %} class="active" {% endif %}><a href="{{ site.baseurl }}/versions">Versions</a></li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/{{ site.github.author }}/{{ site.github.project }}" style="padding:10px 0">

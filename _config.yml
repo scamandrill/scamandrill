@@ -1,10 +1,12 @@
 name: scamandrill
-markdown: redcarpet
-pygments: true
 license: http://www.apache.org/licenses/LICENSE-2.0.html
-url: http://dzsessona.github.io/scamandrill
-    
+url: https://scamandrill.github.io
+baseurl: /scamandrill
+
 github:
   author: dzsessona
   project: scamandrill
-  
+
+source: ./jekyll
+markdown: kramdown
+highlighter: rouge
