@@ -4,9 +4,9 @@ sonatypeSettings
 
 name := "scamandrill"
 
-organization := "com.github.scamandrill"
+organization := "io.github.scamandrill"
 
-profileName := "com.github.scamandrill"
+profileName := "io.github.scamandrill"
 
 description := "Scala client for Mandrill api"
 
