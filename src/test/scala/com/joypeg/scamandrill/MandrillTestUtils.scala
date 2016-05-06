@@ -136,11 +136,11 @@ object MandrillTestUtils extends Matchers {
 
   val validSearch = MSearch(
     query = "email:gmail.com",
-    date_from = "2013-01-01",
-    date_to = "2018-01-01")
+    date_from = "2016-01-01",
+    date_to = "2016-01-02")
 
   val validSearchTimeSeries = MSearchTimeSeries(
     query = "email:gmail.com",
-    date_from = "2013-01-01",
-    date_to = "2018-01-01")
+    date_from = "2016-01-01",
+    date_to = "2016-01-02")
 }

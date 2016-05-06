@@ -4,29 +4,31 @@ import com.joypeg.scamandrill
 import com.joypeg.scamandrill.client.UnsuccessfulResponseException
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.utils._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import scala.util.Failure
-import scala.util.Success
+
+import scala.util.{Failure, Success, Try}
 
 class TemplateCallsTest extends FlatSpec with Matchers with SimpleLogger {
 
   "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" in {
-    val res = Await.result(mandrillAsyncClient.templateAdd(validNonPublidhedTemplate2), DefaultConfig.defaultTimeout)
-    res.getClass shouldBe classOf[MTemplateAddResponses]
+    val res: MTemplateAddResponses = Await.result(
+      mandrillAsyncClient.templateAdd(validNonPublidhedTemplate2), DefaultConfig.defaultTimeout
+    )
     res.publish_code shouldBe None
     res.slug shouldBe "templatetest2"
     res.publish_name shouldBe  "templatetest2"
   }
   it should "work getting a valid MTemplateAddResponses (blocking client)" in {
-    mandrillBlockingClient.templateAdd(validNonPublidhedTemplate) match {
-      case Success(res) =>
-        res.getClass shouldBe classOf[MTemplateAddResponses]
-        res.publish_code shouldBe None
-        res.slug shouldBe "templatetest"
-        res.publish_name shouldBe  "templatetest"
+    val res: Try[MTemplateAddResponses] = mandrillBlockingClient.templateAdd(validNonPublidhedTemplate)
+    res match {
+      case Success(resTemplate) =>
+        resTemplate.publish_code shouldBe None
+        resTemplate.slug shouldBe "templatetest"
+        resTemplate.publish_name shouldBe  "templatetest"
       case Failure(ex) => fail(ex)
     }
   }
