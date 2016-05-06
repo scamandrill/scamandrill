@@ -5,15 +5,13 @@ import org.scalatest.Matchers
 import org.scalatest.BeforeAndAfterAll
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import scala.util.{Failure, Success}
+import scala.util.{Try, Failure, Success}
 import com.joypeg.scamandrill.utils._
 import com.joypeg.scamandrill.MandrillTestUtils._
 import com.joypeg.scamandrill.models.MSenderDataResponse
 import com.joypeg.scamandrill.models.MInfoResponse
-import scala.util.Success
 import com.joypeg.scamandrill.models.MKey
 import com.joypeg.scamandrill.models.MPingResponse
-import scala.util.Failure
 
 class UserCallsTest extends FlatSpec with Matchers with SimpleLogger{
 
@@ -61,22 +59,20 @@ class UserCallsTest extends FlatSpec with Matchers with SimpleLogger{
   }
 
   "Info" should "work getting a valid MInfoResponse (async client)" in {
-    val res = Await.result(mandrillAsyncClient.usersInfo(MKey()), DefaultConfig.defaultTimeout)
-    res.getClass shouldBe classOf[MInfoResponse]
-    res.username shouldBe "scamandrill@gmail.com"
-    res.created_at shouldBe "2014-05-21 21:04:21.73604"
-    res.hourly_quota shouldBe 250
-    res.public_id shouldBe "Y5eZitt8VBjItiKUgkNhjg"
+    val res: MInfoResponse = Await.result(mandrillAsyncClient.usersInfo(MKey()), DefaultConfig.defaultTimeout)
+    res.username shouldBe "30909130"
+    res.created_at shouldBe "2016-05-05 15:25:38.62985"
+    res.hourly_quota shouldBe 25
+    res.public_id shouldBe "ALLdCj8lhM94O0jL0V3VLQ"
   }
   it should "work getting a valid MInfoResponse (blocking client)" in {
-    mandrillBlockingClient.usersInfo(MKey()) match {
-      case Success(res: MInfoResponse) =>
-        res.getClass shouldBe classOf[MInfoResponse]
-        res.username shouldBe "scamandrill@gmail.com"
-        res.created_at shouldBe "2014-05-21 21:04:21.73604"
-        res.hourly_quota shouldBe 250
-        res.public_id shouldBe "Y5eZitt8VBjItiKUgkNhjg"
-      case Success(res) => fail("Excpecting a MInfoResponse object")
+    val tryRes: Try[MInfoResponse] = mandrillBlockingClient.usersInfo(MKey())
+    tryRes match {
+      case Success(res) =>
+        res.username shouldBe "30909130"
+        res.created_at shouldBe "2016-05-05 15:25:38.62985"
+        res.hourly_quota shouldBe 25
+        res.public_id shouldBe "ALLdCj8lhM94O0jL0V3VLQ"
       case Failure(ex) => fail(ex)
     }
   }

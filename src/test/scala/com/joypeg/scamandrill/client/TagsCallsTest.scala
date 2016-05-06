@@ -2,31 +2,32 @@ package com.joypeg.scamandrill.client
 
 import com.joypeg.scamandrill
 import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import scala.util.{Failure, Success}
+
+import scala.util._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import scala.util.Failure
-import scala.util.Success
-import com.joypeg.scamandrill.models.MKey
-import scala.util.Failure
 import com.joypeg.scamandrill.models.MTagResponse
-import scala.util.Success
+
+import scala.util.{Try, Success, Failure}
 
 class TagsCallsTest extends FlatSpec with Matchers with SimpleLogger {
 
   "TagList" should "work getting a valid List[MTagResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.tagList(MKey()), DefaultConfig.defaultTimeout)
-    res.head.getClass shouldBe classOf[MTagResponse]
-    res.head.tag shouldBe "exampletag1"
+    val res: List[MTagResponse] = Await.result(mandrillAsyncClient.tagList(MKey()), DefaultConfig.defaultTimeout)
+    val head: MTagResponse = res.head
+    head.tag shouldBe "exampletag1"
   }
   it should "work getting a valid List[MTagResponse] (blocking client)" in {
-    mandrillBlockingClient.tagList(MKey()) match {
-      case Success(res) =>
-        res.head.getClass shouldBe classOf[MTagResponse]
-        res.head.tag shouldBe "exampletag1"
+    val res: Try[List[MTagResponse]] = mandrillBlockingClient.tagList(MKey())
+    res match {
+      case Success(resList) => {
+        val head:  MTagResponse = resList.head
+        head.tag shouldBe "exampletag1"
+      }
       case Failure(ex) => fail(ex)
     }
   }

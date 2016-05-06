@@ -2,15 +2,17 @@ package com.joypeg.scamandrill.client
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import scala.util.Success
-import com.joypeg.scamandrill.utils._
+
+import scala.util.{Failure, Success, Try}
 import com.joypeg.scamandrill.MandrillTestUtils._
-import scala.util.Failure
 import com.joypeg.scamandrill.models.MRejectAdd
+
 import scala.util.Success
 import com.joypeg.scamandrill.models.MRejectAddResponse
+import com.joypeg.scamandrill.utils.SimpleLogger
 
 class SendersCallsTest extends FlatSpec with Matchers with SimpleLogger {
 
@@ -117,15 +119,18 @@ class SendersCallsTest extends FlatSpec with Matchers with SimpleLogger {
   }
 
   "SendersTimeSeries" should "work getting a valid List[MSenderTSResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.sendersTimeSeries(MSenderAddress(address ="scamandrill@test.com")), DefaultConfig.defaultTimeout)
-    res.head.getClass shouldBe classOf[MSenderTSResponse]
-    res.head.clicks shouldBe 0
+    val res: List[MSenderTSResponse] = Await.result(
+      mandrillAsyncClient.sendersTimeSeries(MSenderAddress(address ="scamandrill@test.com")), DefaultConfig.defaultTimeout
+    )
+    res shouldBe Nil
   }
   it should "work getting a valid List[MSenderTSResponse] (blocking client)" in {
-    mandrillBlockingClient.sendersTimeSeries(MSenderAddress(address ="scamandrill@test.com")) match {
-      case Success(res) =>
-        res.head.getClass shouldBe classOf[MSenderTSResponse]
-        res.head.clicks shouldBe 0
+    val res: Try[List[MSenderTSResponse]] = mandrillBlockingClient.sendersTimeSeries(
+      MSenderAddress(address ="scamandrill@test.com")
+    )
+    res match {
+      case Success(resSender) =>
+        resSender shouldBe Nil
       case Failure(ex) => fail(ex)
     }
   }

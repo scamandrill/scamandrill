@@ -14,8 +14,9 @@ import scala.util.Success
 class SubaccountCallsTest extends FlatSpec with Matchers with SimpleLogger {
 
   "SubaccountAdd" should "work getting a valid MSubaccountsResponse (async client)" in {
-    val res = Await.result(mandrillAsyncClient.subaccountAdd(validSubaccount), DefaultConfig.defaultTimeout)
-    res.getClass shouldBe classOf[MSubaccountsResponse]
+    val res: MSubaccountsResponse = Await.result(
+      mandrillAsyncClient.subaccountAdd(validSubaccount), DefaultConfig.defaultTimeout
+    )
     res.id shouldBe validSubaccount.id
     res.name shouldBe validSubaccount.name
   }
