@@ -4,9 +4,9 @@ sonatypeSettings
 
 name := "scamandrill"
 
-organization := "com.github.dzsessona"
+organization := "com.github.scamandrill"
 
-profileName := "com.github.dzsessona"
+profileName := "com.github.scamandrill"
 
 description := "Scala client for Mandrill api"
 
@@ -42,10 +42,8 @@ publishMavenStyle := true
 
 pomIncludeRepository := { _ => false }
 
-//pgpPublicRing := file("/Users/dzsessona/Documents/mykeys/diegopgp.asc")
-
 pomExtra := (
-  <url>http://github.com/dzsessona/scamandrill</url>
+  <url>http://github.com/scamandrill/scamandrill</url>
     <licenses>
       <license>
         <name>Apache License 2.0</name>
@@ -53,15 +51,20 @@ pomExtra := (
       </license>
     </licenses>
     <scm>
-      <connection>scm:git:github.com/dzsessona/scamandrill.git</connection>
-      <developerConnection>scm:git:git@github.com:dzsessona/scamandrill.git</developerConnection>
-      <url>github.com/dzsessona/scamandrill</url>
+      <connection>scm:git:github.com/scamandrill/scamandrill.git</connection>
+      <developerConnection>scm:git:git@github.com:scamandrill/scamandrill.git</developerConnection>
+      <url>github.com/scamandrill/scamandrill</url>
     </scm>
     <developers>
       <developer>
         <id>dzsessona</id>
         <name>Diego Zambelli Sessona</name>
         <url>https://www.linkedin.com/in/diegozambellisessona</url>
+      </developer>
+      <developer>
+        <id>graingert</id>
+        <name>Diego Zambelli Sessona</name>
+        <url>https://graingert.co.uk/</url>
       </developer>
     </developers>
   )
