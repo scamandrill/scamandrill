@@ -1,19 +1,18 @@
 package com.joypeg.scamandrill.client
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import org.scalatest.BeforeAndAfterAll
+import com.joypeg.scamandrill.MandrillSpec
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import scala.util.{Try, Failure, Success}
-import com.joypeg.scamandrill.utils._
+
+import scala.util.{Failure, Success, Try}
 import com.joypeg.scamandrill.MandrillTestUtils._
 import com.joypeg.scamandrill.models.MSenderDataResponse
 import com.joypeg.scamandrill.models.MInfoResponse
 import com.joypeg.scamandrill.models.MKey
 import com.joypeg.scamandrill.models.MPingResponse
 
-class UserCallsTest extends FlatSpec with Matchers with SimpleLogger{
+class UserCallsTest extends MandrillSpec {
 
   "Ping" should "work getting a valid MPingResponse (async client)" in {
     val res = Await.result(mandrillAsyncClient.usersPing(MKey()), DefaultConfig.defaultTimeout)

@@ -1,18 +1,15 @@
 package com.joypeg.scamandrill.client
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import scala.util.Success
-import com.joypeg.scamandrill.utils._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import scala.util.Failure
-import com.joypeg.scamandrill.models.MRejectAdd
-import scala.util.Success
-import com.joypeg.scamandrill.models.MRejectAddResponse
 
-class WhitelistCallsTest extends FlatSpec with Matchers with SimpleLogger {
+import scala.util.Failure
+import scala.util.Success
+
+class WhitelistCallsTest extends MandrillSpec {
 
   "WhitelistAdd" should "work getting a valid MWhitelistAddResponse (async client)" in {
     val res = Await.result(mandrillAsyncClient.whitelistAdd(MWhitelist(email = "whitelist@example.com")), DefaultConfig.defaultTimeout)

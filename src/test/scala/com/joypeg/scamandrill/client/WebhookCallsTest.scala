@@ -1,17 +1,15 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.util.Failure
 import scala.util.Success
 
-class WebhookCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class WebhookCallsTest extends MandrillSpec {
 
   "WebhookList" should "work getting a valid List[MWebhooksResponse] (async client)" in {
     val res = Await.result(mandrillAsyncClient.webhookList(MKey()), DefaultConfig.defaultTimeout)

@@ -1,19 +1,20 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.util.Failure
 import scala.util.Success
 
+import org.scalatest.tagobjects.Retryable
 
-class SubaccountCallsTest extends FlatSpec with Matchers with SimpleLogger {
 
-  "SubaccountAdd" should "work getting a valid MSubaccountsResponse (async client)" in {
+class SubaccountCallsTest extends MandrillSpec {
+
+  "SubaccountAdd" should "work getting a valid MSubaccountsResponse (async client)" taggedAs(Retryable) in {
     val res: MSubaccountsResponse = Await.result(
       mandrillAsyncClient.subaccountAdd(validSubaccount), DefaultConfig.defaultTimeout
     )

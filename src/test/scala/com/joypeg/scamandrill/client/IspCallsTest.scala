@@ -1,17 +1,15 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
+
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.util.Failure
 import scala.util.Success
 
-class IspCallsTest  extends FlatSpec with Matchers with SimpleLogger {
+class IspCallsTest  extends MandrillSpec {
 
   "IspList" should "work getting a valid List[MIspResponse] (async client)" in {
     val res = Await.result(mandrillAsyncClient.ispList(MKey()), DefaultConfig.defaultTimeout)
