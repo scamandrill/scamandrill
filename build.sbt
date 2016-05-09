@@ -14,7 +14,9 @@ scalaVersion := "2.11.7"
 
 crossScalaVersions := Seq("2.10.5", "2.11.7")
 
-scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+scalacOptions := Seq(
+  "-feature", "-unchecked", "-deprecation", "-encoding", "utf8"
+)
 
 resolvers ++= Seq("spray repo" at "http://repo.spray.io/")
 
