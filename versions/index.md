@@ -3,8 +3,7 @@ layout: nothome
 active: versions
 title: Scamandrill - versions
 ---
-## 1.0.0 <small> Released on 21/05/2014</small>
+## 1.2.1
 
-First release (only scala 2.10).
-
-[Maven central for scala 2.10 link](http://central.maven.org/maven2/io/github/scamandrill/scamandrill_2.10/1.0.0/)
+First release (only scala 2.11).
+[JCenter Scamandrill 1.2.1](https://jcenter.bintray.com/io/github/scamandrill/scamandrill_2.11/1.2.1/)

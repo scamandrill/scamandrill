@@ -2,6 +2,7 @@ name: scamandrill
 license: https://www.apache.org/licenses/LICENSE-2.0.html
 url: https://scamandrill.github.io
 baseurl: /scamandrill
+version: 1.2.1
 
 github:
   author: scamandrill

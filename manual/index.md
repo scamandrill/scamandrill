@@ -8,14 +8,13 @@ title: Sbt Neo Dependencies - manual
 
 **The artifacts of this project are uploaded in Maven Central.** 
 
-As from the [sbt documentation](http://www.scala-sbt.org/release/docs/Detailed-Topics/Resolvers.html) 
+As from the [sbt documentation](http://www.scala-sbt.org/release/docs/Resolvers.html)
 the DefaultMavenRepository is the main Maven repository at http://repo1.maven.org/maven2/ and is included by default. 
 Therefore you don't need to add any resolvers to your build definition; you can simply add the scamandrill client 
 in your build definition **libraryDependencies** as follow: 
 
-``` "io.github.scamandrill"     %% "scamandrill"          % "version"  ```
+``` "io.github.scamandrill"     %% "scamandrill"          % "{{ site.version }}"  ```
 
-Replace **version** with the last version of this project (1.0.0 at the time of writing this document). 
 All versions for this plugin can be found [here]({{ site.baseurl }}/versions). In case you are confused about the difference
  between build.sbt and Build.scala read [this](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html).
 
