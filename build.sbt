@@ -61,7 +61,7 @@ pomExtra := (
       </developer>
       <developer>
         <id>graingert</id>
-        <name>Diego Zambelli Sessona</name>
+        <name>Thomas Grainger</name>
         <url>https://graingert.co.uk/</url>
       </developer>
     </developers>
