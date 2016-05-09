@@ -1,20 +1,16 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.{FlatSpec, Matchers}
-import com.joypeg.scamandrill.utils.SimpleLogger
+import com.joypeg.scamandrill.MandrillSpec
 
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 
-import scala.util._
 import com.joypeg.scamandrill.MandrillTestUtils._
 import com.joypeg.scamandrill.models.MTagResponse
 
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
-class TagsCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class TagsCallsTest extends MandrillSpec {
 
   "TagList" should "work getting a valid List[MTagResponse] (async client)" in {
     val res: List[MTagResponse] = Await.result(mandrillAsyncClient.tagList(MKey()), DefaultConfig.defaultTimeout)

@@ -1,18 +1,13 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
 
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 
 import scala.util.{Failure, Success, Try}
-import com.joypeg.scamandrill.utils._
 
-
-class MessageCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class MessageCallsTest extends MandrillSpec {
 
   import com.joypeg.scamandrill.MandrillTestUtils._
 

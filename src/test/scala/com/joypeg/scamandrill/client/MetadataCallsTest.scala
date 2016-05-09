@@ -1,15 +1,11 @@
 package com.joypeg.scamandrill.client
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import scala.concurrent.Await
+import com.joypeg.scamandrill.MandrillSpec
+
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
-import scala.util.Failure
-import scala.util.Success
 
-class MetadataCallsTest  extends FlatSpec with Matchers with SimpleLogger {
+class MetadataCallsTest  extends MandrillSpec {
 
 
 //  "MetadataAdd" should "work getting a valid MIMetadataResponse (async client)" in {

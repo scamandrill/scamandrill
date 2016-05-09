@@ -1,19 +1,17 @@
 package com.joypeg.scamandrill.client
 
+import com.joypeg.scamandrill.MandrillSpec
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.util.Failure
 import scala.util.Success
 
+import org.scalatest.tagobjects.Retryable
 
-class InboundCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class InboundCallsTest extends MandrillSpec {
 
   "InboundAddDomains" should "work getting a valid MInboundDomainResponse (async client)" in {
     val res = Await.result(mandrillAsyncClient.inboundAddDomain(MInboundDomain(domain = "testingdomain")), DefaultConfig.defaultTimeout)
@@ -84,7 +82,7 @@ class InboundCallsTest extends FlatSpec with Matchers with SimpleLogger {
     checkFailedBecauseOfInvalidKey(mandrillBlockingClient.inboundDeleteDomain(MInboundDomain(domain = "testingdomain", key="invalid")))
   }
 
-  "InboundAddRoute" should "fail if the key is not valid, with an , with an 'Unknown_InboundDomain' code" in {
+  "InboundAddRoute" should "fail if the key is not valid, with an , with an 'Unknown_InboundDomain' code" taggedAs(Retryable) in {
     mandrillBlockingClient.inboundAddRoute(validRoute) match {
       case Success(res) =>
         fail("This operation should be unsuccessful")

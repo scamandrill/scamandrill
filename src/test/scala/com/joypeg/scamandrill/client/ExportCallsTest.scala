@@ -1,15 +1,11 @@
 package com.joypeg.scamandrill.client
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import scala.concurrent.Await
+import com.joypeg.scamandrill.MandrillSpec
+
 import com.joypeg.scamandrill.models._
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.utils.SimpleLogger
-import scala.util.Failure
-import scala.util.Success
 
-class ExportCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class ExportCallsTest extends MandrillSpec {
 
 //  "ExportList" should "work getting a valid MExportResponse (async client)" in {
 //    val res = Await.result(MandrillAsyncClient.exportList(MKey()), DefaultConfig.defaultTimeout)

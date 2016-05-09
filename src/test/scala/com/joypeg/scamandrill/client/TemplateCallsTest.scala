@@ -1,18 +1,15 @@
 package com.joypeg.scamandrill.client
 
-import com.joypeg.scamandrill
-import com.joypeg.scamandrill.client.UnsuccessfulResponseException
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
 
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
-import com.joypeg.scamandrill.utils._
 import com.joypeg.scamandrill.MandrillTestUtils._
 
 import scala.util.{Failure, Success, Try}
+import org.scalatest.tagobjects.Retryable
 
-class TemplateCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class TemplateCallsTest extends MandrillSpec {
 
   "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" in {
     val res: MTemplateAddResponses = Await.result(
@@ -22,7 +19,7 @@ class TemplateCallsTest extends FlatSpec with Matchers with SimpleLogger {
     res.slug shouldBe "templatetest2"
     res.publish_name shouldBe  "templatetest2"
   }
-  it should "work getting a valid MTemplateAddResponses (blocking client)" in {
+  it should "work getting a valid MTemplateAddResponses (blocking client)" taggedAs(Retryable) in {
     val res: Try[MTemplateAddResponses] = mandrillBlockingClient.templateAdd(validNonPublidhedTemplate)
     res match {
       case Success(resTemplate) =>

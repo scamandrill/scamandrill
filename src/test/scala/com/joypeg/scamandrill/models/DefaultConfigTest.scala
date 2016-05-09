@@ -1,10 +1,12 @@
 package com.joypeg.scamandrill.models
 
-import org.scalatest.{Matchers, FlatSpec}
+import com.joypeg.scamandrill.MandrillSpec
+import org.scalatest.{FlatSpec, Matchers}
 import com.joypeg.scamandrill.utils.SimpleLogger
+
 import scala.concurrent.duration._
 
-class DefaultConfigTest extends FlatSpec with Matchers with SimpleLogger {
+class DefaultConfigTest extends MandrillSpec {
 
   "DefaultConfig" should "read the defaut key from the configuration" in {
     DefaultConfig.defaultKeyFromConfig.getClass shouldBe classOf[String]

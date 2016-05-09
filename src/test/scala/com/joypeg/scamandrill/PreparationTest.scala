@@ -1,23 +1,16 @@
 package com.joypeg.scamandrill
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import org.scalatest.BeforeAndAfterAll
 import com.joypeg.scamandrill.models._
 import scala.util.{Failure, Success}
-import com.joypeg.scamandrill.utils._
-import com.joypeg.scamandrill.client.MandrillBlockingClient
 import com.joypeg.scamandrill.MandrillTestUtils._
 import com.joypeg.scamandrill.models.MSendResponse
 import com.joypeg.scamandrill.models.MTemplateAddResponses
 import com.joypeg.scamandrill.models.MTemplate
-import scala.util.Success
 import com.joypeg.scamandrill.models.MTo
-import scala.util.Failure
 import com.joypeg.scamandrill.models.MSendMessage
 
 
-class PreparationTest extends FlatSpec with Matchers with BeforeAndAfterAll with SimpleLogger {
+class PreparationTest extends MandrillSpec {
 
   val realKey = "REPLACEME" //ADD YOUR REAL (NON TESTING) KEY HERE
 

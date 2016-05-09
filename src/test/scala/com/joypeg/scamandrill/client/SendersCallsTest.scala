@@ -1,20 +1,16 @@
 package com.joypeg.scamandrill.client
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+import com.joypeg.scamandrill.MandrillSpec
 
 import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Try}
 import com.joypeg.scamandrill.MandrillTestUtils._
-import com.joypeg.scamandrill.models.MRejectAdd
 
 import scala.util.Success
-import com.joypeg.scamandrill.models.MRejectAddResponse
-import com.joypeg.scamandrill.utils.SimpleLogger
 
-class SendersCallsTest extends FlatSpec with Matchers with SimpleLogger {
+class SendersCallsTest extends MandrillSpec {
 
   "SendersList" should "work getting a valid List[MSendersListResp] (async client)" in {
     val res = Await.result(mandrillAsyncClient.sendersList(MKey()), DefaultConfig.defaultTimeout)
