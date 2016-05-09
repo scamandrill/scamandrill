@@ -48,12 +48,6 @@ pomIncludeRepository := { _ => false }
 
 pomExtra := (
   <url>http://github.com/scamandrill/scamandrill</url>
-    <licenses>
-      <license>
-        <name>Apache License 2.0</name>
-        <url>http://opensource.org/licenses/Apache-2.0</url>
-      </license>
-    </licenses>
     <scm>
       <connection>scm:git:github.com/scamandrill/scamandrill.git</connection>
       <developerConnection>scm:git:git@github.com:scamandrill/scamandrill.git</developerConnection>
