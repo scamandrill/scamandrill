@@ -21,7 +21,7 @@ class SubaccountCallsTest extends MandrillSpec {
     res.id shouldBe validSubaccount.id
     res.name shouldBe validSubaccount.name
   }
-  it should "work getting a valid MSubaccountsResponse (blocking client)" in {
+  it should "work getting a valid MSubaccountsResponse (blocking client)" taggedAs(Retryable) in {
     mandrillBlockingClient.subaccountAdd(validSubaccount2) match {
       case Success(res) =>
         res.getClass shouldBe classOf[MSubaccountsResponse]

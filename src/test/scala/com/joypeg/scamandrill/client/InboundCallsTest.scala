@@ -130,7 +130,7 @@ class InboundCallsTest extends MandrillSpec {
     checkFailedBecauseOfInvalidKey(mandrillBlockingClient.inboundUpdateRoute(MInboundUpdateRoute(id ="nonexisting", pattern="", url = "example",key = "invalid")))
   }
 
-  "InboundRoutes" should "fail if the key is not valid, with an , with an 'Unknown_InboundDomain' code" in {
+  "InboundRoutes" should "fail if the key is not valid, with an , with an 'Unknown_InboundDomain' code" taggedAs(Retryable) in {
     mandrillBlockingClient.inboundRoutes(MInboundDomain(domain = "testingdomain")) match {
       case Success(res) =>
         fail("This operation should be unsuccessful")

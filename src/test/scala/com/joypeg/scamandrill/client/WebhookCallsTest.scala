@@ -9,6 +9,8 @@ import com.joypeg.scamandrill.MandrillTestUtils._
 import scala.util.Failure
 import scala.util.Success
 
+import org.scalatest.tagobjects.Retryable
+
 class WebhookCallsTest extends MandrillSpec {
 
   "WebhookList" should "work getting a valid List[MWebhooksResponse] (async client)" in {
@@ -26,7 +28,7 @@ class WebhookCallsTest extends MandrillSpec {
     checkFailedBecauseOfInvalidKey(mandrillBlockingClient.webhookList(MKey(key="invalid")))
   }
 
-  "WebhookAdd" should "fail if the key is not valid, with an 'ValidationError' code" in {
+  "WebhookAdd" should "fail if the key is not valid, with an 'ValidationError' code" taggedAs(Retryable) in {
     mandrillBlockingClient.webhookAdd(validWebhook) match {
       case Success(res) =>
         fail("This operation should be unsuccessful")
