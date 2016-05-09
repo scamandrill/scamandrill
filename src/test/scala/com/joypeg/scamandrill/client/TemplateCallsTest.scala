@@ -79,7 +79,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
 
-  "TemplateInfo" should "work getting a valid MTemplateAddResponses (async client)" in {
+  "TemplateInfo" should "work getting a valid MTemplateAddResponses (async client)" taggedAs(Retryable) in {
     val res = Await.result(mandrillAsyncClient.templateInfo(MTemplateInfo(name = validNonPublidhedTemplate.name)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
     res.publish_code shouldBe Some("<div>example code</div>")
