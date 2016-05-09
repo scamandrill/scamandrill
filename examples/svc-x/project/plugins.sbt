@@ -1,1 +1,1 @@
-addSbtPlugin("com.github.dzsessona" %% "sbt-neo-dependencies" % "1.2.0")
+addSbtPlugin("io.github.scamandrill" %% "sbt-neo-dependencies" % "1.2.0")

@@ -13,7 +13,7 @@ the DefaultMavenRepository is the main Maven repository at http://repo1.maven.or
 Therefore you don't need to add any resolvers to your build definition; you can simply add the scamandrill client 
 in your build definition **libraryDependencies** as follow: 
 
-``` "com.github.dzsessona"     %% "scamandrill"          % "version"  ```
+``` "io.github.scamandrill"     %% "scamandrill"          % "version"  ```
 
 Replace **version** with the last version of this project (1.0.0 at the time of writing this document). 
 All versions for this plugin can be found [here]({{ site.baseurl }}/versions). In case you are confused about the difference
