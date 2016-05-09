@@ -11,6 +11,7 @@ import com.joypeg.scamandrill.models.MSearchTimeSeries
 import com.joypeg.scamandrill.models.MTo
 import scala.util.Failure
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 object MandrillTestUtils extends Matchers {
 
