@@ -1,12 +1,14 @@
-import SonatypeKeys._
-
-sonatypeSettings
-
 name := "scamandrill"
 
 organization := "io.github.scamandrill"
 
-profileName := "io.github.scamandrill"
+bintrayOrganization := Some("scamandrill")
+
+bintrayRepository := "scamandrill"
+
+bintrayReleaseOnPublish in ThisBuild := false
+
+licenses += ("Apache-2.0", url("https://spdx.org/licenses/Apache-2.0"))
 
 description := "Scala client for Mandrill api"
 
