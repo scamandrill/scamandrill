@@ -11,20 +11,20 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
-  var mandrillAsyncClient = new MandrillAsyncClient()
-  implicit var mat = mandrillAsyncClient.materializer
-  implicit var ec = mandrillAsyncClient.system.dispatcher
+  var client = new MandrillClient()
+  implicit var mat = client.materializer
+  implicit var ec = client.system.dispatcher
 
   def shutdown(): Unit = {
-    implicit val system = mandrillAsyncClient.system
+    implicit val system = client.system
     Await.ready(Http().shutdownAllConnectionPools(), Duration.Inf)
-    Await.ready(mandrillAsyncClient.system.terminate(), Duration.Inf)
+    Await.ready(client.system.terminate(), Duration.Inf)
   }
 
   override def beforeEach(): Unit = {
-    mandrillAsyncClient = new MandrillAsyncClient()
-    mat = mandrillAsyncClient.materializer
-    ec = mandrillAsyncClient.system.dispatcher
+    client = new MandrillClient()
+    mat = client.materializer
+    ec = client.system.dispatcher
     super.beforeEach()
   }
 

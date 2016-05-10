@@ -12,18 +12,18 @@ import scala.util.Success
 
 class UrlCallsTest extends MandrillSpec {
 
-  "UrlsList" should "work getting a valid List[MUrlResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.urlsList(MKey()), DefaultConfig.defaultTimeout)
+  "UrlsList" should "work getting a valid List[MUrlResponse]" in {
+    val res = Await.result(client.urlsList(MKey()), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
-  "UrlsSearch" should "work getting a valid List[MUrlResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.urlsSearch(MUrlSearch(q = "http://example.com/example")), DefaultConfig.defaultTimeout)
+  "UrlsSearch" should "work getting a valid List[MUrlResponse]" in {
+    val res = Await.result(client.urlsSearch(MUrlSearch(q = "http://example.com/example")), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
-//  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse] (async client)" in {
-//    val res = Await.result(mandrillAsyncClient.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")), DefaultConfig.defaultTimeout)
+//  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse]" in {
+//    val res = Await.result(client.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")), DefaultConfig.defaultTimeout)
 //    res shouldBe Nil
 //  }
 //  it should "work getting a valid List[MUrlTimeResponse] (blocking client)" in {
@@ -34,19 +34,19 @@ class UrlCallsTest extends MandrillSpec {
 //    }
 //  }
 
-  "UrlsAddTrackingDomain" should "work getting a valid MUrlDomainResponse (async client)" in {
-    val res = Await.result(mandrillAsyncClient.urlsAddTrackingDomain(MUrlDomain(domain = "test.com")), DefaultConfig.defaultTimeout)
+  "UrlsAddTrackingDomain" should "work getting a valid MUrlDomainResponse" in {
+    val res = Await.result(client.urlsAddTrackingDomain(MUrlDomain(domain = "test.com")), DefaultConfig.defaultTimeout)
     res.domain shouldBe "test.com"
   }
 
-  "UrlsTrackingDomain" should "work getting a valid List[MUrlDomainResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.urlsTrackingDomain(MKey()), DefaultConfig.defaultTimeout)
+  "UrlsTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
+    val res = Await.result(client.urlsTrackingDomain(MKey()), DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MUrlDomainResponse]
     res.head.domain shouldBe "test.com"
   }
 
-  "UrlsCheckTrackingDomain" should "work getting a valid List[MUrlDomainResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.urlsCheckTrackingDomain(MUrlDomain(domain= "test.com")), DefaultConfig.defaultTimeout)
+  "UrlsCheckTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
+    val res = Await.result(client.urlsCheckTrackingDomain(MUrlDomain(domain= "test.com")), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MUrlDomainResponse]
     res.domain shouldBe "test.com"
   }

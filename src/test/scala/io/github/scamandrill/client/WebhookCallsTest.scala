@@ -12,8 +12,8 @@ import scala.util.Success
 import org.scalatest.tagobjects.Retryable
 
 class WebhookCallsTest extends MandrillSpec {
-  "WebhookList" should "work getting a valid List[MWebhooksResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.webhookList(MKey()), DefaultConfig.defaultTimeout)
+  "WebhookList" should "work getting a valid List[MWebhooksResponse]" in {
+    val res = Await.result(client.webhookList(MKey()), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 }
