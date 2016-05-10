@@ -4,8 +4,6 @@ import io.github.scamandrill.MandrillSpec
 
 class MandrillJsonProtocolTest extends MandrillSpec {
 
-  import io.github.scamandrill.MandrillTestUtils._
-
 //  "MSendMessageJsonFormat" should "marshall and unmarshall a MSendMessage" in {
 //    import MandrillJsonProtocol._
 //    import spray.httpx.SprayJsonSupport._

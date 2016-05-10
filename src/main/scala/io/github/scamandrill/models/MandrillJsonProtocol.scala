@@ -1,6 +1,7 @@
 package io.github.scamandrill.models
 
 import spray.json._
+
 import scala.util.Try
 
 /**

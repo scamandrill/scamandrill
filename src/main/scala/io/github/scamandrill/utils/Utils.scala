@@ -1,7 +1,7 @@
 package io.github.scamandrill.utils
 
-import org.slf4j.LoggerFactory
 import com.typesafe.config.ConfigFactory
+import org.slf4j.LoggerFactory
 
 object `package` {
   lazy val config = {

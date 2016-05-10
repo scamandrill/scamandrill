@@ -1,13 +1,11 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.MandrillTestUtils._
+import io.github.scamandrill.models._
+import org.scalatest.tagobjects.Retryable
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-import io.github.scamandrill.MandrillTestUtils._
-
-import scala.util.{Failure, Success, Try}
-import org.scalatest.tagobjects.Retryable
 
 class TemplateCallsTest extends MandrillSpec {
 

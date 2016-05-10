@@ -3,12 +3,12 @@ package io.github.scamandrill
 import akka.http.scaladsl.Http
 import io.github.scamandrill.client._
 import io.github.scamandrill.utils.SimpleLogger
-import org.scalatest.{BeforeAndAfterEach, FlatSpec, Matchers, Retries, Suite}
+import org.scalatest._
 
-import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success, Try}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
+import scala.util.{Failure, Success, Try}
 
 trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
   var client = new MandrillClient()

@@ -1,16 +1,7 @@
 package io.github.scamandrill
 
-import io.github.scamandrill.models._
-import io.github.scamandrill.client.{MandrillClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
+import io.github.scamandrill.models.{MSearch, MSearchTimeSeries, MTo, _}
 import org.scalatest.Matchers
-import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success, Try}
-import io.github.scamandrill.models.MSearch
-import scala.util.Success
-import io.github.scamandrill.models.MSearchTimeSeries
-import io.github.scamandrill.models.MTo
-import scala.util.Failure
-import scala.concurrent.duration._
 
 object MandrillTestUtils extends Matchers {
 

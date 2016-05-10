@@ -1,14 +1,9 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.models.{MTagResponse, _}
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-
-import io.github.scamandrill.MandrillTestUtils._
-import io.github.scamandrill.models.MTagResponse
-
-import scala.util.{Failure, Success, Try}
 
 class TagsCallsTest extends MandrillSpec {
 

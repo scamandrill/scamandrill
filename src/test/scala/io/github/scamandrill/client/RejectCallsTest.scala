@@ -1,15 +1,10 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.models.{MRejectAdd, MRejectAddResponse, _}
+import org.scalatest.tagobjects.Retryable
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-
-import scala.util.{Failure, Success}
-import io.github.scamandrill.MandrillTestUtils._
-import io.github.scamandrill.models.MRejectAdd
-import io.github.scamandrill.models.MRejectAddResponse
-import org.scalatest.tagobjects.Retryable
 
 class RejectCallsTest extends MandrillSpec {
 

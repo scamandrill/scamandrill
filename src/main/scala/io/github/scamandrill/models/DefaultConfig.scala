@@ -1,7 +1,8 @@
 package io.github.scamandrill.models
 
-import scala.concurrent.duration._
 import io.github.scamandrill.utils._
+
+import scala.concurrent.duration._
 
 object DefaultConfig{
 

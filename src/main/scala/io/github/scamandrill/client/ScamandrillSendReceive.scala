@@ -9,8 +9,8 @@ import io.github.scamandrill.utils.SimpleLogger
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success}
 import scala.language.postfixOps
+import scala.util.{Failure, Success}
 
 /**
   * This trait abstract on top of spray the handling of all request / response to the mandrill API. Its
