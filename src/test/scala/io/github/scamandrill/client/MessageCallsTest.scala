@@ -15,7 +15,7 @@ class MessageCallsTest extends MandrillSpec {
 
   "Send" should "work getting a valid List[MSendResponse] (async client)" in {
     val res: List[MSendResponse] = Await.result(
-      mandrillAsyncClient.messagesSend(MSendMessage(message = validMessage)), DefaultConfig.defaultTimeout
+      client.messagesSend(MSendMessage(message = validMessage)), DefaultConfig.defaultTimeout
     )
     res.size shouldBe 1
     res.head.status shouldBe "queued"
@@ -25,7 +25,7 @@ class MessageCallsTest extends MandrillSpec {
 
   "SendTemplate" should "work getting a valid List[MSendResponse] (async client)" in {
     val res: List[MSendResponse] = Await.result(
-      mandrillAsyncClient.messagesSendTemplate(
+      client.messagesSendTemplate(
         MSendTemplateMessage(
           template_name = "testtemplate",
           template_content = List(MVars("first", "example")),
@@ -41,20 +41,20 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "Search" should "work getting a valid List[MSearchResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.messagesSearch(validSearch), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.messagesSearch(validSearch), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
   // Causes Mandrill to 500
   ignore should "work getting a valid List[MSearchResponse] with a TimeSeries (async client)" in {
       val res = Await.result(
-        mandrillAsyncClient.messagesSearchTimeSeries(validSearchTimeSeries), DefaultConfig.defaultTimeout
+        client.messagesSearchTimeSeries(validSearchTimeSeries), DefaultConfig.defaultTimeout
       )
       res shouldBe Nil
   }
 
   "MessageInfo" should "work getting a valid MMessageInfoResponse (async client)" ignore {
-    val res = Await.result(mandrillAsyncClient.messagesInfo(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.messagesInfo(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MMessageInfoResponse]
     res._id shouldBe idOfMailForInfoTest
     res.subject shouldBe "subject test"
@@ -63,7 +63,7 @@ class MessageCallsTest extends MandrillSpec {
 
 //  This call doesn't seem to work in the api
 //  "MessageInfo" should "work getting a valid MContentResponse (async client)" in {
-//    val res = Await.result(mandrillAsyncClient.content(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
+//    val res = Await.result(client.content(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
 //    res.getClass shouldBe classOf[MMessageInfoResponse]
 //    res._id shouldBe idOfMailForInfoTest
 //    res.subject shouldBe "subject test"
@@ -82,18 +82,18 @@ class MessageCallsTest extends MandrillSpec {
 //  }
 
   "Parse" should "work getting a valid MParseResponse (async client)" in {
-    val res = Await.result(mandrillAsyncClient.messagesParse(MParse(raw_message = """From: sender@example.com""")), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.messagesParse(MParse(raw_message = """From: sender@example.com""")), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MParseResponse]
     res.from_email shouldBe Some("sender@example.com")
   }
 
   "SendRaw" should "work getting a valid MParseResponse (async client)" in {
-    val res = Await.result(mandrillAsyncClient.messagesSendRaw(validRawMessage), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.messagesSendRaw(validRawMessage), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
   "ListSchedule" should "work getting a valid List[MScheduleResponse] (async client)" in {
-    val res = Await.result(mandrillAsyncClient.messagesListSchedule(MListSchedule(to = "test@recipient.com")), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.messagesListSchedule(MListSchedule(to = "test@recipient.com")), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 }
