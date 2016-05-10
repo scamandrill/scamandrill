@@ -1,0 +1,135 @@
+package io.github.scamandrill.client
+
+import io.github.scamandrill.MandrillSpec
+
+import scala.concurrent.Await
+import io.github.scamandrill.models._
+
+import io.github.scamandrill.MandrillTestUtils._
+import io.github.scamandrill.models.MTagResponse
+
+import scala.util.{Failure, Success, Try}
+
+class TagsCallsTest extends MandrillSpec {
+
+  "TagList" should "work getting a valid List[MTagResponse] (async client)" in {
+    val res: List[MTagResponse] = Await.result(mandrillAsyncClient.tagList(MKey()), DefaultConfig.defaultTimeout)
+    val head: MTagResponse = res.head
+    head.tag shouldBe "exampletag1"
+  }
+  it should "work getting a valid List[MTagResponse] (blocking client)" in {
+    val res: Try[List[MTagResponse]] = mandrillBlockingClient.tagList(MKey())
+    res match {
+      case Success(resList) => {
+        val head:  MTagResponse = resList.head
+        head.tag shouldBe "exampletag1"
+      }
+      case Failure(ex) => fail(ex)
+    }
+  }
+  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.tagList(MKey("invalidkeytest")))
+  }
+
+//  "TagDelete" should "work getting a valid MTagResponse (async client)" in {
+//    val res = Await.result(mandrillAsyncClient.tagDelete(MTagRequest(key = "twotag")), DefaultConfig.defaultTimeout)
+//    res.getClass shouldBe classOf[MTagResponse]
+//    res.key shouldBe "twotag"
+//  }
+//  it should "work getting a valid MTagResponse (blocking client)" in {
+//    mandrillBlockingClient.tagDelete(MTagRequest(key = "twotag")) match {
+//      case Success(res) =>
+//        res.key shouldBe "twotag"
+//      case Failure(ex) => fail(ex)
+//    }
+//  }
+  "TagDelete" should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.tagDelete(MTagRequest(tag = "exampletag1", key="invalid")))
+  }
+  it should "fail if the key does not exists, with an 'Invalid_Tag_Name' code" in {
+    mandrillBlockingClient.tagDelete(MTagRequest(tag = "invalid")) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", 1, "Invalid_Tag_Name", "no such tag \"invalid\"")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "TagInfo" should "work getting a valid MTagInfoResponse (async client)" in {
+    val res = Await.result(mandrillAsyncClient.tagInfo(MTagRequest(tag = "exampletag1")), DefaultConfig.defaultTimeout)
+    res.getClass shouldBe classOf[MTagInfoResponse]
+    res.tag shouldBe "exampletag1"
+  }
+  it should "work getting a valid MTagInfoResponse (blocking client)" in {
+    mandrillBlockingClient.tagInfo(MTagRequest(tag = "exampletag1")) match {
+      case Success(res) =>
+        res.tag shouldBe "exampletag1"
+      case Failure(ex) => fail(ex)
+    }
+  }
+  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.tagInfo(MTagRequest(tag = "exampletag1", key="invalid")))
+  }
+  it should "fail if the key does not exists, with an 'Invalid_Tag_Name' code" in {
+    mandrillBlockingClient.tagInfo(MTagRequest(tag = "invalid")) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", 1, "Invalid_Tag_Name", "no such tag \"invalid\"")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "TagTimeSeries" should "work getting a valid List[MTimeSeriesResponse] (async client)" in {
+    val res = Await.result(mandrillAsyncClient.tagTimeSeries(MTagRequest(tag = "exampletag1")), DefaultConfig.defaultTimeout)
+    //res shouldBe Nil
+  }
+  it should "work getting a valid List[MTimeSeriesResponse] (blocking client)" in {
+    mandrillBlockingClient.tagTimeSeries(MTagRequest(tag = "exampletag1")) match {
+      case Success(res) =>
+        //res shouldBe Nil
+      case Failure(ex) => fail(ex)
+    }
+  }
+  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.tagTimeSeries(MTagRequest(tag = "exampletag1", key="invalid")))
+  }
+  it should "fail if the key does not exists, with an 'Invalid_Tag_Name' code" in {
+    mandrillBlockingClient.tagTimeSeries(MTagRequest(tag = "invalid")) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", 1, "Invalid_Tag_Name", "no such tag \"invalid\"")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "TagAllTimeSeries" should "work getting a valid List[MTimeSeriesResponse] (async client)" in {
+    val res = Await.result(mandrillAsyncClient.tagAllTimeSeries(MKey()), DefaultConfig.defaultTimeout)
+    //res shouldBe Nil
+  }
+  it should "work getting a valid List[MTimeSeriesResponse] (blocking client)" in {
+    mandrillBlockingClient.tagAllTimeSeries(MKey()) match {
+      case Success(res) =>
+        //res shouldBe Nil
+      case Failure(ex) => fail(ex)
+    }
+  }
+  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.tagAllTimeSeries(MKey(key="invalid")))
+  }
+
+
+
+
+}
