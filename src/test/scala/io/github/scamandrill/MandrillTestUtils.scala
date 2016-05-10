@@ -1,7 +1,7 @@
 package io.github.scamandrill
 
 import io.github.scamandrill.models._
-import io.github.scamandrill.client.{MandrillBlockingClient, MandrillAsyncClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
+import io.github.scamandrill.client.{MandrillAsyncClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
 import org.scalatest.Matchers
 import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success, Try}

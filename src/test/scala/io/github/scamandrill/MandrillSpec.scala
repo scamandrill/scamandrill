@@ -12,7 +12,6 @@ import scala.language.postfixOps
 
 trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
   var mandrillAsyncClient = new MandrillAsyncClient()
-  var mandrillBlockingClient = new MandrillBlockingClient(mandrillAsyncClient.system)
   implicit var mat = mandrillAsyncClient.materializer
   implicit var ec = mandrillAsyncClient.system.dispatcher
 
@@ -24,7 +23,6 @@ trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
 
   override def beforeEach(): Unit = {
     mandrillAsyncClient = new MandrillAsyncClient()
-    mandrillBlockingClient = new MandrillBlockingClient(mandrillAsyncClient.system)
     mat = mandrillAsyncClient.materializer
     ec = mandrillAsyncClient.system.dispatcher
     super.beforeEach()

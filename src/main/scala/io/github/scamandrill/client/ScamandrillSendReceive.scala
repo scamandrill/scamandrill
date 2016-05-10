@@ -14,7 +14,7 @@ import scala.language.postfixOps
 
 /**
   * This trait abstract on top of spray the handling of all request / response to the mandrill API. Its
-  * executeQuery fuction is the one use by both the async client and the blocking one (wrapper).
+  * executeQuery function is the one used by the client.
   */
 trait ScamandrillSendReceive extends SimpleLogger {
 
@@ -58,10 +58,8 @@ trait ScamandrillSendReceive extends SimpleLogger {
 
   /**
     * Asks all the underlying actors to close (waiting for 1 second)
-    * and then shut down the system. Because the blocking client is
-    * basically a wrapper of the async one, both the async and blocking
-    * client are supposed to call this method when they are not required
-    * or the application using them exit.
+    * and then shut down the system. Users of this class are supposed to call
+    * this method when they are no-longer required or the application exits.
     */
   def shutdown(): Unit = {
     logger.info("asking all actor to close")
