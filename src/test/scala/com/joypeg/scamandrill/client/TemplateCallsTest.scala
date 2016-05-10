@@ -11,7 +11,7 @@ import org.scalatest.tagobjects.Retryable
 
 class TemplateCallsTest extends MandrillSpec {
 
-  "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" in {
+  "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" taggedAs(Retryable) in {
     val res: MTemplateAddResponses = Await.result(
       mandrillAsyncClient.templateAdd(validNonPublidhedTemplate2), DefaultConfig.defaultTimeout
     )

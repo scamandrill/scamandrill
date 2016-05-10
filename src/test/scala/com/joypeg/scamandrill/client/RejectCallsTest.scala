@@ -9,6 +9,7 @@ import scala.util.{Failure, Success}
 import com.joypeg.scamandrill.MandrillTestUtils._
 import com.joypeg.scamandrill.models.MRejectAdd
 import com.joypeg.scamandrill.models.MRejectAddResponse
+import org.scalatest.tagobjects.Retryable
 
 class RejectCallsTest extends MandrillSpec {
 
@@ -41,7 +42,7 @@ class RejectCallsTest extends MandrillSpec {
     }
   }
 
-  "RejectList" should "work getting a valid MRejectListResponse (async client)" in {
+  "RejectList" should "work getting a valid MRejectListResponse (async client)" taggedAs(Retryable) in {
     val res = Await.result(mandrillAsyncClient.rejectList(MRejectList(email = "add@example.com")), DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MRejectListResponse]
     res.head.email shouldBe "add@example.com"

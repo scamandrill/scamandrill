@@ -11,49 +11,8 @@ import com.joypeg.scamandrill.models.MSearchTimeSeries
 import com.joypeg.scamandrill.models.MTo
 import scala.util.Failure
 import scala.concurrent.duration._
-import scala.language.postfixOps
 
 object MandrillTestUtils extends Matchers {
-
-  val mandrillAsyncClient = new MandrillAsyncClient()
-  val mandrillBlockingClient = new MandrillBlockingClient(mandrillAsyncClient.system)
-  implicit val mat = mandrillAsyncClient.materializer
-  implicit val ec = mandrillAsyncClient.system.dispatcher
-
-
-  /**
-   * A simple fuction to check equality of the errors from mandrill, but it also
-   * display the reason of failure on screen, thing that I would loose using equality
-   * on the errors themselves.
-   * @param expected - the expected error
-   * @param response - the error return from Mandrill
-   */
-  def checkError(expected: MandrillResponseException, responseF: Future[MandrillResponseException]): Unit = {
-    val response = Await.result(responseF, 10 seconds)
-    expected.httpCode shouldBe response.httpCode
-    expected.httpReason shouldBe response.httpReason
-    expected.mandrillError.code shouldBe response.mandrillError.code
-    expected.mandrillError.message shouldBe response.mandrillError.message
-    expected.mandrillError.name shouldBe response.mandrillError.name
-    expected.mandrillError.status shouldBe response.mandrillError.status
-  }
-
-  /**
-   * Utility method to check the failure because of an invalid key
-   * @param response - the response from mandrill api
-   */
-  def checkFailedBecauseOfInvalidKey(response: Try[Any]): Unit = response match {
-    case Success(res) =>
-      fail("This operation should be unsuccessful")
-    case Failure(ex: UnsuccessfulResponseException) =>
-      val inernalError = MandrillError("error", -1, "Invalid_Key", "Invalid API key")
-      val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
-      checkError(expected, MandrillResponseException(ex))
-    case Failure(ex) =>
-      println(s"Failure is ${ex}")
-      println(s"of class ${ex.getClass}")
-      fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
-  }
 
   val validRoute = MInboundRoute(
     domain= "example.com",
