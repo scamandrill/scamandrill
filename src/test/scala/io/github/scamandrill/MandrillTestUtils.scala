@@ -1,7 +1,7 @@
 package io.github.scamandrill
 
 import io.github.scamandrill.models._
-import io.github.scamandrill.client.{MandrillBlockingClient, MandrillAsyncClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
+import io.github.scamandrill.client.{MandrillAsyncClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
 import org.scalatest.Matchers
 import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success, Try}
@@ -67,18 +67,6 @@ object MandrillTestUtils extends Matchers {
     template_name = "templatetest",
     template_content = List(MTemplateCnt(name = "editable" , content = "<div>content to inject *|MERGE1|*</div>")),
     merge_vars = List(MTemplateCnt(name = "merge1" , content = "merge1 content"))
-  )
-
-
-  val validNonPublidhedTemplate2 = MTemplate(
-    name = "templatetest2",
-    from_email = "from_email@example.com",
-    from_name = "Example Name",
-    subject = "example subject",
-    code = "<div>example code</div>",
-    text = "Example text content",
-    publish = false,
-    labels = List("templatetest2")
   )
 
   val validMessage = new MSendMsg(

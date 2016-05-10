@@ -18,14 +18,12 @@ class MandrillAsyncClient(val system: ActorSystem = ActorSystem("scamandrill")) 
   implicit val ec = system.dispatcher
 
   /**
-   * Asks all the underlying actors to close (waiting for 1 second)
-   * and then shut down the system. Because the blocking client is
-   * basically a wrapper of the async one, bot the async and blocking
-   * client are supposed to call this method when they are not required
-   * or the application using them exit.
- *
-   * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
-   */
+    * Asks all the underlying actors to close (waiting for 1 second)
+    * and then shut down the system. Users of this class are supposed to call
+    * this method when they are no-longer required or the application exits.
+    *
+    * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
+    */
 
   def marshal[T: RootJsonFormat](value: T): Future[MessageEntity] = Marshal(value).to[MessageEntity]
 
