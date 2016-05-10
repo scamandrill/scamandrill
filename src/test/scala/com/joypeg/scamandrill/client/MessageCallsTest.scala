@@ -6,6 +6,7 @@ import scala.concurrent.Await
 import com.joypeg.scamandrill.models._
 
 import scala.util.{Failure, Success, Try}
+import org.scalatest.tagobjects.Retryable
 
 class MessageCallsTest extends MandrillSpec {
 
@@ -21,7 +22,7 @@ class MessageCallsTest extends MandrillSpec {
     res.head.email shouldBe "test@recipient.com"
     res.head.reject_reason shouldBe None
   }
-  it should "return as many MSendResponse as the recipients list size" in {
+  it should "return as many MSendResponse as the recipients list size" taggedAs(Retryable) in {
     mandrillBlockingClient.messagesSend(MSendMessage(message =
       validMessage.copy(to = List(MTo("test@recipient.com"),MTo("test1@recipient.2"),MTo("tes3@recipient.3"))))) match {
       case Success(res) =>
