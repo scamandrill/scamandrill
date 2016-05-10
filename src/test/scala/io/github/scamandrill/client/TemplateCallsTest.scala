@@ -11,7 +11,7 @@ import org.scalatest.tagobjects.Retryable
 
 class TemplateCallsTest extends MandrillSpec {
 
-  "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" taggedAs(Retryable) in {
+  "TemplateAdd" should "work getting a valid MTemplateAddResponses" taggedAs(Retryable) in {
     val res: MTemplateAddResponses = Await.result(
       client.templateAdd(validNonPublidhedTemplate), DefaultConfig.defaultTimeout
     )
@@ -20,7 +20,7 @@ class TemplateCallsTest extends MandrillSpec {
     res.publish_name shouldBe  "templatetest"
   }
 
-  "TemplatePublish" should "work getting a valid MTemplateAddResponses (async client)" in {
+  "TemplatePublish" should "work getting a valid MTemplateAddResponses" in {
     val res = Await.result(client.templatePublish(MTemplateInfo(name = validNonPublidhedTemplate.name)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
     res.publish_code shouldBe Some("<div>example code</div>")
@@ -28,7 +28,7 @@ class TemplateCallsTest extends MandrillSpec {
     res.publish_name shouldBe  "templatetest"
   }
 
-  "TemplateInfo" should "work getting a valid MTemplateAddResponses (async client)" taggedAs(Retryable) in {
+  "TemplateInfo" should "work getting a valid MTemplateAddResponses" taggedAs(Retryable) in {
     val res = Await.result(client.templateInfo(MTemplateInfo(name = validNonPublidhedTemplate.name)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
     res.publish_code shouldBe Some("<div>example code</div>")
@@ -36,7 +36,7 @@ class TemplateCallsTest extends MandrillSpec {
     res.publish_name shouldBe  "templatetest"
   }
 
-  "TemplateList" should "work getting a valid List[MTemplateAddResponses] (async client)" in {
+  "TemplateList" should "work getting a valid List[MTemplateAddResponses]" in {
     val res = Await.result(client.templateList(MTemplateList(label = validNonPublidhedTemplate.labels.head)), DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MTemplateAddResponses]
     res.head.publish_code shouldBe Some("<div>example code</div>")
@@ -45,7 +45,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
 
-  "TemplateUpdate" should "work getting a valid MTemplateAddResponses (async client)" in {
+  "TemplateUpdate" should "work getting a valid MTemplateAddResponses" in {
     val res = Await.result(client.templateUpdate(validNonPublidhedTemplate), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
     res.publish_code shouldBe Some("<div>example code</div>")
@@ -53,7 +53,7 @@ class TemplateCallsTest extends MandrillSpec {
     res.publish_name shouldBe  "templatetest"
   }
 
-//  "templateTimeSeries" should "work getting a valid List[MTimeSeriesResponse] (async client)" in {
+//  "templateTimeSeries" should "work getting a valid List[MTimeSeriesResponse]" in {
 //    val res = Await.result(client.templateTimeSeries(MTemplateInfo(name = validNonPublidhedTemplate2.name)), DefaultConfig.defaultTimeout)
 //    res.head.getClass shouldBe classOf[MTimeSeriesResponse]
 //  }
@@ -65,13 +65,13 @@ class TemplateCallsTest extends MandrillSpec {
 //    }
 //  }
 
-  "TemplateRender" should "work getting a valid MTemplateRenderResponse (async client)" in {
+  "TemplateRender" should "work getting a valid MTemplateRenderResponse" in {
     val res = Await.result(client.templateRender(validTemplateRender), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateRenderResponse]
     res.html shouldBe Some("<div>example code</div>")
   }
 
-  "TemplateDelete" should "work getting a valid MTemplateAddResponses (async client)" in {
+  "TemplateDelete" should "work getting a valid MTemplateAddResponses" in {
     val res = Await.result(client.templateDelete(MTemplateInfo(name = validNonPublidhedTemplate.name)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
   }

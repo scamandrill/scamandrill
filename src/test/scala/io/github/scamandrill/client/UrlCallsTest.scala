@@ -12,17 +12,17 @@ import scala.util.Success
 
 class UrlCallsTest extends MandrillSpec {
 
-  "UrlsList" should "work getting a valid List[MUrlResponse] (async client)" in {
+  "UrlsList" should "work getting a valid List[MUrlResponse]" in {
     val res = Await.result(client.urlsList(MKey()), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
-  "UrlsSearch" should "work getting a valid List[MUrlResponse] (async client)" in {
+  "UrlsSearch" should "work getting a valid List[MUrlResponse]" in {
     val res = Await.result(client.urlsSearch(MUrlSearch(q = "http://example.com/example")), DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
-//  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse] (async client)" in {
+//  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse]" in {
 //    val res = Await.result(client.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")), DefaultConfig.defaultTimeout)
 //    res shouldBe Nil
 //  }
@@ -34,18 +34,18 @@ class UrlCallsTest extends MandrillSpec {
 //    }
 //  }
 
-  "UrlsAddTrackingDomain" should "work getting a valid MUrlDomainResponse (async client)" in {
+  "UrlsAddTrackingDomain" should "work getting a valid MUrlDomainResponse" in {
     val res = Await.result(client.urlsAddTrackingDomain(MUrlDomain(domain = "test.com")), DefaultConfig.defaultTimeout)
     res.domain shouldBe "test.com"
   }
 
-  "UrlsTrackingDomain" should "work getting a valid List[MUrlDomainResponse] (async client)" in {
+  "UrlsTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
     val res = Await.result(client.urlsTrackingDomain(MKey()), DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MUrlDomainResponse]
     res.head.domain shouldBe "test.com"
   }
 
-  "UrlsCheckTrackingDomain" should "work getting a valid List[MUrlDomainResponse] (async client)" in {
+  "UrlsCheckTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
     val res = Await.result(client.urlsCheckTrackingDomain(MUrlDomain(domain= "test.com")), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MUrlDomainResponse]
     res.domain shouldBe "test.com"
