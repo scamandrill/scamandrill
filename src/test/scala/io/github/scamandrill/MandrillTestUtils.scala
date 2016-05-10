@@ -69,18 +69,6 @@ object MandrillTestUtils extends Matchers {
     merge_vars = List(MTemplateCnt(name = "merge1" , content = "merge1 content"))
   )
 
-
-  val validNonPublidhedTemplate2 = MTemplate(
-    name = "templatetest2",
-    from_email = "from_email@example.com",
-    from_name = "Example Name",
-    subject = "example subject",
-    code = "<div>example code</div>",
-    text = "Example text content",
-    publish = false,
-    labels = List("templatetest2")
-  )
-
   val validMessage = new MSendMsg(
     html = "<h1>test</h1>",
     text = "test",

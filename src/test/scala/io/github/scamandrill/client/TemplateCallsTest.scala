@@ -13,11 +13,11 @@ class TemplateCallsTest extends MandrillSpec {
 
   "TemplateAdd" should "work getting a valid MTemplateAddResponses (async client)" taggedAs(Retryable) in {
     val res: MTemplateAddResponses = Await.result(
-      mandrillAsyncClient.templateAdd(validNonPublidhedTemplate2), DefaultConfig.defaultTimeout
+      mandrillAsyncClient.templateAdd(validNonPublidhedTemplate), DefaultConfig.defaultTimeout
     )
     res.publish_code shouldBe None
-    res.slug shouldBe "templatetest2"
-    res.publish_name shouldBe  "templatetest2"
+    res.slug shouldBe "templatetest"
+    res.publish_name shouldBe  "templatetest"
   }
 
   "TemplatePublish" should "work getting a valid MTemplateAddResponses (async client)" in {
@@ -46,11 +46,11 @@ class TemplateCallsTest extends MandrillSpec {
 
 
   "TemplateUpdate" should "work getting a valid MTemplateAddResponses (async client)" in {
-    val res = Await.result(mandrillAsyncClient.templateUpdate(validNonPublidhedTemplate2), DefaultConfig.defaultTimeout)
+    val res = Await.result(mandrillAsyncClient.templateUpdate(validNonPublidhedTemplate), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
     res.publish_code shouldBe Some("<div>example code</div>")
-    res.slug shouldBe "templatetest2"
-    res.publish_name shouldBe  "templatetest2"
+    res.slug shouldBe "templatetest"
+    res.publish_name shouldBe  "templatetest"
   }
 
 //  "templateTimeSeries" should "work getting a valid List[MTimeSeriesResponse] (async client)" in {
@@ -72,7 +72,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateDelete" should "work getting a valid MTemplateAddResponses (async client)" in {
-    val res = Await.result(mandrillAsyncClient.templateDelete(MTemplateInfo(name = validNonPublidhedTemplate2.name)), DefaultConfig.defaultTimeout)
+    val res = Await.result(mandrillAsyncClient.templateDelete(MTemplateInfo(name = validNonPublidhedTemplate.name)), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MTemplateAddResponses]
   }
 }
