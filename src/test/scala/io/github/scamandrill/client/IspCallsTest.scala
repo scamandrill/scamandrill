@@ -1,15 +1,11 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.models._
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-import io.github.scamandrill.MandrillTestUtils._
 
-import scala.util.Failure
-import scala.util.Success
-
-class IspCallsTest  extends MandrillSpec {
+class IspCallsTest extends MandrillSpec {
 
   "IspList" should "work getting a valid List[MIspResponse]" in {
     val res = Await.result(client.ispList(MKey()), DefaultConfig.defaultTimeout)

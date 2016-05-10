@@ -1,23 +1,14 @@
 package io.github.scamandrill
 
-import io.github.scamandrill.models._
-import io.github.scamandrill.client.{MandrillClient, MandrillError, MandrillResponseException, UnsuccessfulResponseException}
+import io.github.scamandrill.models.{MSearch, MSearchTimeSeries, MTo, _}
 import org.scalatest.Matchers
-import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success, Try}
-import io.github.scamandrill.models.MSearch
-import scala.util.Success
-import io.github.scamandrill.models.MSearchTimeSeries
-import io.github.scamandrill.models.MTo
-import scala.util.Failure
-import scala.concurrent.duration._
 
 object MandrillTestUtils extends Matchers {
 
   val validRoute = MInboundRoute(
-    domain= "example.com",
-    pattern= "mailbox-*",
-    url= "http://example.com"
+    domain = "example.com",
+    pattern = "mailbox-*",
+    url = "http://example.com"
   )
 
   val validSubaccount = MSubaccount(
@@ -50,7 +41,7 @@ object MandrillTestUtils extends Matchers {
 
   val idOfMailForInfoTest = "3edaed120eb144debb843893f4d92179"
 
-  val validRawMessage = MSendRaw(raw_message =  """From: sender@example.com""")
+  val validRawMessage = MSendRaw(raw_message = """From: sender@example.com""")
 
   val validNonPublidhedTemplate = MTemplate(
     name = "templatetest",
@@ -65,8 +56,8 @@ object MandrillTestUtils extends Matchers {
 
   val validTemplateRender = MTemplateRender(
     template_name = "templatetest",
-    template_content = List(MTemplateCnt(name = "editable" , content = "<div>content to inject *|MERGE1|*</div>")),
-    merge_vars = List(MTemplateCnt(name = "merge1" , content = "merge1 content"))
+    template_content = List(MTemplateCnt(name = "editable", content = "<div>content to inject *|MERGE1|*</div>")),
+    merge_vars = List(MTemplateCnt(name = "merge1", content = "merge1 content"))
   )
 
   val validMessage = new MSendMsg(

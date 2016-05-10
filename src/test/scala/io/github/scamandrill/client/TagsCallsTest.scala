@@ -1,14 +1,9 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.models.{MTagResponse, _}
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-
-import io.github.scamandrill.MandrillTestUtils._
-import io.github.scamandrill.models.MTagResponse
-
-import scala.util.{Failure, Success, Try}
 
 class TagsCallsTest extends MandrillSpec {
 
@@ -18,18 +13,18 @@ class TagsCallsTest extends MandrillSpec {
     head.tag shouldBe "exampletag1"
   }
 
-//  "TagDelete" should "work getting a valid MTagResponse" in {
-//    val res = Await.result(client.tagDelete(MTagRequest(key = "twotag")), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MTagResponse]
-//    res.key shouldBe "twotag"
-//  }
-//  it should "work getting a valid MTagResponse (blocking client)" in {
-//    mandrillBlockingClient.tagDelete(MTagRequest(key = "twotag")) match {
-//      case Success(res) =>
-//        res.key shouldBe "twotag"
-//      case Failure(ex) => fail(ex)
-//    }
-//  }
+  //  "TagDelete" should "work getting a valid MTagResponse" in {
+  //    val res = Await.result(client.tagDelete(MTagRequest(key = "twotag")), DefaultConfig.defaultTimeout)
+  //    res.getClass shouldBe classOf[MTagResponse]
+  //    res.key shouldBe "twotag"
+  //  }
+  //  it should "work getting a valid MTagResponse (blocking client)" in {
+  //    mandrillBlockingClient.tagDelete(MTagRequest(key = "twotag")) match {
+  //      case Success(res) =>
+  //        res.key shouldBe "twotag"
+  //      case Failure(ex) => fail(ex)
+  //    }
+  //  }
 
   "TagInfo" should "work getting a valid MTagInfoResponse" in {
     val res = Await.result(client.tagInfo(MTagRequest(tag = "exampletag1")), DefaultConfig.defaultTimeout)

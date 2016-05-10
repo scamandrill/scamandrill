@@ -9,8 +9,8 @@ import io.github.scamandrill.utils.SimpleLogger
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success}
 import scala.language.postfixOps
+import scala.util.{Failure, Success}
 
 /**
   * This trait abstract on top of spray the handling of all request / response to the mandrill API. Its
@@ -48,8 +48,8 @@ trait ScamandrillSendReceive extends SimpleLogger {
       val futureResponse = Source.single(request -> 1).via(clientFlow).runWith(Sink.head)
       futureResponse.flatMap { case (tryResponse, dummyInt) =>
         tryResponse match {
-          case Success(rsp) => if(rsp.status.isSuccess()) handler(rsp)
-            else Future.failed(new UnsuccessfulResponseException(rsp))
+          case Success(rsp) => if (rsp.status.isSuccess()) handler(rsp)
+          else Future.failed(new UnsuccessfulResponseException(rsp))
           case Failure(e) => Future.failed(e)
         }
       }

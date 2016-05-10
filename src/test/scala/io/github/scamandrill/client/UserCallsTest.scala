@@ -1,16 +1,9 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.models.{MInfoResponse, MKey, MPingResponse, MSenderDataResponse, _}
 
 import scala.concurrent.Await
-import io.github.scamandrill.models._
-
-import scala.util.{Failure, Success, Try}
-import io.github.scamandrill.MandrillTestUtils._
-import io.github.scamandrill.models.MSenderDataResponse
-import io.github.scamandrill.models.MInfoResponse
-import io.github.scamandrill.models.MKey
-import io.github.scamandrill.models.MPingResponse
 
 class UserCallsTest extends MandrillSpec {
 

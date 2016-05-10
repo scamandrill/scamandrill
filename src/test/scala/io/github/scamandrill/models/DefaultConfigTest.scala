@@ -1,8 +1,6 @@
 package io.github.scamandrill.models
 
 import io.github.scamandrill.MandrillSpec
-import org.scalatest.{FlatSpec, Matchers}
-import io.github.scamandrill.utils.SimpleLogger
 
 import scala.concurrent.duration._
 
