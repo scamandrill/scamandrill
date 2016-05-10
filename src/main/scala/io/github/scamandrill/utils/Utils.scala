@@ -9,6 +9,6 @@ object `package` {
   }
 }
 
-trait SimpleLogger{
+trait SimpleLogger {
   val logger = LoggerFactory.getLogger(getClass)
 }

@@ -16,31 +16,19 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
 
   implicit val ec = system.dispatcher
 
-  /**
-    * Asks all the underlying actors to close (waiting for 1 second)
-    * and then shut down the system. Users of this class are supposed to call
-    * this method when they are no-longer required or the application exits.
-    *
-    * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
-    */
-
-  def marshal[T: RootJsonFormat](value: T): Future[MessageEntity] = Marshal(value).to[MessageEntity]
-
-  def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
-
   override def shutdownSystem(): Unit = shutdown()
 
-  /////////////////////////////////////////////////////////////
-  //USER calls https://mandrillapp.com/api/docs/users.JSON.html
-  /////////////////////////////////////////////////////////////
-
   override def usersPing(ping: MKey): Future[MPingResponse] = {
-    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(ping)){resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_))}
+    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(ping)) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_)) }
   }
 
   override def usersPing2(ping: MKey): Future[MPingResponse] = {
     executeQuery[MPingResponse](Endpoints.ping2.endpoint, marshal(ping))(unmarshal[MPingResponse])
   }
+
+  /////////////////////////////////////////////////////////////
+  //USER calls https://mandrillapp.com/api/docs/users.JSON.html
+  /////////////////////////////////////////////////////////////
 
   override def usersSenders(ping: MKey): Future[List[MSenderDataResponse]] = {
     executeQuery[List[MSenderDataResponse]](Endpoints.senders.endpoint, marshal(ping))(unmarshal[List[MSenderDataResponse]])
@@ -50,10 +38,6 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MInfoResponse](Endpoints.info.endpoint, marshal(ping))(unmarshal[MInfoResponse])
   }
 
-  ////////////////////////////////////////////////////////////////////
-  //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
-  ////////////////////////////////////////////////////////////////////
-
   override def messagesSend(msg: MSendMessage): Future[List[MSendResponse]] = {
     executeQuery[List[MSendResponse]](Endpoints.send.endpoint, marshal(msg))(unmarshal[List[MSendResponse]])
   }
@@ -61,6 +45,10 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   override def messagesSendTemplate(msg: MSendTemplateMessage): Future[List[MSendResponse]] = {
     executeQuery[List[MSendResponse]](Endpoints.sendTemplate.endpoint, marshal(msg))(unmarshal[List[MSendResponse]])
   }
+
+  ////////////////////////////////////////////////////////////////////
+  //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
+  ////////////////////////////////////////////////////////////////////
 
   override def messagesSearch(q: MSearch): Future[List[MSearchResponse]] = {
     executeQuery[List[MSearchResponse]](Endpoints.search.endpoint, marshal(q))(unmarshal[List[MSearchResponse]])
@@ -98,10 +86,6 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MScheduleResponse](Endpoints.reschedule.endpoint, marshal(sc))(unmarshal[MScheduleResponse])
   }
 
-  ////////////////////////////////////////////////////////////
-  //TAGS calls https://mandrillapp.com/api/docs/tags.JSON.html
-  ////////////////////////////////////////////////////////////
-
   override def tagList(tag: MKey): Future[List[MTagResponse]] = {
     executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(tag))(unmarshal[List[MTagResponse]])
   }
@@ -109,6 +93,10 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   override def tagDelete(tag: MTagRequest): Future[MTagResponse] = {
     executeQuery[MTagResponse](Endpoints.tagdelete.endpoint, marshal(tag))(unmarshal[MTagResponse])
   }
+
+  ////////////////////////////////////////////////////////////
+  //TAGS calls https://mandrillapp.com/api/docs/tags.JSON.html
+  ////////////////////////////////////////////////////////////
 
   override def tagInfo(tag: MTagRequest): Future[MTagInfoResponse] = {
     executeQuery[MTagInfoResponse](Endpoints.taginfo.endpoint, marshal(tag))(unmarshal[MTagInfoResponse])
@@ -122,10 +110,6 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
   }
 
-  /////////////////////////////////////////////////////////////////
-  //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
-  /////////////////////////////////////////////////////////////////
-
   override def rejectAdd(reject: MRejectAdd): Future[MRejectAddResponse] = {
     executeQuery[MRejectAddResponse](Endpoints.rejadd.endpoint, marshal(reject))(unmarshal[MRejectAddResponse])
   }
@@ -134,13 +118,13 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MRejectDeleteResponse](Endpoints.regdelete.endpoint, marshal(reject))(unmarshal[MRejectDeleteResponse])
   }
 
+  /////////////////////////////////////////////////////////////////
+  //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
+  /////////////////////////////////////////////////////////////////
+
   override def rejectList(reject: MRejectList): Future[List[MRejectListResponse]] = {
     executeQuery[List[MRejectListResponse]](Endpoints.rejlist.endpoint, marshal(reject))(unmarshal[List[MRejectListResponse]])
   }
-
-  ///////////////////////////////////////////////////////////////////////
-  //WHITELIST calls https://mandrillapp.com/api/docs/whitelists.JSON.html
-  ///////////////////////////////////////////////////////////////////////
 
   override def whitelistAdd(mail: MWhitelist): Future[MWhitelistAddResponse] = {
     executeQuery[MWhitelistAddResponse](Endpoints.wlistadd.endpoint, marshal(mail))(unmarshal[MWhitelistAddResponse])
@@ -150,13 +134,13 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MWhitelistDeleteResponse](Endpoints.wlistdelete.endpoint, marshal(mail))(unmarshal[MWhitelistDeleteResponse])
   }
 
+  ///////////////////////////////////////////////////////////////////////
+  //WHITELIST calls https://mandrillapp.com/api/docs/whitelists.JSON.html
+  ///////////////////////////////////////////////////////////////////////
+
   override def whitelistList(mail: MWhitelist): Future[List[MWhitelistListResponse]] = {
     executeQuery[List[MWhitelistListResponse]](Endpoints.wlistlist.endpoint, marshal(mail))(unmarshal[List[MWhitelistListResponse]])
   }
-
-  ///////////////////////////////////////////////////////////////////////
-  //SENDERS calls https://mandrillapp.com/api/docs/senders.JSON.html
-  ///////////////////////////////////////////////////////////////////////
 
   override def sendersList(snd: MKey): Future[List[MSendersListResp]] = {
     executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(snd))(unmarshal[List[MSendersListResp]])
@@ -165,6 +149,10 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   override def sendersDomains(snd: MKey): Future[List[MSendersDomainResponses]] = {
     executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(snd))(unmarshal[List[MSendersDomainResponses]])
   }
+
+  ///////////////////////////////////////////////////////////////////////
+  //SENDERS calls https://mandrillapp.com/api/docs/senders.JSON.html
+  ///////////////////////////////////////////////////////////////////////
 
   override def sendersAddDomain(snd: MSenderDomain): Future[MSendersDomainResponses] = {
     executeQuery[MSendersDomainResponses](Endpoints.sendersadddom.endpoint, marshal(snd))(unmarshal[MSendersDomainResponses])
@@ -186,10 +174,6 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MSenderTSResponse]](Endpoints.sendersts.endpoint, marshal(snd))(unmarshal[List[MSenderTSResponse]])
   }
 
-  ////////////////////////////////////////////////////////////
-  //URLS calls https://mandrillapp.com/api/docs/urls.JSON.html
-  ////////////////////////////////////////////////////////////
-
   override def urlsList(url: MKey): Future[List[MUrlResponse]] = {
     executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(url))(unmarshal[List[MUrlResponse]])
   }
@@ -198,6 +182,10 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MUrlResponse]](Endpoints.urlsearch.endpoint, marshal(url))(unmarshal[List[MUrlResponse]])
   }
 
+  ////////////////////////////////////////////////////////////
+  //URLS calls https://mandrillapp.com/api/docs/urls.JSON.html
+  ////////////////////////////////////////////////////////////
+
   override def urlsTimeSeries(url: MUrlTimeSeries): Future[List[MUrlTimeResponse]] = {
     executeQuery[List[MUrlTimeResponse]](Endpoints.urlts.endpoint, marshal(url))(unmarshal[List[MUrlTimeResponse]])
   }
@@ -205,6 +193,18 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   override def urlsTrackingDomain(url: MKey): Future[List[MUrlDomainResponse]] = {
     executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(url))(unmarshal[List[MUrlDomainResponse]])
   }
+
+  /**
+    * Asks all the underlying actors to close (waiting for 1 second)
+    * and then shut down the system. Users of this class are supposed to call
+    * this method when they are no-longer required or the application exits.
+    *
+    * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
+    */
+
+  def marshal[T: RootJsonFormat](value: T): Future[MessageEntity] = Marshal(value).to[MessageEntity]
+
+  def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
 
   override def urlsCheckTrackingDomain(url: MUrlDomain): Future[MUrlDomainResponse] = {
     executeQuery[MUrlDomainResponse](Endpoints.urlchktrackdom.endpoint, marshal(url))(unmarshal[MUrlDomainResponse])

@@ -6,9 +6,9 @@ import org.scalatest.Matchers
 object MandrillTestUtils extends Matchers {
 
   val validRoute = MInboundRoute(
-    domain= "example.com",
-    pattern= "mailbox-*",
-    url= "http://example.com"
+    domain = "example.com",
+    pattern = "mailbox-*",
+    url = "http://example.com"
   )
 
   val validSubaccount = MSubaccount(
@@ -41,7 +41,7 @@ object MandrillTestUtils extends Matchers {
 
   val idOfMailForInfoTest = "3edaed120eb144debb843893f4d92179"
 
-  val validRawMessage = MSendRaw(raw_message =  """From: sender@example.com""")
+  val validRawMessage = MSendRaw(raw_message = """From: sender@example.com""")
 
   val validNonPublidhedTemplate = MTemplate(
     name = "templatetest",
@@ -56,8 +56,8 @@ object MandrillTestUtils extends Matchers {
 
   val validTemplateRender = MTemplateRender(
     template_name = "templatetest",
-    template_content = List(MTemplateCnt(name = "editable" , content = "<div>content to inject *|MERGE1|*</div>")),
-    merge_vars = List(MTemplateCnt(name = "merge1" , content = "merge1 content"))
+    template_content = List(MTemplateCnt(name = "editable", content = "<div>content to inject *|MERGE1|*</div>")),
+    merge_vars = List(MTemplateCnt(name = "merge1", content = "merge1 content"))
   )
 
   val validMessage = new MSendMsg(

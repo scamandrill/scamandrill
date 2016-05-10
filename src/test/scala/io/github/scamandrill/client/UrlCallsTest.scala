@@ -17,17 +17,17 @@ class UrlCallsTest extends MandrillSpec {
     res shouldBe Nil
   }
 
-//  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse]" in {
-//    val res = Await.result(client.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")), DefaultConfig.defaultTimeout)
-//    res shouldBe Nil
-//  }
-//  it should "work getting a valid List[MUrlTimeResponse] (blocking client)" in {
-//    mandrillBlockingClient.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")) match {
-//      case Success(res) =>
-//        res shouldBe Nil
-//      case Failure(ex) => fail(ex)
-//    }
-//  }
+  //  "UrlsTimeSeries" should "work getting a valid List[MUrlTimeResponse]" in {
+  //    val res = Await.result(client.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")), DefaultConfig.defaultTimeout)
+  //    res shouldBe Nil
+  //  }
+  //  it should "work getting a valid List[MUrlTimeResponse] (blocking client)" in {
+  //    mandrillBlockingClient.urlsTimeSeries(MUrlTimeSeries(key = "http://example.com/example")) match {
+  //      case Success(res) =>
+  //        res shouldBe Nil
+  //      case Failure(ex) => fail(ex)
+  //    }
+  //  }
 
   "UrlsAddTrackingDomain" should "work getting a valid MUrlDomainResponse" in {
     val res = Await.result(client.urlsAddTrackingDomain(MUrlDomain(domain = "test.com")), DefaultConfig.defaultTimeout)
@@ -41,7 +41,7 @@ class UrlCallsTest extends MandrillSpec {
   }
 
   "UrlsCheckTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
-    val res = Await.result(client.urlsCheckTrackingDomain(MUrlDomain(domain= "test.com")), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.urlsCheckTrackingDomain(MUrlDomain(domain = "test.com")), DefaultConfig.defaultTimeout)
     res.getClass shouldBe classOf[MUrlDomainResponse]
     res.domain shouldBe "test.com"
   }

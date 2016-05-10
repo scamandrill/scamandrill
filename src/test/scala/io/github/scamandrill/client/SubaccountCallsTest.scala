@@ -10,7 +10,7 @@ import scala.concurrent.Await
 
 class SubaccountCallsTest extends MandrillSpec {
 
-  "SubaccountAdd" should "work getting a valid MSubaccountsResponse" taggedAs(Retryable) in {
+  "SubaccountAdd" should "work getting a valid MSubaccountsResponse" taggedAs (Retryable) in {
     val res: MSubaccountsResponse = Await.result(
       client.subaccountAdd(validSubaccount), DefaultConfig.defaultTimeout
     )

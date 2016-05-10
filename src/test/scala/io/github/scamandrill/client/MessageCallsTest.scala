@@ -44,10 +44,10 @@ class MessageCallsTest extends MandrillSpec {
 
   // Causes Mandrill to 500
   ignore should "work getting a valid List[MSearchResponse] with a TimeSeries" in {
-      val res = Await.result(
-        client.messagesSearchTimeSeries(validSearchTimeSeries), DefaultConfig.defaultTimeout
-      )
-      res shouldBe Nil
+    val res = Await.result(
+      client.messagesSearchTimeSeries(validSearchTimeSeries), DefaultConfig.defaultTimeout
+    )
+    res shouldBe Nil
   }
 
   "MessageInfo" should "work getting a valid MMessageInfoResponse" ignore {
@@ -58,25 +58,25 @@ class MessageCallsTest extends MandrillSpec {
     res.email shouldBe "test@example.com"
   }
 
-//  This call doesn't seem to work in the api
-//  "MessageInfo" should "work getting a valid MContentResponse" in {
-//    val res = Await.result(client.content(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MMessageInfoResponse]
-//    res._id shouldBe idOfMailForInfoTest
-//    res.subject shouldBe "subject test"
-//    println(res)
-//    //res.email shouldBe "test@example.com"
-//  }
-//  it should "work getting a valid MContentResponse (blocking client)" in {
-//    mandrillBlockingClient.content(MMessageInfo(id = idOfMailForInfoTest)) match {
-//      case Success(res) =>
-//        res.getClass shouldBe classOf[MMessageInfoResponse]
-//        res._id shouldBe idOfMailForInfoTest
-//        res.subject shouldBe "subject test"
-//        //res.email shouldBe "test@example.com"
-//      case Failure(ex) => fail(ex)
-//    }
-//  }
+  //  This call doesn't seem to work in the api
+  //  "MessageInfo" should "work getting a valid MContentResponse" in {
+  //    val res = Await.result(client.content(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
+  //    res.getClass shouldBe classOf[MMessageInfoResponse]
+  //    res._id shouldBe idOfMailForInfoTest
+  //    res.subject shouldBe "subject test"
+  //    println(res)
+  //    //res.email shouldBe "test@example.com"
+  //  }
+  //  it should "work getting a valid MContentResponse (blocking client)" in {
+  //    mandrillBlockingClient.content(MMessageInfo(id = idOfMailForInfoTest)) match {
+  //      case Success(res) =>
+  //        res.getClass shouldBe classOf[MMessageInfoResponse]
+  //        res._id shouldBe idOfMailForInfoTest
+  //        res.subject shouldBe "subject test"
+  //        //res.email shouldBe "test@example.com"
+  //      case Failure(ex) => fail(ex)
+  //    }
+  //  }
 
   "Parse" should "work getting a valid MParseResponse" in {
     val res = Await.result(client.messagesParse(MParse(raw_message = """From: sender@example.com""")), DefaultConfig.defaultTimeout)

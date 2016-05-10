@@ -48,8 +48,8 @@ trait ScamandrillSendReceive extends SimpleLogger {
       val futureResponse = Source.single(request -> 1).via(clientFlow).runWith(Sink.head)
       futureResponse.flatMap { case (tryResponse, dummyInt) =>
         tryResponse match {
-          case Success(rsp) => if(rsp.status.isSuccess()) handler(rsp)
-            else Future.failed(new UnsuccessfulResponseException(rsp))
+          case Success(rsp) => if (rsp.status.isSuccess()) handler(rsp)
+          else Future.failed(new UnsuccessfulResponseException(rsp))
           case Failure(e) => Future.failed(e)
         }
       }
