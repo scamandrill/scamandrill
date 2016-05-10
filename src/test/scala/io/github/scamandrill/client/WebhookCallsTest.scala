@@ -1,0 +1,82 @@
+package io.github.scamandrill.client
+
+import io.github.scamandrill.MandrillSpec
+
+import scala.concurrent.Await
+import io.github.scamandrill.models._
+import io.github.scamandrill.MandrillTestUtils._
+
+import scala.util.Failure
+import scala.util.Success
+
+import org.scalatest.tagobjects.Retryable
+
+class WebhookCallsTest extends MandrillSpec {
+
+  "WebhookList" should "work getting a valid List[MWebhooksResponse] (async client)" in {
+    val res = Await.result(mandrillAsyncClient.webhookList(MKey()), DefaultConfig.defaultTimeout)
+    res shouldBe Nil
+  }
+  it should "work getting a valid List[MWebhooksResponse] (blocking client)" in {
+    mandrillBlockingClient.webhookList(MKey()) match {
+      case Success(res) =>
+        res shouldBe Nil
+      case Failure(ex) => fail(ex)
+    }
+  }
+  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+    checkFailedBecauseOfInvalidKey(mandrillBlockingClient.webhookList(MKey(key="invalid")))
+  }
+
+  "WebhookAdd" should "fail if the key is not valid, with an 'ValidationError' code" taggedAs(Retryable) in {
+    mandrillBlockingClient.webhookAdd(validWebhook) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", -2, "ValidationError", "Validation error: {\"url\":\"That is not a valid URL\"}")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "WebhookInfo" should "fail if the key specified with the id does not exists" in {
+    mandrillBlockingClient.webhookInfo(MWebhookInfo(id = 4)) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", 3, "Unknown_Webhook", "Unknown hook ID 4")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "WebhookDelete" should "fail if the key specified with the id does not exists" in {
+    mandrillBlockingClient.webhookDelete(MWebhookInfo(id = 4)) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", 3, "Unknown_Webhook", "Unknown hook ID 4")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+
+  "WebhookUpdate" should "fail if the key specified with the id does not exists" in {
+    mandrillBlockingClient.webhookUpdate(validWebhookUpdate) match {
+      case Success(res) =>
+        fail("This operation should be unsuccessful")
+      case Failure(ex: UnsuccessfulResponseException) =>
+        val inernalError = MandrillError("error", -2, "ValidationError", "Validation error: {\"url\":\"That is not a valid URL\"}")
+        val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
+        checkError(expected, MandrillResponseException(ex))
+      case Failure(ex) =>
+        fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+    }
+  }
+}
