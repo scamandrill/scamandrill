@@ -290,7 +290,7 @@ class MessageCallsTest extends MandrillSpec {
         fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
     }
   }
-  it should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
+  ignore should "fail if the key passed is invalid, with an 'Invalid_Key' code" in {
     checkFailedBecauseOfInvalidKey(mandrillBlockingClient.messagesReschedule(MReSchedule(key = "invalid" ,id = "invalid", send_at = "2012-06-01 08:15:01")))
   }
 
