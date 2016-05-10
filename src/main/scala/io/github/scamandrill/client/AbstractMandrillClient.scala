@@ -4,7 +4,7 @@ import io.github.scamandrill.models._
 
 /**
   * Trait to define the operations that are allowed by the client.
-  * Note that each operation return a Future (in case of the async client).
+  * Note that each operation returns a Future.
   * It also contains the list of endpoints of the
   * Mandrill API.
   */
