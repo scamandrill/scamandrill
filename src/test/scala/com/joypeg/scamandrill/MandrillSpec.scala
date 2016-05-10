@@ -1,5 +1,6 @@
 package com.joypeg.scamandrill
 
+import akka.http.scaladsl.Http
 import com.joypeg.scamandrill.client._
 import com.joypeg.scamandrill.utils.SimpleLogger
 import org.scalatest.{BeforeAndAfterEach, FlatSpec, Matchers, Retries, Suite}
@@ -15,6 +16,12 @@ trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
   implicit var mat = mandrillAsyncClient.materializer
   implicit var ec = mandrillAsyncClient.system.dispatcher
 
+  def shutdown(): Unit = {
+    implicit val system = mandrillAsyncClient.system
+    Await.ready(Http().shutdownAllConnectionPools(), Duration.Inf)
+    Await.ready(mandrillAsyncClient.system.terminate(), Duration.Inf)
+  }
+
   override def beforeEach(): Unit = {
     mandrillAsyncClient = new MandrillAsyncClient()
     mandrillBlockingClient = new MandrillBlockingClient(mandrillAsyncClient.system)
@@ -25,7 +32,7 @@ trait MandrillBinder extends BeforeAndAfterEach { this: Suite =>
 
   override def afterEach(): Unit = {
     try super.beforeEach()
-    finally mandrillAsyncClient.shutdown()
+    finally shutdown()
   }
 }
 
