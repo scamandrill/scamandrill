@@ -46,7 +46,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   // Causes Mandrill to 500
-  ignore should "work getting a valid List[MSearchResponse] (async client)" in {
+  ignore should "work getting a valid List[MSearchResponse] with a TimeSeries (async client)" in {
       val res = Await.result(
         mandrillAsyncClient.messagesSearchTimeSeries(validSearchTimeSeries), DefaultConfig.defaultTimeout
       )
