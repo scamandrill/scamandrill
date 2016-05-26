@@ -19,28 +19,28 @@ trait AbstractMandrillClient {
     *
     * @return - the string "PONG!" if successful
     */
-  def usersPing(): Any
+  def usersPing: Any
 
   /**
     * Validate an API key and respond to a ping (anal JSON parser version)
     *
     * @return - the string "PONG!" if successful
     */
-  def usersPing2(): Any
+  def usersPing2: Any
 
   /**
     * Return the senders that have tried to use this account, both verified and unverified
     *
     * @return the senders that have tried to use this account, both verified and unverified
     */
-  def usersSenders(): Any
+  def usersSenders: Any
 
   /**
     * Return the information about the API-connected user
     *
     * @return the information about the API-connected user
     */
-  def usersInfo(): Any
+  def usersInfo: Any
 
   ////////////////////////////////////////////////////////////////////
   //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
@@ -146,7 +146,7 @@ trait AbstractMandrillClient {
     *
     * @return all of the user-defined key information
     */
-  def tagList(): Any
+  def tagList: Any
 
   /**
     * Deletes a tag permanently. Deleting a tag removes the tag from any messages that have been sent, and also deletes the tag's stats.
@@ -178,7 +178,7 @@ trait AbstractMandrillClient {
     *
     * @return the recent history (hourly stats for the last 30 days) for all tags
     */
-  def tagAllTimeSeries(): Any
+  def tagAllTimeSeries: Any
 
   /////////////////////////////////////////////////////////////////
   //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
@@ -251,14 +251,14 @@ trait AbstractMandrillClient {
     *
     * @return the senders that have tried to use this account.
     */
-  def sendersList(): Any
+  def sendersList: Any
 
   /**
     * Returns the sender domains that have been added to this account.
     *
     * @return the sender domains that have been added to this account.
     */
-  def sendersDomains(): Any
+  def sendersDomains: Any
 
   /**
     * Adds a sender domain to your account. Sender domains are added automatically as you send,
@@ -314,7 +314,7 @@ trait AbstractMandrillClient {
     *
     * @return the 100 most clicked URLs
     */
-  def urlsList(): Any
+  def urlsList: Any
 
   /**
     * Return the 100 most clicked URLs that match the search query given
@@ -337,7 +337,7 @@ trait AbstractMandrillClient {
     *
     * @return the list of tracking domains set up for this account
     */
-  def urlsTrackingDomain(): Any
+  def urlsTrackingDomain: Any
 
   /**
     * Checks the CNAME settings for a tracking domain. The domain must have been added already with the add-tracking-domain call
@@ -432,12 +432,12 @@ trait AbstractMandrillClient {
     *
     * @return the webhooks associated with the account
     */
-  def webhookList(): Any
+  def webhookList: Any
 
   /**
     * Add a new webhook
     *
-    * @param webhook
+    * @param webhook - a webhook to add
     * @return the information saved about the new webhook
     */
   def webhookAdd(webhook: MWebhook): Any
@@ -535,7 +535,7 @@ trait AbstractMandrillClient {
     *
     * @return the inbound domains associated with the account
     */
-  def inboundDomains(): Any
+  def inboundDomains: Any
 
   /**
     * Add an inbound domain to your account
@@ -621,7 +621,7 @@ trait AbstractMandrillClient {
     *
     * @return the account's exports
     */
-  def exportList(): Any
+  def exportList: Any
 
   /**
     * Begins an export of your rejection blacklist. The blacklist will be exported to a zip archive containing a single
@@ -661,7 +661,7 @@ trait AbstractMandrillClient {
     *
     * @return an array of structs for each dedicated IP
     */
-  def ispList(): Any
+  def ispList: Any
 
   /**
     * Retrieves information about a single dedicated ip.
@@ -719,7 +719,7 @@ trait AbstractMandrillClient {
     *
     * @return the dedicated IP pools for your account, up to a maximum of 1,000
     */
-  def ispListPool(): Any
+  def ispListPool: Any
 
   /**
     * Describes a single dedicated IP pool.
@@ -762,7 +762,7 @@ trait AbstractMandrillClient {
     *
     * @return the custom metadata fields for the account
     */
-  def metadataList(): Any
+  def metadataList: Any
 
   /**
     * Add a new custom metadata field to be indexed for the account.
