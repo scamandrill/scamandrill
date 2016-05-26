@@ -8,34 +8,37 @@ import akka.http.scaladsl.unmarshalling.Unmarshaller._
 import akka.http.scaladsl.unmarshalling._
 import io.github.scamandrill.models.MandrillJsonProtocol._
 import io.github.scamandrill.models._
-import spray.json.RootJsonFormat
+import spray.json.{JsObject, JsString, JsValue, RootJsonFormat}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) extends AbstractMandrillClient with ScamandrillSendReceive {
+class MandrillClient(
+  val system: ActorSystem = ActorSystem("scamandrill"),
+  val key: String = DefaultConfig.defaultKeyFromConfig
+) extends AbstractMandrillClient with ScamandrillSendReceive {
 
   implicit val ec = system.dispatcher
 
   override def shutdownSystem(): Unit = shutdown()
 
-  override def usersPing(ping: MKey): Future[MPingResponse] = {
-    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(ping)) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_)) }
+  override def usersPing: Future[MPingResponse] = {
+    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(MVoid())) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply) }
   }
 
-  override def usersPing2(ping: MKey): Future[MPingResponse] = {
-    executeQuery[MPingResponse](Endpoints.ping2.endpoint, marshal(ping))(unmarshal[MPingResponse])
+  override def usersPing2: Future[MPingResponse] = {
+    executeQuery[MPingResponse](Endpoints.ping2.endpoint, marshal(MVoid()))(unmarshal[MPingResponse])
   }
 
   /////////////////////////////////////////////////////////////
   //USER calls https://mandrillapp.com/api/docs/users.JSON.html
   /////////////////////////////////////////////////////////////
 
-  override def usersSenders(ping: MKey): Future[List[MSenderDataResponse]] = {
-    executeQuery[List[MSenderDataResponse]](Endpoints.senders.endpoint, marshal(ping))(unmarshal[List[MSenderDataResponse]])
+  override def usersSenders: Future[List[MSenderDataResponse]] = {
+    executeQuery[List[MSenderDataResponse]](Endpoints.senders.endpoint, marshal(MVoid()))(unmarshal[List[MSenderDataResponse]])
   }
 
-  override def usersInfo(ping: MKey): Future[MInfoResponse] = {
-    executeQuery[MInfoResponse](Endpoints.info.endpoint, marshal(ping))(unmarshal[MInfoResponse])
+  override def usersInfo(): Future[MInfoResponse] = {
+    executeQuery[MInfoResponse](Endpoints.info.endpoint, marshal(MVoid()))(unmarshal[MInfoResponse])
   }
 
   override def messagesSend(msg: MSendMessage): Future[List[MSendResponse]] = {
@@ -86,8 +89,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MScheduleResponse](Endpoints.reschedule.endpoint, marshal(sc))(unmarshal[MScheduleResponse])
   }
 
-  override def tagList(tag: MKey): Future[List[MTagResponse]] = {
-    executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(tag))(unmarshal[List[MTagResponse]])
+  override def tagList: Future[List[MTagResponse]] = {
+    executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(MVoid()))(unmarshal[List[MTagResponse]])
   }
 
   override def tagDelete(tag: MTagRequest): Future[MTagResponse] = {
@@ -106,8 +109,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MTimeSeriesResponse]](Endpoints.tagtimeseries.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
   }
 
-  override def tagAllTimeSeries(tag: MKey): Future[List[MTimeSeriesResponse]] = {
-    executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
+  override def tagAllTimeSeries(): Future[List[MTimeSeriesResponse]] = {
+    executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(MVoid()))(unmarshal[List[MTimeSeriesResponse]])
   }
 
   override def rejectAdd(reject: MRejectAdd): Future[MRejectAddResponse] = {
@@ -142,12 +145,12 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MWhitelistListResponse]](Endpoints.wlistlist.endpoint, marshal(mail))(unmarshal[List[MWhitelistListResponse]])
   }
 
-  override def sendersList(snd: MKey): Future[List[MSendersListResp]] = {
-    executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(snd))(unmarshal[List[MSendersListResp]])
+  override def sendersList: Future[List[MSendersListResp]] = {
+    executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(MVoid()))(unmarshal[List[MSendersListResp]])
   }
 
-  override def sendersDomains(snd: MKey): Future[List[MSendersDomainResponses]] = {
-    executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(snd))(unmarshal[List[MSendersDomainResponses]])
+  override def sendersDomains: Future[List[MSendersDomainResponses]] = {
+    executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(MVoid()))(unmarshal[List[MSendersDomainResponses]])
   }
 
   ///////////////////////////////////////////////////////////////////////
@@ -174,8 +177,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MSenderTSResponse]](Endpoints.sendersts.endpoint, marshal(snd))(unmarshal[List[MSenderTSResponse]])
   }
 
-  override def urlsList(url: MKey): Future[List[MUrlResponse]] = {
-    executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(url))(unmarshal[List[MUrlResponse]])
+  override def urlsList: Future[List[MUrlResponse]] = {
+    executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(MVoid()))(unmarshal[List[MUrlResponse]])
   }
 
   override def urlsSearch(url: MUrlSearch): Future[List[MUrlResponse]] = {
@@ -190,8 +193,20 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[List[MUrlTimeResponse]](Endpoints.urlts.endpoint, marshal(url))(unmarshal[List[MUrlTimeResponse]])
   }
 
-  override def urlsTrackingDomain(url: MKey): Future[List[MUrlDomainResponse]] = {
-    executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(url))(unmarshal[List[MUrlDomainResponse]])
+  override def urlsTrackingDomain: Future[List[MUrlDomainResponse]] = {
+    executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(MVoid()))(unmarshal[List[MUrlDomainResponse]])
+  }
+
+  class AuthenticatedJsonFormat[T](fmt: RootJsonFormat[T]) extends RootJsonFormat[T] {
+    override def write(obj: T): JsValue =
+      fmt.write(obj) match {
+        case JsObject(fields) => JsObject(
+          fields ++ Map("key" -> JsString(key))
+        )
+        case json @ _ => json
+      }
+
+    override def read(json: JsValue): T = ???
   }
 
   /**
@@ -202,7 +217,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
     */
 
-  def marshal[T: RootJsonFormat](value: T): Future[MessageEntity] = Marshal(value).to[MessageEntity]
+  def marshal[T: RootJsonFormat](value: T)(implicit fmt:RootJsonFormat[T], ec: ExecutionContext): Future[MessageEntity] =
+    Marshal(value).to[MessageEntity](new AuthenticatedJsonFormat(fmt), ec)
 
   def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
 
@@ -254,8 +270,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   //WEBHOOKS calls https://mandrillapp.com/api/docs/webhooks.JSON.html
   ////////////////////////////////////////////////////////////////////
 
-  override def webhookList(webhook: MKey): Future[List[MWebhooksResponse]] = {
-    executeQuery[List[MWebhooksResponse]](Endpoints.webhlist.endpoint, marshal(webhook))(unmarshal[List[MWebhooksResponse]])
+  override def webhookList: Future[List[MWebhooksResponse]] = {
+    executeQuery[List[MWebhooksResponse]](Endpoints.webhlist.endpoint, marshal(MVoid()))(unmarshal[List[MWebhooksResponse]])
   }
 
   override def webhookAdd(webhook: MWebhook): Future[MWebhooksResponse] = {
@@ -310,8 +326,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   //INBOUND https://mandrillapp.com/api/docs/key.JSON.html
   ////////////////////////////////////////////////////////////
 
-  override def inboundDomains(inbound: MKey): Future[List[MInboundDomainResponse]] = {
-    executeQuery[List[MInboundDomainResponse]](Endpoints.inbdom.endpoint, marshal(inbound))(unmarshal[List[MInboundDomainResponse]])
+  override def inboundDomains: Future[List[MInboundDomainResponse]] = {
+    executeQuery[List[MInboundDomainResponse]](Endpoints.inbdom.endpoint, marshal(MVoid()))(unmarshal[List[MInboundDomainResponse]])
   }
 
   override def inboundAddDomain(inbound: MInboundDomain): Future[MInboundDomainResponse] = {
@@ -354,8 +370,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MExportResponse](Endpoints.expinfo.endpoint, marshal(export))(unmarshal[MExportResponse])
   }
 
-  override def exportList(export: MKey): Future[List[MExportResponse]] = {
-    executeQuery[List[MExportResponse]](Endpoints.explist.endpoint, marshal(export))(unmarshal[List[MExportResponse]])
+  override def exportList: Future[List[MExportResponse]] = {
+    executeQuery[List[MExportResponse]](Endpoints.explist.endpoint, marshal(MVoid()))(unmarshal[List[MExportResponse]])
   }
 
   override def exportReject(export: MExportNotify): Future[MExportResponse] = {
@@ -374,8 +390,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   //ISP https://mandrillapp.com/api/docs/ips.JSON.html
   ////////////////////////////////////////////////////
 
-  override def ispList(isp: MKey): Future[List[MIspResponse]] = {
-    executeQuery[List[MIspResponse]](Endpoints.isplist.endpoint, marshal(isp))(unmarshal[List[MIspResponse]])
+  override def ispList: Future[List[MIspResponse]] = {
+    executeQuery[List[MIspResponse]](Endpoints.isplist.endpoint, marshal(MVoid()))(unmarshal[List[MIspResponse]])
   }
 
   override def ispInfo(isp: MIspIp): Future[MIspResponse] = {
@@ -402,8 +418,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
     executeQuery[MIspDelete](Endpoints.ispdel.endpoint, marshal(isp))(unmarshal[MIspDelete])
   }
 
-  override def ispListPool(isp: MKey): Future[List[MIspInfoPool]] = {
-    executeQuery[List[MIspInfoPool]](Endpoints.isplistpool.endpoint, marshal(isp))(unmarshal[List[MIspInfoPool]])
+  override def ispListPool: Future[List[MIspInfoPool]] = {
+    executeQuery[List[MIspInfoPool]](Endpoints.isplistpool.endpoint, marshal(MVoid()))(unmarshal[List[MIspInfoPool]])
   }
 
   override def ispPoolInfo(isp: MIspPoolInfo): Future[MIspInfoPool] = {
@@ -426,8 +442,8 @@ class MandrillClient(val system: ActorSystem = ActorSystem("scamandrill")) exten
   //METADATA https://mandrillapp.com/api/docs/metadata.JSON.html
   //////////////////////////////////////////////////////////////
 
-  override def metadataList(meta: MKey): Future[List[MIMetadataResponse]] = {
-    executeQuery[List[MIMetadataResponse]](Endpoints.metalist.endpoint, marshal(meta))(unmarshal[List[MIMetadataResponse]])
+  override def metadataList: Future[List[MIMetadataResponse]] = {
+    executeQuery[List[MIMetadataResponse]](Endpoints.metalist.endpoint, marshal(MVoid()))(unmarshal[List[MIMetadataResponse]])
   }
 
   override def metadataAdd(meta: MMeteadatapAdd): Future[MIMetadataResponse] = {

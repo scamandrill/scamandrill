@@ -8,7 +8,7 @@ import scala.concurrent.Await
 class IspCallsTest extends MandrillSpec {
 
   "IspList" should "work getting a valid List[MIspResponse]" in {
-    val res = Await.result(client.ispList(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.ispList, DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
@@ -18,7 +18,7 @@ class IspCallsTest extends MandrillSpec {
   }
 
   "IspListPool" should "work getting a valid List[MIspInfoPool]" in {
-    val res = Await.result(client.ispListPool(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.ispListPool, DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MIspInfoPool]
   }
 

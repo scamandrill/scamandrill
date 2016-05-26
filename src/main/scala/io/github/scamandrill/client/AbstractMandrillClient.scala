@@ -17,34 +17,30 @@ trait AbstractMandrillClient {
   /**
     * Validate an API key and respond to a ping
     *
-    * @param key - the key of the account to use
     * @return - the string "PONG!" if successful
     */
-  def usersPing(key: MKey): Any
+  def usersPing(): Any
 
   /**
     * Validate an API key and respond to a ping (anal JSON parser version)
     *
-    * @param key - the key of the account to use
     * @return - the string "PONG!" if successful
     */
-  def usersPing2(key: MKey): Any
+  def usersPing2(): Any
 
   /**
     * Return the senders that have tried to use this account, both verified and unverified
     *
-    * @param key - the key of the account to use
     * @return the senders that have tried to use this account, both verified and unverified
     */
-  def usersSenders(key: MKey): Any
+  def usersSenders(): Any
 
   /**
     * Return the information about the API-connected user
     *
-    * @param key - the key of the account to use
     * @return the information about the API-connected user
     */
-  def usersInfo(key: MKey): Any
+  def usersInfo(): Any
 
   ////////////////////////////////////////////////////////////////////
   //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
@@ -148,10 +144,9 @@ trait AbstractMandrillClient {
   /**
     * Return all of the user-defined key information
     *
-    * @param key - the key of the account to use
     * @return all of the user-defined key information
     */
-  def tagList(key: MKey): Any
+  def tagList(): Any
 
   /**
     * Deletes a tag permanently. Deleting a tag removes the tag from any messages that have been sent, and also deletes the tag's stats.
@@ -181,10 +176,9 @@ trait AbstractMandrillClient {
   /**
     * Return the recent history (hourly stats for the last 30 days) for all tags
     *
-    * @param key - the key of the account to use
     * @return the recent history (hourly stats for the last 30 days) for all tags
     */
-  def tagAllTimeSeries(key: MKey): Any
+  def tagAllTimeSeries(): Any
 
   /////////////////////////////////////////////////////////////////
   //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
@@ -255,18 +249,16 @@ trait AbstractMandrillClient {
   /**
     * Return the senders that have tried to use this account.
     *
-    * @param key - the key of the account to use
     * @return the senders that have tried to use this account.
     */
-  def sendersList(key: MKey): Any
+  def sendersList(): Any
 
   /**
     * Returns the sender domains that have been added to this account.
     *
-    * @param key - the key of the account to use
     * @return the sender domains that have been added to this account.
     */
-  def sendersDomains(key: MKey): Any
+  def sendersDomains(): Any
 
   /**
     * Adds a sender domain to your account. Sender domains are added automatically as you send,
@@ -320,10 +312,9 @@ trait AbstractMandrillClient {
   /**
     * Get the 100 most clicked URLs
     *
-    * @param key - the key of the account to use
     * @return the 100 most clicked URLs
     */
-  def urlsList(key: MKey): Any
+  def urlsList(): Any
 
   /**
     * Return the 100 most clicked URLs that match the search query given
@@ -344,10 +335,9 @@ trait AbstractMandrillClient {
   /**
     * Get the list of tracking domains set up for this account
     *
-    * @param key - the key of the account to use
     * @return the list of tracking domains set up for this account
     */
-  def urlsTrackingDomain(key: MKey): Any
+  def urlsTrackingDomain(): Any
 
   /**
     * Checks the CNAME settings for a tracking domain. The domain must have been added already with the add-tracking-domain call
@@ -440,10 +430,9 @@ trait AbstractMandrillClient {
   /**
     * Get the list of all webhooks defined on the account
     *
-    * @param key - the key of the account to use
     * @return the webhooks associated with the account
     */
-  def webhookList(key: MKey): Any
+  def webhookList(): Any
 
   /**
     * Add a new webhook
@@ -544,10 +533,9 @@ trait AbstractMandrillClient {
   /**
     * List the domains that have been configured for inbound delivery
     *
-    * @param key - the key of the account to use
     * @return the inbound domains associated with the account
     */
-  def inboundDomains(key: MKey): Any
+  def inboundDomains(): Any
 
   /**
     * Add an inbound domain to your account
@@ -631,10 +619,9 @@ trait AbstractMandrillClient {
   /**
     * Returns a list of your exports.
     *
-    * @param key - the key of the account to use
     * @return the account's exports
     */
-  def exportList(key: MKey): Any
+  def exportList(): Any
 
   /**
     * Begins an export of your rejection blacklist. The blacklist will be exported to a zip archive containing a single
@@ -672,10 +659,9 @@ trait AbstractMandrillClient {
   /**
     * Lists your dedicated IPs.
     *
-    * @param key - the key of the account to use
     * @return an array of structs for each dedicated IP
     */
-  def ispList(key: MKey): Any
+  def ispList(): Any
 
   /**
     * Retrieves information about a single dedicated ip.
@@ -731,10 +717,9 @@ trait AbstractMandrillClient {
   /**
     * Lists your dedicated IP pools.
     *
-    * @param key - the key of the account to use
     * @return the dedicated IP pools for your account, up to a maximum of 1,000
     */
-  def ispListPool(key: MKey): Any
+  def ispListPool(): Any
 
   /**
     * Describes a single dedicated IP pool.
@@ -775,10 +760,9 @@ trait AbstractMandrillClient {
   /**
     * Get the list of custom metadata fields indexed for the account.
     *
-    * @param key - the key of the account to use
     * @return the custom metadata fields for the account
     */
-  def metadataList(key: MKey): Any
+  def metadataList(): Any
 
   /**
     * Add a new custom metadata field to be indexed for the account.

@@ -7,7 +7,7 @@ import scala.concurrent.Await
 
 class WebhookCallsTest extends MandrillSpec {
   "WebhookList" should "work getting a valid List[MWebhooksResponse]" in {
-    val res = Await.result(client.webhookList(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.webhookList, DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 }

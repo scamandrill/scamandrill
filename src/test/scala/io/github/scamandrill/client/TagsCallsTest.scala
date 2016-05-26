@@ -8,7 +8,7 @@ import scala.concurrent.Await
 class TagsCallsTest extends MandrillSpec {
 
   "TagList" should "work getting a valid List[MTagResponse]" in {
-    val res: List[MTagResponse] = Await.result(client.tagList(MKey()), DefaultConfig.defaultTimeout)
+    val res: List[MTagResponse] = Await.result(client.tagList, DefaultConfig.defaultTimeout)
     val head: MTagResponse = res.head
     head.tag shouldBe "exampletag1"
   }
@@ -38,7 +38,7 @@ class TagsCallsTest extends MandrillSpec {
   }
 
   "TagAllTimeSeries" should "work getting a valid List[MTimeSeriesResponse]" in {
-    val res = Await.result(client.tagAllTimeSeries(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.tagAllTimeSeries, DefaultConfig.defaultTimeout)
     //res shouldBe Nil
   }
 }

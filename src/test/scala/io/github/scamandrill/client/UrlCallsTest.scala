@@ -8,7 +8,7 @@ import scala.concurrent.Await
 class UrlCallsTest extends MandrillSpec {
 
   "UrlsList" should "work getting a valid List[MUrlResponse]" in {
-    val res = Await.result(client.urlsList(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.urlsList, DefaultConfig.defaultTimeout)
     res shouldBe Nil
   }
 
@@ -35,7 +35,7 @@ class UrlCallsTest extends MandrillSpec {
   }
 
   "UrlsTrackingDomain" should "work getting a valid List[MUrlDomainResponse]" in {
-    val res = Await.result(client.urlsTrackingDomain(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.urlsTrackingDomain, DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MUrlDomainResponse]
     res.head.domain shouldBe "test.com"
   }

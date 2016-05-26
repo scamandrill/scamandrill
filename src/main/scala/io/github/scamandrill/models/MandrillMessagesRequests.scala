@@ -3,14 +3,12 @@ package io.github.scamandrill.models
 /**
   * A message to be sent
   *
-  * @param key     - a valid API key
   * @param message - the information on the message to send
   * @param async   - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
   * @param ip_pool - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
   * @param send_at - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
   */
-case class MSendMessage(key: String = DefaultConfig.defaultKeyFromConfig,
-                        message: MSendMsg,
+case class MSendMessage(message: MSendMsg,
                         async: Boolean = false,
                         ip_pool: Option[String] = None,
                         send_at: Option[String] = None) extends MandrillRequest
@@ -18,7 +16,6 @@ case class MSendMessage(key: String = DefaultConfig.defaultKeyFromConfig,
 /**
   * A message to be sent through a template
   *
-  * @param key              - a valid API key
   * @param template_name    - the immutable name or slug of a template that exists in the user's account. For backwards-compatibility, the template name may also be used but the immutable slug is preferred.
   * @param template_content - an array of template content to send. Each item in the array should be a struct with two keys - name: the name of the content block to set the content for, and content: the actual content to put into the block
   * @param message          - the information on the message to send
@@ -26,8 +23,7 @@ case class MSendMessage(key: String = DefaultConfig.defaultKeyFromConfig,
   * @param ip_pool          - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
   * @param send_at          - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
   */
-case class MSendTemplateMessage(key: String = DefaultConfig.defaultKeyFromConfig,
-                                template_name: String,
+case class MSendTemplateMessage(template_name: String,
                                 template_content: List[MVars],
                                 message: MSendMsg,
                                 async: Boolean = false,
@@ -263,7 +259,6 @@ case class MTo(email: String, name: Option[String] = None, `type`: String = "to"
 /**
   * The information about the search
   *
-  * @param key       - a valid API key
   * @param query     - the search terms to find matching messages for
   * @param date_from - start date
   * @param date_to   - end date
@@ -272,8 +267,7 @@ case class MTo(email: String, name: Option[String] = None, `type`: String = "to"
   * @param api_keys  - an array of API keys to narrow the search to, will return messages sent by ANY of the keys
   * @param limit     - the maximum number of results to return, defaults to 100, 1000 is the maximum
   */
-case class MSearch(key: String = DefaultConfig.defaultKeyFromConfig,
-                   query: String,
+case class MSearch(query: String,
                    date_from: String,
                    date_to: String,
                    tags: List[String] = List.empty,
@@ -284,15 +278,13 @@ case class MSearch(key: String = DefaultConfig.defaultKeyFromConfig,
 /**
   * The information about the search
   *
-  * @param key       - a valid API key
   * @param query     - the search terms to find matching messages for
   * @param date_from - start date
   * @param date_to   - end date
   * @param tags      - an array of key names to narrow the search to, will return messages that contain ANY of the tags
   * @param senders   - an array of sender addresses to narrow the search to, will return messages sent by ANY of the senders
   */
-case class MSearchTimeSeries(key: String = DefaultConfig.defaultKeyFromConfig,
-                             query: String,
+case class MSearchTimeSeries(query: String,
                              date_from: String,
                              date_to: String,
                              tags: List[String] = List.empty,
@@ -317,7 +309,6 @@ case class MParse(key: String = DefaultConfig.defaultKeyFromConfig, raw_message:
 /**
   * The raw message to send
   *
-  * @param key                - a valid API key
   * @param raw_message        - the raw message
   * @param from_email         - optionally define the sender address - otherwise we'll use the address found in the provided headers
   * @param from_name          - optionally define the sender alias
@@ -327,8 +318,7 @@ case class MParse(key: String = DefaultConfig.defaultKeyFromConfig, raw_message:
   * @param send_at            - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately.
   * @param return_path_domain - a custom domain to use for the messages's return-path
   */
-case class MSendRaw(key: String = DefaultConfig.defaultKeyFromConfig,
-                    raw_message: String,
+case class MSendRaw(raw_message: String,
                     from_email: Option[String] = None,
                     from_name: Option[String] = None,
                     to: List[String] = List.empty,
@@ -340,24 +330,21 @@ case class MSendRaw(key: String = DefaultConfig.defaultKeyFromConfig,
 /**
   * Parameter to list the scheduled mails
   *
-  * @param key - a valid API key
   * @param to  - an optional recipient address to restrict results to
   */
-case class MListSchedule(key: String = DefaultConfig.defaultKeyFromConfig, to: String) extends MandrillRequest
+case class MListSchedule(to: String) extends MandrillRequest
 
 /**
   * Info about the mail to cancel the schedule
   *
-  * @param key - a valid API key
   * @param id  - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   */
-case class MCancelSchedule(key: String = DefaultConfig.defaultKeyFromConfig, id: String) extends MandrillRequest
+case class MCancelSchedule(id: String) extends MandrillRequest
 
 /**
   * Info about the mail to cancel the schedule
   *
-  * @param key     - a valid API key
   * @param id      - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   * @param send_at - the new UTC timestamp when the message should sent. Mandrill can't time travel, so if you specify a time in past the message will be sent immediately
   */
-case class MReSchedule(key: String = DefaultConfig.defaultKeyFromConfig, id: String, send_at: String) extends MandrillRequest
+case class MReSchedule(id: String, send_at: String) extends MandrillRequest

@@ -8,13 +8,13 @@ import scala.concurrent.Await
 class SendersCallsTest extends MandrillSpec {
 
   "SendersList" should "work getting a valid List[MSendersListResp]" in {
-    val res = Await.result(client.sendersList(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.sendersList, DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MSendersListResp]
     res.head.address shouldBe "scamandrill@test.com"
   }
 
   "SendersDomains" should "work getting a valid List[MSendersDomainResponses]" in {
-    val res = Await.result(client.sendersDomains(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.sendersDomains, DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MSendersDomainResponses]
     res.head.domain shouldBe "gmail.com"
   }

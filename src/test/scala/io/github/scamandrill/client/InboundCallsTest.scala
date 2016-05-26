@@ -14,7 +14,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundDomains" should "work getting a valid List[MInboundDomainResponse]" in {
-    val res = Await.result(client.inboundDomains(MKey()), DefaultConfig.defaultTimeout)
+    val res = Await.result(client.inboundDomains, DefaultConfig.defaultTimeout)
     res.head.getClass shouldBe classOf[MInboundDomainResponse]
   }
 
