@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import spray.json.{JsString, JsValue}
+
 /**
   * A message to be sent
   *
@@ -249,7 +251,15 @@ case class MMergeVars(rcpt: String, vars: List[MVars])
   * @param name    - the merge variable's name. Merge variable names are case-insensitive and may not start with _
   * @param content - the merge variable's content
   */
-case class MVars(name: String, content: String)
+case class MVars(name: String, content: JsValue)
+case object MVars extends ((String,JsValue) => MVars) {
+  @deprecated(
+    message = "Should be MVars(name:String, content:JsValue). Replace content with 'new JsString(content)'",
+    since = "2.0.1"
+  )
+  def apply(name: String, content: String):MVars = MVars(name, new JsString(content))
+}
+
 
 /**
   * A single recipient's information.
