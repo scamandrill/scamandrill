@@ -2,7 +2,11 @@ name := "scamandrill"
 
 organization := "io.github.scamandrill"
 
-version := "2.0.1-MT-SNAPSHOT"
+bintrayOrganization := Some("scamandrill")
+
+bintrayRepository := "scamandrill"
+
+bintrayReleaseOnPublish in ThisBuild := false
 
 licenses += ("Apache-2.0", url("https://spdx.org/licenses/Apache-2.0"))
 
@@ -35,16 +39,6 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-testkit"     % akkaV % "test"
   )
 }
-
-publishTo <<= version { (v: String) =>
-  val mtmaven = "https://maven.getmealticket.com/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("meal-ticket-snapshots" at mtmaven + "repository/snapshots")
-  else
-    Some("meal-ticket-releases"  at mtmaven + "repository/releases")
-}
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials-releases")
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials-snapshots")
 
 publishArtifact in Test := false
 
