@@ -254,7 +254,7 @@ case class MMergeVars(rcpt: String, vars: List[MVars])
 case class MVars(name: String, content: JsValue)
 case object MVars extends ((String,JsValue) => MVars) {
   @deprecated(
-    message = "MVars should be a String->JsValue. Replace content with 'new JsString(content)'",
+    message = "Should be MVars(name:String, content:JsValue). Replace content with 'new JsString(content)'",
     since = "2.0.1"
   )
   def apply(name: String, content: String):MVars = MVars(name, new JsString(content))
