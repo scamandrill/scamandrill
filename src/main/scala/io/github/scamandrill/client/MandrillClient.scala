@@ -32,6 +32,18 @@ class MandrillClient(
 
   def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
 
+  class AuthenticatedJsonFormat[T](fmt: RootJsonFormat[T]) extends RootJsonFormat[T] {
+    override def write(obj: T): JsValue =
+      fmt.write(obj) match {
+        case JsObject(fields) => JsObject(
+          fields ++ Map("key" -> JsString(key))
+        )
+        case json@_ => json
+      }
+
+    override def read(json: JsValue): T = ???
+  }
+
 
   /////////////////////////////////////////////////////////////
   //USER calls https://mandrillapp.com/api/docs/users.JSON.html
@@ -40,41 +52,37 @@ class MandrillClient(
   /**
     * Validate an API key and respond to a ping
     *
-    * @param key - the key of the account to use
     * @return - the string "PONG!" if successful
     */
-  def usersPing(ping: MKey): Future[MPingResponse] = {
-    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(ping)) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_)) }
+  def usersPing(): Future[MPingResponse] = {
+    executeQuery[MPingResponse](Endpoints.ping.endpoint, marshal(MVoid())) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_)) }
   }
 
   /**
     * Validate an API key and respond to a ping (anal JSON parser version)
     *
-    * @param key - the key of the account to use
     * @return - the string "PONG!" if successful
     */
-  def usersPing2(ping: MKey): Future[MPingResponse] = {
-    executeQuery[MPingResponse](Endpoints.ping2.endpoint, marshal(ping))(unmarshal[MPingResponse])
+  def usersPing2(): Future[MPingResponse] = {
+    executeQuery[MPingResponse](Endpoints.ping2.endpoint, marshal(MVoid()))(unmarshal[MPingResponse])
   }
 
   /**
     * Return the senders that have tried to use this account, both verified and unverified
     *
-    * @param key - the key of the account to use
     * @return the senders that have tried to use this account, both verified and unverified
     */
-  def usersSenders(ping: MKey): Future[List[MSenderDataResponse]] = {
-    executeQuery[List[MSenderDataResponse]](Endpoints.senders.endpoint, marshal(ping))(unmarshal[List[MSenderDataResponse]])
+  def usersSenders(): Future[List[MSenderDataResponse]] = {
+    executeQuery[List[MSenderDataResponse]](Endpoints.senders.endpoint, marshal(MVoid()))(unmarshal[List[MSenderDataResponse]])
   }
 
   /**
     * Return the information about the API-connected user
     *
-    * @param key - the key of the account to use
     * @return the information about the API-connected user
     */
-  def usersInfo(ping: MKey): Future[MInfoResponse] = {
-    executeQuery[MInfoResponse](Endpoints.info.endpoint, marshal(ping))(unmarshal[MInfoResponse])
+  def usersInfo(): Future[MInfoResponse] = {
+    executeQuery[MInfoResponse](Endpoints.info.endpoint, marshal(MVoid()))(unmarshal[MInfoResponse])
   }
 
   ////////////////////////////////////////////////////////////////////
@@ -194,10 +202,6 @@ class MandrillClient(
     executeQuery[MScheduleResponse](Endpoints.reschedule.endpoint, marshal(sc))(unmarshal[MScheduleResponse])
   }
 
-<<<<<<< HEAD
-  override def tagList: Future[List[MTagResponse]] = {
-    executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(MVoid()))(unmarshal[List[MTagResponse]])
-=======
   ////////////////////////////////////////////////////////////
   //TAGS calls https://mandrillapp.com/api/docs/tags.JSON.html
   ////////////////////////////////////////////////////////////
@@ -205,12 +209,10 @@ class MandrillClient(
   /**
     * Return all of the user-defined key information
     *
-    * @param key - the key of the account to use
     * @return all of the user-defined key information
     */
-  def tagList(tag: MKey): Future[List[MTagResponse]] = {
-    executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(tag))(unmarshal[List[MTagResponse]])
->>>>>>> drop-abstract-client
+  def tagList(): Future[List[MTagResponse]] = {
+    executeQuery[List[MTagResponse]](Endpoints.taglist.endpoint, marshal(MVoid()))(unmarshal[List[MTagResponse]])
   }
 
   /**
@@ -244,19 +246,13 @@ class MandrillClient(
     executeQuery[List[MTimeSeriesResponse]](Endpoints.tagtimeseries.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
   }
 
-<<<<<<< HEAD
-  override def tagAllTimeSeries(): Future[List[MTimeSeriesResponse]] = {
-    executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(MVoid()))(unmarshal[List[MTimeSeriesResponse]])
-=======
   /**
     * Return the recent history (hourly stats for the last 30 days) for all tags
     *
-    * @param key - the key of the account to use
     * @return the recent history (hourly stats for the last 30 days) for all tags
     */
-  def tagAllTimeSeries(tag: MKey): Future[List[MTimeSeriesResponse]] = {
-    executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
->>>>>>> drop-abstract-client
+  def tagAllTimeSeries(): Future[List[MTimeSeriesResponse]] = {
+    executeQuery[List[MTimeSeriesResponse]](Endpoints.tagalltime.endpoint, marshal(MVoid()))(unmarshal[List[MTimeSeriesResponse]])
   }
 
   /////////////////////////////////////////////////////////////////
@@ -333,14 +329,6 @@ class MandrillClient(
     executeQuery[List[MWhitelistListResponse]](Endpoints.wlistlist.endpoint, marshal(mail))(unmarshal[List[MWhitelistListResponse]])
   }
 
-<<<<<<< HEAD
-  override def sendersList: Future[List[MSendersListResp]] = {
-    executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(MVoid()))(unmarshal[List[MSendersListResp]])
-  }
-
-  override def sendersDomains: Future[List[MSendersDomainResponses]] = {
-    executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(MVoid()))(unmarshal[List[MSendersDomainResponses]])
-=======
   //////////////////////////////////////////////////////////////////
   //SENDERS calls https://mandrillapp.com/api/docs/senders.JSON.html
   //////////////////////////////////////////////////////////////////
@@ -348,22 +336,19 @@ class MandrillClient(
   /**
     * Return the senders that have tried to use this account.
     *
-    * @param key - the key of the account to use
     * @return the senders that have tried to use this account.
     */
-  def sendersList(snd: MKey): Future[List[MSendersListResp]] = {
-    executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(snd))(unmarshal[List[MSendersListResp]])
+  def sendersList(): Future[List[MSendersListResp]] = {
+    executeQuery[List[MSendersListResp]](Endpoints.senderslist.endpoint, marshal(MVoid()))(unmarshal[List[MSendersListResp]])
   }
 
   /**
     * Returns the sender domains that have been added to this account.
     *
-    * @param key - the key of the account to use
     * @return the sender domains that have been added to this account.
     */
-  def sendersDomains(snd: MKey): Future[List[MSendersDomainResponses]] = {
-    executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(snd))(unmarshal[List[MSendersDomainResponses]])
->>>>>>> drop-abstract-client
+  def sendersDomains(): Future[List[MSendersDomainResponses]] = {
+    executeQuery[List[MSendersDomainResponses]](Endpoints.sendersdomains.endpoint, marshal(MVoid()))(unmarshal[List[MSendersDomainResponses]])
   }
 
   /**
@@ -422,10 +407,6 @@ class MandrillClient(
     executeQuery[List[MSenderTSResponse]](Endpoints.sendersts.endpoint, marshal(snd))(unmarshal[List[MSenderTSResponse]])
   }
 
-<<<<<<< HEAD
-  override def urlsList: Future[List[MUrlResponse]] = {
-    executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(MVoid()))(unmarshal[List[MUrlResponse]])
-=======
   ////////////////////////////////////////////////////////////
   //URLS calls https://mandrillapp.com/api/docs/urls.JSON.html
   ////////////////////////////////////////////////////////////
@@ -433,12 +414,10 @@ class MandrillClient(
   /**
     * Get the 100 most clicked URLs
     *
-    * @param key - the key of the account to use
     * @return the 100 most clicked URLs
     */
-  def urlsList(url: MKey): Future[List[MUrlResponse]] = {
-    executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(url))(unmarshal[List[MUrlResponse]])
->>>>>>> drop-abstract-client
+  def urlsList(): Future[List[MUrlResponse]] = {
+    executeQuery[List[MUrlResponse]](Endpoints.urllist.endpoint, marshal(MVoid()))(unmarshal[List[MUrlResponse]])
   }
 
   /**
@@ -461,31 +440,13 @@ class MandrillClient(
     executeQuery[List[MUrlTimeResponse]](Endpoints.urlts.endpoint, marshal(url))(unmarshal[List[MUrlTimeResponse]])
   }
 
-<<<<<<< HEAD
-  override def urlsTrackingDomain: Future[List[MUrlDomainResponse]] = {
-    executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(MVoid()))(unmarshal[List[MUrlDomainResponse]])
-  }
-
-  class AuthenticatedJsonFormat[T](fmt: RootJsonFormat[T]) extends RootJsonFormat[T] {
-    override def write(obj: T): JsValue =
-      fmt.write(obj) match {
-        case JsObject(fields) => JsObject(
-          fields ++ Map("key" -> JsString(key))
-        )
-        case json @ _ => json
-      }
-
-    override def read(json: JsValue): T = ???
-=======
   /**
     * Get the list of tracking domains set up for this account
     *
-    * @param key - the key of the account to use
     * @return the list of tracking domains set up for this account
     */
-  def urlsTrackingDomain(url: MKey): Future[List[MUrlDomainResponse]] = {
-    executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(url))(unmarshal[List[MUrlDomainResponse]])
->>>>>>> drop-abstract-client
+  def urlsTrackingDomain(): Future[List[MUrlDomainResponse]] = {
+    executeQuery[List[MUrlDomainResponse]](Endpoints.urltrackdom.endpoint, marshal(MVoid()))(unmarshal[List[MUrlDomainResponse]])
   }
 
   /**
@@ -494,17 +455,7 @@ class MandrillClient(
     * @param url - an existing tracking domain name
     * @return information about the tracking domain
     */
-<<<<<<< HEAD
-
-  def marshal[T: RootJsonFormat](value: T)(implicit fmt:RootJsonFormat[T], ec: ExecutionContext): Future[MessageEntity] =
-    Marshal(value).to[MessageEntity](new AuthenticatedJsonFormat(fmt), ec)
-
-  def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
-
-  override def urlsCheckTrackingDomain(url: MUrlDomain): Future[MUrlDomainResponse] = {
-=======
   def urlsCheckTrackingDomain(url: MUrlDomain): Future[MUrlDomainResponse] = {
->>>>>>> drop-abstract-client
     executeQuery[MUrlDomainResponse](Endpoints.urlchktrackdom.endpoint, marshal(url))(unmarshal[MUrlDomainResponse])
   }
 
@@ -606,19 +557,13 @@ class MandrillClient(
   //WEBHOOKS calls https://mandrillapp.com/api/docs/webhooks.JSON.html
   ////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-  override def webhookList: Future[List[MWebhooksResponse]] = {
-    executeQuery[List[MWebhooksResponse]](Endpoints.webhlist.endpoint, marshal(MVoid()))(unmarshal[List[MWebhooksResponse]])
-=======
   /**
     * Get the list of all webhooks defined on the account
     *
-    * @param key - the key of the account to use
     * @return the webhooks associated with the account
     */
-  def webhookList(webhook: MKey): Future[List[MWebhooksResponse]] = {
-    executeQuery[List[MWebhooksResponse]](Endpoints.webhlist.endpoint, marshal(webhook))(unmarshal[List[MWebhooksResponse]])
->>>>>>> drop-abstract-client
+  def webhookList(): Future[List[MWebhooksResponse]] = {
+    executeQuery[List[MWebhooksResponse]](Endpoints.webhlist.endpoint, marshal(MVoid()))(unmarshal[List[MWebhooksResponse]])
   }
 
   /**
@@ -739,19 +684,13 @@ class MandrillClient(
   //INBOUND https://mandrillapp.com/api/docs/key.JSON.html
   ////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-  override def inboundDomains: Future[List[MInboundDomainResponse]] = {
-    executeQuery[List[MInboundDomainResponse]](Endpoints.inbdom.endpoint, marshal(MVoid()))(unmarshal[List[MInboundDomainResponse]])
-=======
   /**
     * List the domains that have been configured for inbound delivery
     *
-    * @param key - the key of the account to use
     * @return the inbound domains associated with the account
     */
-  def inboundDomains(inbound: MKey): Future[List[MInboundDomainResponse]] = {
-    executeQuery[List[MInboundDomainResponse]](Endpoints.inbdom.endpoint, marshal(inbound))(unmarshal[List[MInboundDomainResponse]])
->>>>>>> drop-abstract-client
+  def inboundDomains(): Future[List[MInboundDomainResponse]] = {
+    executeQuery[List[MInboundDomainResponse]](Endpoints.inbdom.endpoint, marshal(MVoid()))(unmarshal[List[MInboundDomainResponse]])
   }
 
   /**
@@ -851,19 +790,13 @@ class MandrillClient(
     executeQuery[MExportResponse](Endpoints.expinfo.endpoint, marshal(export))(unmarshal[MExportResponse])
   }
 
-<<<<<<< HEAD
-  override def exportList: Future[List[MExportResponse]] = {
-    executeQuery[List[MExportResponse]](Endpoints.explist.endpoint, marshal(MVoid()))(unmarshal[List[MExportResponse]])
-=======
   /**
     * Returns a list of your exports.
     *
-    * @param key - the key of the account to use
     * @return the account's exports
     */
-  def exportList(export: MKey): Future[List[MExportResponse]] = {
-    executeQuery[List[MExportResponse]](Endpoints.explist.endpoint, marshal(export))(unmarshal[List[MExportResponse]])
->>>>>>> drop-abstract-client
+  def exportList(): Future[List[MExportResponse]] = {
+    executeQuery[List[MExportResponse]](Endpoints.explist.endpoint, marshal(MVoid()))(unmarshal[List[MExportResponse]])
   }
 
   /**
@@ -905,19 +838,13 @@ class MandrillClient(
   //ISP https://mandrillapp.com/api/docs/ips.JSON.html
   ////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-  override def ispList: Future[List[MIspResponse]] = {
-    executeQuery[List[MIspResponse]](Endpoints.isplist.endpoint, marshal(MVoid()))(unmarshal[List[MIspResponse]])
-=======
   /**
     * Lists your dedicated IPs.
     *
-    * @param key - the key of the account to use
     * @return an array of structs for each dedicated IP
     */
-  def ispList(isp: MKey): Future[List[MIspResponse]] = {
-    executeQuery[List[MIspResponse]](Endpoints.isplist.endpoint, marshal(isp))(unmarshal[List[MIspResponse]])
->>>>>>> drop-abstract-client
+  def ispList(): Future[List[MIspResponse]] = {
+    executeQuery[List[MIspResponse]](Endpoints.isplist.endpoint, marshal(MVoid()))(unmarshal[List[MIspResponse]])
   }
 
   /**
@@ -983,19 +910,14 @@ class MandrillClient(
     executeQuery[MIspDelete](Endpoints.ispdel.endpoint, marshal(isp))(unmarshal[MIspDelete])
   }
 
-<<<<<<< HEAD
-  override def ispListPool: Future[List[MIspInfoPool]] = {
-    executeQuery[List[MIspInfoPool]](Endpoints.isplistpool.endpoint, marshal(MVoid()))(unmarshal[List[MIspInfoPool]])
-=======
   /**
     * Lists your dedicated IP pools.
     *
     * @param key - the key of the account to use
     * @return the dedicated IP pools for your account, up to a maximum of 1,000
     */
-  def ispListPool(isp: MKey): Future[List[MIspInfoPool]] = {
-    executeQuery[List[MIspInfoPool]](Endpoints.isplistpool.endpoint, marshal(isp))(unmarshal[List[MIspInfoPool]])
->>>>>>> drop-abstract-client
+  def ispListPool(): Future[List[MIspInfoPool]] = {
+    executeQuery[List[MIspInfoPool]](Endpoints.isplistpool.endpoint, marshal(MVoid()))(unmarshal[List[MIspInfoPool]])
   }
 
   /**
@@ -1042,19 +964,13 @@ class MandrillClient(
   //METADATA https://mandrillapp.com/api/docs/metadata.JSON.html
   //////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-  override def metadataList: Future[List[MIMetadataResponse]] = {
-    executeQuery[List[MIMetadataResponse]](Endpoints.metalist.endpoint, marshal(MVoid()))(unmarshal[List[MIMetadataResponse]])
-=======
   /**
     * Get the list of custom metadata fields indexed for the account.
     *
-    * @param key - the key of the account to use
     * @return the custom metadata fields for the account
     */
-  def metadataList(meta: MKey): Future[List[MIMetadataResponse]] = {
-    executeQuery[List[MIMetadataResponse]](Endpoints.metalist.endpoint, marshal(meta))(unmarshal[List[MIMetadataResponse]])
->>>>>>> drop-abstract-client
+  def metadataList(): Future[List[MIMetadataResponse]] = {
+    executeQuery[List[MIMetadataResponse]](Endpoints.metalist.endpoint, marshal(MVoid()))(unmarshal[List[MIMetadataResponse]])
   }
 
   /**
