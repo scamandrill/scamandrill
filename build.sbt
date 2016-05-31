@@ -33,11 +33,12 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-http-experimental" % "2.4.2",
     "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.2",
     "com.typesafe"      % "config"            % "1.3.0",
-    "org.slf4j"         % "slf4j-api"         % "1.7.14"
+    "org.slf4j"         % "slf4j-api"         % "1.7.21"
   ) ++ Seq(
     "org.specs2"        %%  "specs2"          % "2.3.13"    % "test",
     "org.scalatest"     %%  "scalatest"       % "2.1.6"     % "test->*",
-    "com.typesafe.akka" %% "akka-testkit"     % akkaV % "test"
+    "com.typesafe.akka" %%  "akka-testkit"    % akkaV % "test",
+    "org.slf4j"         %   "slf4j-simple"    % "1.7.21" % "test"
   )
 }
 

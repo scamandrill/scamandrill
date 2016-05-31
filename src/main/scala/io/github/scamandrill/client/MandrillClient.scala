@@ -2,46 +2,23 @@ package io.github.scamandrill.client
 
 import play.api.libs.ws.WSClient
 import io.github.scamandrill.models._
-import jdk.nashorn.api.scripting.JSObject
-import play.api.libs.json.{JsObject, JsValue, Json, Writes}
-import spray.json.JsString
 
-import scala.concurrent.{ExecutionContext, Future}\
+import scala.concurrent.{ExecutionContext, Future}
 
 class MandrillClient(
-  val wc: WSClient,
-  val key: APIKey = APIKey(DefaultConfig.defaultKeyFromConfig)
-) extends ScamandrillSendReceive with MandrillClientProvider {
-
+  val ws: WSClient,
+  val key: APIKey = APIKey(DefaultConfig.defaultKeyFromConfig),
+  val onShutdown: () => Future[Unit] = () => Future.successful(())
+)(implicit val ec: ExecutionContext) extends ScamandrillSendReceive with MandrillClientProvider {
+  import MandrillClient.Endpoints._
 
   /**
-    * Asks all the underlying actors to close (waiting for 1 second)
-    * and then shut down the system. Users of this class are supposed to call
-    * this method when they are no-longer required or the application exits.
+    * If the WSClient was created by Scamandrill, this will shut down the scamandrill actor system and client.
+    * If the WSClient was not created by Scamandrill, this will close the client.
     *
     * @see [[io.github.scamandrill.client.ScamandrillSendReceive]]
     */
-  def shutdownSystem(): Unit = shutdown()
-
-
-
-//
-//  def marshal[T: RootJsonFormat](value: T): Future[MessageEntity] = Marshal(value).to[MessageEntity]
-//
-//  def unmarshal[T: FromResponseUnmarshaller]: HttpResponse => Future[T] = response => Unmarshal(response).to[T]
-//
-//  class AuthenticatedJsonFormat[T](fmt: RootJsonFormat[T]) extends RootJsonFormat[T] {
-//    override def write(obj: T): JsValue =
-//      fmt.write(obj) match {
-//        case JsObject(fields) => JsObject(
-//          fields ++ Map("key" -> JsString(key.key))
-//        )
-//        case json@_ => json
-//      }
-//
-//    override def read(json: JsValue): T = ???
-//  }
-
+  def shutdownSystem(): Future[Unit] = shutdown()
 
   /////////////////////////////////////////////////////////////
   //USER calls https://mandrillapp.com/api/docs/users.JSON.html
@@ -52,38 +29,37 @@ class MandrillClient(
     *
     * @return - the string "PONG!" if successful
     */
-  def usersPing(): Future[MPingResponse] = {
-    this.wc.url(s"$serviceRoot${MandrillClient.Endpoints.ping.endpoint}").post(MVoid)
-//    executeQuery[MPingResponse](MandrillClient.Endpoints.ping.endpoint, marshal(MVoid())) { resp => Unmarshal(resp).to[String].map(MPingResponse.apply(_)) }
+  def usersPing: Future[MandrillResponse[MPingResponse]] = {
+    executeQuery[MVoid, MPingResponse](ping, MVoid())
   }
 
-//  /**
-//    * Validate an API key and respond to a ping (anal JSON parser version)
-//    *
-//    * @return - the string "PONG!" if successful
-//    */
-//  def usersPing2(): Future[MPingResponse] = {
-//    executeQuery[MPingResponse](MandrillClient.Endpoints.ping2.endpoint, marshal(MVoid()))(unmarshal[MPingResponse])
-//  }
-//
-//  /**
-//    * Return the senders that have tried to use this account, both verified and unverified
-//    *
-//    * @return the senders that have tried to use this account, both verified and unverified
-//    */
-//  def usersSenders(): Future[List[MSenderDataResponse]] = {
-//    executeQuery[List[MSenderDataResponse]](MandrillClient.Endpoints.senders.endpoint, marshal(MVoid()))(unmarshal[List[MSenderDataResponse]])
-//  }
-//
-//  /**
-//    * Return the information about the API-connected user
-//    *
-//    * @return the information about the API-connected user
-//    */
-//  def usersInfo(): Future[MInfoResponse] = {
-//    executeQuery[MInfoResponse](MandrillClient.Endpoints.info.endpoint, marshal(MVoid()))(unmarshal[MInfoResponse])
-//  }
-//
+  /**
+    * Validate an API key and respond to a ping (anal JSON parser version)
+    *
+    * @return - the string "PONG!" if successful
+    */
+  def usersPing2: Future[MandrillResponse[MPingResponse]] = {
+    executeQuery[MVoid, MPingResponse](ping2, MVoid())
+  }
+
+  /**
+    * Return the senders that have tried to use this account, both verified and unverified
+    *
+    * @return the senders that have tried to use this account, both verified and unverified
+    */
+  def usersSenders: Future[MandrillResponse[List[MSenderDataResponse]]] = {
+    executeQuery[MVoid, List[MSenderDataResponse]](senders, MVoid())
+  }
+
+  /**
+    * Return the information about the API-connected user
+    *
+    * @return the information about the API-connected user
+    */
+  def usersInfo: Future[MandrillResponse[MInfoResponse]] = {
+    executeQuery[MVoid, MInfoResponse](info, MVoid())
+  }
+
 //  ////////////////////////////////////////////////////////////////////
 //  //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
 //  ////////////////////////////////////////////////////////////////////
@@ -1012,6 +988,10 @@ object MandrillClient {
     * @see https://mandrillapp.com/api/docs/
     */
   object Endpoints extends Enumeration {
+    private[MandrillClient] final def Value(name: String, endpoint: String): Endpoint = new Endpoint(endpoint)
+
+    class Endpoint(val endpoint: String) extends Val(nextId, endpoint)
+
     //users
     val ping = Value("ping", "/users/ping.json")
     val ping2 = Value("ping2", "/users/ping2.json")
@@ -1115,9 +1095,5 @@ object MandrillClient {
     val metaadd = Value("metaadd", "/metadata/add.json")
     val metaupdate = Value("metaupdate", "/metadata/update.json")
     val metadel = Value("metadel", "/metadata/delete.json")
-
-    private[MandrillClient] final def Value(name: String, endpoint: String): MyVal = new MyVal(endpoint)
-
-    class MyVal(val endpoint: String) extends Val(nextId, endpoint)
   }
 }
