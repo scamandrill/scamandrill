@@ -1,12 +1,15 @@
 package io.github.scamandrill.client
 
+import javax.inject.Provider
+
+import io.github.scamandrill.models.DefaultConfig
 import io.github.scamandrill.utils.SimpleLogger
 import play.api.libs.ws.WSClient
 import play.api.libs.json.{JsString, JsValue, Writes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MandrillClientProvider extends SimpleLogger {
+trait MandrillClientProvider extends SimpleLogger with Provider[MandrillClient] {
   val ws: WSClient
   val onShutdown: () => Future[Unit]
 
@@ -21,8 +24,11 @@ trait MandrillClientProvider extends SimpleLogger {
   }
 
   implicit val ec: ExecutionContext
+  override def get(): MandrillClient = {
+    getClient()
+  }
 
-  def `with`(key: APIKey): MandrillClient = {
+  def getClient(key: APIKey = APIKey(DefaultConfig.defaultKeyFromConfig)): MandrillClient = {
     new MandrillClient(ws = ws, key = key)
   }
 
