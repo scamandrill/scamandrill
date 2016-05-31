@@ -27,6 +27,7 @@ parallelExecution in Test := true
 libraryDependencies ++= {
   val akkaV = "2.4.2"
   Seq(
+    "com.typesafe.play" %% "play-ws" % "2.5.3",
     "io.spray"          %% "spray-json"       % "1.3.2",
     "com.typesafe.akka" %% "akka-actor"       % akkaV,
     "com.typesafe.akka" %% "akka-http-experimental" % "2.4.2",

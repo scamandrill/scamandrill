@@ -1,11 +1,14 @@
 package io.github.scamandrill.client
 
+import play.api.libs.ws.WSClient
 import akka.actor.ActorSystem
 import akka.http.scaladsl._
 import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 import io.github.scamandrill.utils.SimpleLogger
+import play.api.http.Writeable
+import play.api.libs.json._
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -18,13 +21,20 @@ import scala.util.{Failure, Success}
   */
 trait ScamandrillSendReceive extends SimpleLogger {
 
+  private val serviceRoot: String = "https://mandrillapp.com/api/1.0/"
   type Entity = Either[Throwable, RequestEntity]
 
-  implicit val system: ActorSystem
-  implicit val materializer = ActorMaterializer()
+  val wc: WSClient
+  val key: APIKey
 
-  import system.dispatcher
-
+  private def authenticatedWriter[T](ow: Writes[T]): Writes[T] = {
+    new Writes[T] {
+      override def writes(o: T): JsValue = ow.writes(o) match {
+        case js: JsObject => js + ("key" -> Json.toJson(key))
+        case value => value
+      }
+    }
+  }
 
   /**
     * Fire a request to Mandrill API and try to parse the response. Because it return a Future[S], the
@@ -39,20 +49,16 @@ trait ScamandrillSendReceive extends SimpleLogger {
     * @note as from the api documentation, all requests are POST, and You can consider any non-200 HTTP
     *       response code an error - the returned data will contain more detailed information
     */
-  def executeQuery[S](endpoint: String, reqBodyF: Future[RequestEntity])(handler: (HttpResponse => Future[S])): Future[S] = {
+  def executeQuery[Req, Res](endpoint: String, model: Req)(implicit writes: Writes[Req], reads: Reads[Res]): Future[Res] = {
+    wc.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes))).map { res =>
+      res.json.validate[Res](reads).fold(
+        invalid = error => {
+          ""
+        },
+        valid = response => {
 
-    //TODO: reqbody <: MandrillResponse and S :< MandrillRequest
-    reqBodyF.flatMap { reqBody =>
-      val request = HttpRequest(method = HttpMethods.POST, uri = Uri("/api/1.0" + endpoint), entity = reqBody)
-      val clientFlow = Http().cachedHostConnectionPoolHttps[Int]("mandrillapp.com")
-      val futureResponse = Source.single(request -> 1).via(clientFlow).runWith(Sink.head)
-      futureResponse.flatMap { case (tryResponse, dummyInt) =>
-        tryResponse match {
-          case Success(rsp) => if (rsp.status.isSuccess()) handler(rsp)
-          else Future.failed(new UnsuccessfulResponseException(rsp))
-          case Failure(e) => Future.failed(e)
         }
-      }
+      )
     }
   }
 
@@ -63,8 +69,6 @@ trait ScamandrillSendReceive extends SimpleLogger {
     */
   def shutdown(): Unit = {
     logger.info("asking all actor to close")
-    Await.ready(Http().shutdownAllConnectionPools(), 1 second)
-    Await.ready(system.terminate(), 1 second)
     logger.info("actor system shut down")
   }
 }
