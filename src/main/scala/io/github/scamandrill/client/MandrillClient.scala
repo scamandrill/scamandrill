@@ -60,284 +60,285 @@ class MandrillClient(
     executeQuery[MVoid, MInfoResponse](info, MVoid())
   }
 
-//  ////////////////////////////////////////////////////////////////////
-//  //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
-//  ////////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Send a new transactional message through Mandrill
-//    *
-//    * @param msg - the message to send
-//    * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
-//    */
-//  def messagesSend(msg: MSendMessage): Future[List[MSendResponse]] = {
-//    executeQuery[List[MSendResponse]](MandrillClient.Endpoints.send.endpoint, marshal(msg))(unmarshal[List[MSendResponse]])
-//  }
-//
-//  /**
-//    * Send a new transactional message through Mandrill using a template
-//    *
-//    * @param msg - the message to send
-//    * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
-//    */
-//  def messagesSendTemplate(msg: MSendTemplateMessage): Future[List[MSendResponse]] = {
-//    executeQuery[List[MSendResponse]](MandrillClient.Endpoints.sendTemplate.endpoint, marshal(msg))(unmarshal[List[MSendResponse]])
-//  }
-//
-//  /**
-//    * Search the content of recently sent messages and optionally narrow by date range, tags and senders.
-//    * This method may be called up to 20 times per minute. If you need the data more often, you can use
-//    * /messages/info.json to get the information for a single message, or webhooks to push activity to
-//    * your own application for querying.
-//    *
-//    * @param q - the search values
-//    * @return an array of information for a single matching message
-//    */
-//  def messagesSearch(q: MSearch): Future[List[MSearchResponse]] = {
-//    executeQuery[List[MSearchResponse]](MandrillClient.Endpoints.search.endpoint, marshal(q))(unmarshal[List[MSearchResponse]])
-//  }
-//
-//  /**
-//    * Search the content of recently sent messages and return the aggregated hourly stats for matching messages
-//    *
-//    * @param q - the search values
-//    * @return the history information
-//    */
-//  def messagesSearchTimeSeries(q: MSearchTimeSeries): Future[List[MTimeSeriesResponse]] = {
-//    executeQuery[List[MTimeSeriesResponse]](MandrillClient.Endpoints.searchTimeS.endpoint, marshal(q))(unmarshal[List[MTimeSeriesResponse]])
-//  }
-//
-//  /**
-//    * Get the information for a single recently sent message
-//    *
-//    * @param q - the message info (containing unique id)
-//    * @return the information for the message
-//    */
-//  def messagesInfo(q: MMessageInfo): Future[MMessageInfoResponse] = {
-//    executeQuery[MMessageInfoResponse](MandrillClient.Endpoints.msginfo.endpoint, marshal(q))(unmarshal[MMessageInfoResponse])
-//  }
-//
-//  /**
-//    * Get the full content of a recently sent message
-//    *
-//    * @param q - the message info (containing unique id)
-//    * @return the content of the message
-//    */
-//  def messagesContent(q: MMessageInfo): Future[MContentResponse] = {
-//    executeQuery[MContentResponse](MandrillClient.Endpoints.content.endpoint, marshal(q))(unmarshal[MContentResponse])
-//  }
-//
-//  /**
-//    * Parse the full MIME document for an email message, returning the content of the message broken into its constituent pieces
-//    *
-//    * @param raw - the full MIME document of an email message
-//    * @return the parsed message
-//    */
-//  def messagesParse(raw: MParse): Future[MParseResponse] = {
-//    executeQuery[MParseResponse](MandrillClient.Endpoints.parse.endpoint, marshal(raw))(unmarshal[MParseResponse])
-//  }
-//
-//  /**
-//    * Take a raw MIME document for a message, and send it exactly as if it were sent through Mandrill's SMTP servers
-//    *
-//    * @param raw - the full MIME document of an email message
-//    * @return an array for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
-//    */
-//  def messagesSendRaw(raw: MSendRaw): Future[List[MSendResponse]] = {
-//    executeQuery[List[MSendResponse]](MandrillClient.Endpoints.sendraw.endpoint, marshal(raw))(unmarshal[List[MSendResponse]])
-//  }
-//
-//  /**
-//    * Queries your scheduled emails by sender or recipient, or both.
-//    *
-//    * @param to - the recipient address to restrict results to
-//    * @return a list of up to 1000 scheduled emails
-//    */
-//  def messagesListSchedule(sc: MListSchedule): Future[List[MScheduleResponse]] = {
-//    executeQuery[List[MScheduleResponse]](MandrillClient.Endpoints.listSchedule.endpoint, marshal(sc))(unmarshal[List[MScheduleResponse]])
-//  }
-//
-//  /**
-//    * Cancels a scheduled email
-//    *
-//    * @param sc - the scheduled mail
-//    * @return information about the scheduled email that was cancelled.
-//    */
-//  def messagesCancelSchedule(sc: MCancelSchedule): Future[MScheduleResponse] = {
-//    executeQuery[MScheduleResponse](MandrillClient.Endpoints.cancelSchedule.endpoint, marshal(sc))(unmarshal[MScheduleResponse])
-//  }
-//
-//  /**
-//    * Reschedules a scheduled email.
-//    *
-//    * @param sc - the mail to reschedule
-//    * @return information about the scheduled email that was rescheduled.
-//    */
-//  def messagesReschedule(sc: MReSchedule): Future[MScheduleResponse] = {
-//    executeQuery[MScheduleResponse](MandrillClient.Endpoints.reschedule.endpoint, marshal(sc))(unmarshal[MScheduleResponse])
-//  }
-//
-//  ////////////////////////////////////////////////////////////
-//  //TAGS calls https://mandrillapp.com/api/docs/tags.JSON.html
-//  ////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Return all of the user-defined key information
-//    *
-//    * @return all of the user-defined key information
-//    */
-//  def tagList(): Future[List[MTagResponse]] = {
-//    executeQuery[List[MTagResponse]](MandrillClient.Endpoints.taglist.endpoint, marshal(MVoid()))(unmarshal[List[MTagResponse]])
-//  }
-//
-//  /**
-//    * Deletes a tag permanently. Deleting a tag removes the tag from any messages that have been sent, and also deletes the tag's stats.
-//    * There is no way to undo this operation, so use it carefully.
-//    *
-//    * @param tag - the existing tag info
-//    * @return the tag that was deleted
-//    */
-//  def tagDelete(tag: MTagRequest): Future[MTagResponse] = {
-//    executeQuery[MTagResponse](MandrillClient.Endpoints.tagdelete.endpoint, marshal(tag))(unmarshal[MTagResponse])
-//  }
-//
-//  /**
-//    * Return more detailed information about a single tag, including aggregates of recent stats
-//    *
-//    * @param tag - the existing tag info
-//    * @return the tag asked
-//    */
-//  def tagInfo(tag: MTagRequest): Future[MTagInfoResponse] = {
-//    executeQuery[MTagInfoResponse](MandrillClient.Endpoints.taginfo.endpoint, marshal(tag))(unmarshal[MTagInfoResponse])
-//  }
-//
-//  /**
-//    * Return the recent history (hourly stats for the last 30 days) for a tag
-//    *
-//    * @param tag - the existing tag info
-//    * @return the recent history (hourly stats for the last 30 days) for a tag
-//    */
-//  def tagTimeSeries(tag: MTagRequest): Future[List[MTimeSeriesResponse]] = {
-//    executeQuery[List[MTimeSeriesResponse]](MandrillClient.Endpoints.tagtimeseries.endpoint, marshal(tag))(unmarshal[List[MTimeSeriesResponse]])
-//  }
-//
-//  /**
-//    * Return the recent history (hourly stats for the last 30 days) for all tags
-//    *
-//    * @return the recent history (hourly stats for the last 30 days) for all tags
-//    */
-//  def tagAllTimeSeries(): Future[List[MTimeSeriesResponse]] = {
-//    executeQuery[List[MTimeSeriesResponse]](MandrillClient.Endpoints.tagalltime.endpoint, marshal(MVoid()))(unmarshal[List[MTimeSeriesResponse]])
-//  }
-//
-//  /////////////////////////////////////////////////////////////////
-//  //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
-//  /////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Adds an email to your email rejection blacklist. Addresses that you add manually will never expire and there is no
-//    * reputation penalty for removing them from your blacklist. Attempting to blacklist an address that has been
-//    * whitelisted will have no effect.
-//    *
-//    * @param add - info about the mail to blacklist
-//    * @return an object containing the address and the result of the operation
-//    */
-//  def rejectAdd(reject: MRejectAdd): Future[MRejectAddResponse] = {
-//    executeQuery[MRejectAddResponse](MandrillClient.Endpoints.rejadd.endpoint, marshal(reject))(unmarshal[MRejectAddResponse])
-//  }
-//
-//  /**
-//    * Deletes an email rejection. There is no limit to how many rejections you can remove from your blacklist,
-//    * but keep in mind that each deletion has an affect on your reputation.
-//    *
-//    * @param delete - the mail to delete from the blacklist
-//    * @return - an object containing the address and whether the deletion succeeded.
-//    */
-//  def rejectDelete(reject: MRejectDelete): Future[MRejectDeleteResponse] = {
-//    executeQuery[MRejectDeleteResponse](MandrillClient.Endpoints.regdelete.endpoint, marshal(reject))(unmarshal[MRejectDeleteResponse])
-//  }
-//
-//  /**
-//    * Retrieves your email rejection blacklist. You can provide an email address to limit the results.
-//    * Returns up to 1000 results. By default, entries that have expired are excluded from the results;
-//    * set include_expired to true to include them.
-//    *
-//    * @param list - information about the list of mails to retrieve
-//    * @return up to 1000 results
-//    */
-//  def rejectList(reject: MRejectList): Future[List[MRejectListResponse]] = {
-//    executeQuery[List[MRejectListResponse]](MandrillClient.Endpoints.rejlist.endpoint, marshal(reject))(unmarshal[List[MRejectListResponse]])
-//  }
-//
-//  ///////////////////////////////////////////////////////////////////////
-//  //WHITELIST calls https://mandrillapp.com/api/docs/whitelists.JSON.html
-//  ///////////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Adds an email to your email rejection whitelist. If the address is currently on your blacklist,
-//    * that blacklist entry will be removed automatically.
-//    *
-//    * @param mail - the mail to be added to the whitelist
-//    * @return an object containing the address and the result of the operation
-//    */
-//  def whitelistAdd(mail: MWhitelist): Future[MWhitelistAddResponse] = {
-//    executeQuery[MWhitelistAddResponse](MandrillClient.Endpoints.wlistadd.endpoint, marshal(mail))(unmarshal[MWhitelistAddResponse])
-//  }
-//
-//  /**
-//    * Removes an email address from the whitelist.
-//    *
-//    * @param mail - the mail to be removed from the whitelist
-//    * @return a status object containing the address and whether the deletion succeeded
-//    */
-//  def whitelistDelete(mail: MWhitelist): Future[MWhitelistDeleteResponse] = {
-//    executeQuery[MWhitelistDeleteResponse](MandrillClient.Endpoints.wlistdelete.endpoint, marshal(mail))(unmarshal[MWhitelistDeleteResponse])
-//  }
-//
-//  /**
-//    * Retrieves your email rejection whitelist. You can provide an email address or search prefix to limit the results.
-//    *
-//    * @param mail - the list of mails to be returned
-//    * @return up to 1000 results
-//    */
-//  def whitelistList(mail: MWhitelist): Future[List[MWhitelistListResponse]] = {
-//    executeQuery[List[MWhitelistListResponse]](MandrillClient.Endpoints.wlistlist.endpoint, marshal(mail))(unmarshal[List[MWhitelistListResponse]])
-//  }
-//
-//  //////////////////////////////////////////////////////////////////
-//  //SENDERS calls https://mandrillapp.com/api/docs/senders.JSON.html
-//  //////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Return the senders that have tried to use this account.
-//    *
-//    * @return the senders that have tried to use this account.
-//    */
-//  def sendersList(): Future[List[MSendersListResp]] = {
-//    executeQuery[List[MSendersListResp]](MandrillClient.Endpoints.senderslist.endpoint, marshal(MVoid()))(unmarshal[List[MSendersListResp]])
-//  }
-//
-//  /**
-//    * Returns the sender domains that have been added to this account.
-//    *
-//    * @return the sender domains that have been added to this account.
-//    */
-//  def sendersDomains(): Future[List[MSendersDomainResponses]] = {
-//    executeQuery[List[MSendersDomainResponses]](MandrillClient.Endpoints.sendersdomains.endpoint, marshal(MVoid()))(unmarshal[List[MSendersDomainResponses]])
-//  }
-//
-//  /**
-//    * Adds a sender domain to your account. Sender domains are added automatically as you send,
-//    * but you can use this call to add them ahead of time.
-//    *
-//    * @param snd - the domain to add
-//    * @return information about the domain
-//    */
-//  def sendersAddDomain(snd: MSenderDomain): Future[MSendersDomainResponses] = {
-//    executeQuery[MSendersDomainResponses](MandrillClient.Endpoints.sendersadddom.endpoint, marshal(snd))(unmarshal[MSendersDomainResponses])
-//  }
-//
-//
+  ////////////////////////////////////////////////////////////////////
+  //MESSAGES calls https://mandrillapp.com/api/docs/messages.JSON.html
+  ////////////////////////////////////////////////////////////////////
+
+  /**
+    * Send a new transactional message through Mandrill
+    *
+    * @param msg - the message to send
+    * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
+    */
+  def messagesSend(msg: MSendMessage): Future[MandrillResponse[List[MSendResponse]]] = {
+    executeQuery[MSendMessage, List[MSendResponse]](send, msg)
+  }
+
+  /**
+    * Send a new transactional message through Mandrill using a template
+    *
+    * @param msg - the message to send
+    * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
+    */
+  def messagesSendTemplate(msg: MSendTemplateMessage): Future[MandrillResponse[List[MSendResponse]]] = {
+    executeQuery[MSendTemplateMessage,List[MSendResponse]](sendTemplate, msg)
+  }
+
+  /**
+    * Search the content of recently sent messages and optionally narrow by date range, tags and senders.
+    * This method may be called up to 20 times per minute. If you need the data more often, you can use
+    * /messages/info.json to get the information for a single message, or webhooks to push activity to
+    * your own application for querying.
+    *
+    * @param q - the search values
+    * @return an array of information for a single matching message
+    */
+  def messagesSearch(q: MSearch): Future[MandrillResponse[List[MSearchResponse]]] = {
+    executeQuery[MSearch, List[MSearchResponse]](search, q)
+  }
+
+
+  /**
+    * Search the content of recently sent messages and return the aggregated hourly stats for matching messages
+    *
+    * @param q - the search values
+    * @return the history information
+    */
+  def messagesSearchTimeSeries(q: MSearchTimeSeries): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+    executeQuery[MSearchTimeSeries, List[MTimeSeriesResponse]](searchTimeS, q)
+  }
+
+  /**
+    * Get the information for a single recently sent message
+    *
+    * @param q - the message info (containing unique id)
+    * @return the information for the message
+    */
+  def messagesInfo(q: MMessageInfo): Future[MandrillResponse[MMessageInfoResponse]] = {
+    executeQuery[MMessageInfo, MMessageInfoResponse](msginfo, q)
+  }
+
+  /**
+    * Get the full content of a recently sent message
+    *
+    * @param q - the message info (containing unique id)
+    * @return the content of the message
+    */
+  def messagesContent(q: MMessageInfo): Future[MandrillResponse[MContentResponse]] = {
+    executeQuery[MMessageInfo, MContentResponse](content, q)
+  }
+
+  /**
+    * Parse the full MIME document for an email message, returning the content of the message broken into its constituent pieces
+    *
+    * @param raw - the full MIME document of an email message
+    * @return the parsed message
+    */
+  def messagesParse(raw: MParse): Future[MandrillResponse[MParseResponse]] = {
+    executeQuery[MParse,MParseResponse](parse, raw)
+  }
+
+  /**
+    * Take a raw MIME document for a message, and send it exactly as if it were sent through Mandrill's SMTP servers
+    *
+    * @param raw - the full MIME document of an email message
+    * @return an array for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
+    */
+  def messagesSendRaw(raw: MSendRaw): Future[MandrillResponse[List[MSendResponse]]] = {
+    executeQuery[MSendRaw, List[MSendResponse]](sendraw, raw)
+  }
+
+  /**
+    * Queries your scheduled emails by sender or recipient, or both.
+    *
+    * @param sc - the recipient address to restrict results to
+    * @return a list of up to 1000 scheduled emails
+    */
+  def messagesListSchedule(sc: MListSchedule): Future[MandrillResponse[List[MScheduleResponse]]] = {
+    executeQuery[MListSchedule, List[MScheduleResponse]](listSchedule, sc)
+  }
+
+  /**
+    * Cancels a scheduled email
+    *
+    * @param sc - the scheduled mail
+    * @return information about the scheduled email that was cancelled.
+    */
+  def messagesCancelSchedule(sc: MCancelSchedule): Future[MandrillResponse[MScheduleResponse]] = {
+    executeQuery[MCancelSchedule, MScheduleResponse](cancelSchedule, sc)
+  }
+
+  /**
+    * Reschedules a scheduled email.
+    *
+    * @param sc - the mail to reschedule
+    * @return information about the scheduled email that was rescheduled.
+    */
+  def messagesReschedule(sc: MReSchedule): Future[MandrillResponse[MScheduleResponse]] = {
+    executeQuery[MReSchedule, MScheduleResponse](reschedule, sc)
+  }
+
+  ////////////////////////////////////////////////////////////
+  //TAGS calls https://mandrillapp.com/api/docs/tags.JSON.html
+  ////////////////////////////////////////////////////////////
+
+  /**
+    * Return all of the user-defined key information
+    *
+    * @return all of the user-defined key information
+    */
+  def tagList(): Future[MandrillResponse[List[MTagResponse]]] = {
+    executeQuery[MVoid, List[MTagResponse]](taglist, MVoid())
+  }
+
+  /**
+    * Deletes a tag permanently. Deleting a tag removes the tag from any messages that have been sent, and also deletes the tag's stats.
+    * There is no way to undo this operation, so use it carefully.
+    *
+    * @param tag - the existing tag info
+    * @return the tag that was deleted
+    */
+  def tagDelete(tag: MTagRequest): Future[MandrillResponse[MTagResponse]] = {
+    executeQuery[MTagRequest, MTagResponse](tagdelete, tag)
+  }
+
+  /**
+    * Return more detailed information about a single tag, including aggregates of recent stats
+    *
+    * @param tag - the existing tag info
+    * @return the tag asked
+    */
+  def tagInfo(tag: MTagRequest): Future[MandrillResponse[MTagInfoResponse]] = {
+    executeQuery[MTagRequest, MTagInfoResponse](taginfo, tag)
+  }
+
+  /**
+    * Return the recent history (hourly stats for the last 30 days) for a tag
+    *
+    * @param tag - the existing tag info
+    * @return the recent history (hourly stats for the last 30 days) for a tag
+    */
+  def tagTimeSeries(tag: MTagRequest): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+    executeQuery[MTagRequest, List[MTimeSeriesResponse]](tagtimeseries, tag)
+  }
+
+  /**
+    * Return the recent history (hourly stats for the last 30 days) for all tags
+    *
+    * @return the recent history (hourly stats for the last 30 days) for all tags
+    */
+  def tagAllTimeSeries(): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+    executeQuery[MVoid, List[MTimeSeriesResponse]](tagalltime, MVoid())
+  }
+
+  /////////////////////////////////////////////////////////////////
+  //REJECT calls https://mandrillapp.com/api/docs/rejects.JSON.html
+  /////////////////////////////////////////////////////////////////
+
+  /**
+    * Adds an email to your email rejection blacklist. Addresses that you add manually will never expire and there is no
+    * reputation penalty for removing them from your blacklist. Attempting to blacklist an address that has been
+    * whitelisted will have no effect.
+    *
+    * @param reject - info about the mail to blacklist
+    * @return an object containing the address and the result of the operation
+    */
+  def rejectAdd(reject: MRejectAdd): Future[MandrillResponse[MRejectAddResponse]] = {
+    executeQuery[MRejectAdd, MRejectAddResponse](rejadd, reject)
+  }
+
+  /**
+    * Deletes an email rejection. There is no limit to how many rejections you can remove from your blacklist,
+    * but keep in mind that each deletion has an affect on your reputation.
+    *
+    * @param delete - the mail to delete from the blacklist
+    * @return - an object containing the address and whether the deletion succeeded.
+    */
+  def rejectDelete(delete: MRejectDelete): Future[MandrillResponse[MRejectDeleteResponse]] = {
+    executeQuery[MRejectDelete, MRejectDeleteResponse](rejdelete, delete)
+  }
+
+  /**
+    * Retrieves your email rejection blacklist. You can provide an email address to limit the results.
+    * Returns up to 1000 results. By default, entries that have expired are excluded from the results;
+    * set include_expired to true to include them.
+    *
+    * @param reject - information about the list of mails to retrieve
+    * @return up to 1000 results
+    */
+  def rejectList(reject: MRejectList): Future[MandrillResponse[List[MRejectListResponse]]] = {
+    executeQuery[MRejectList, List[MRejectListResponse]](rejlist, reject)
+  }
+
+  ///////////////////////////////////////////////////////////////////////
+  //WHITELIST calls https://mandrillapp.com/api/docs/whitelists.JSON.html
+  ///////////////////////////////////////////////////////////////////////
+
+  /**
+    * Adds an email to your email rejection whitelist. If the address is currently on your blacklist,
+    * that blacklist entry will be removed automatically.
+    *
+    * @param mail - the mail to be added to the whitelist
+    * @return an object containing the address and the result of the operation
+    */
+  def whitelistAdd(mail: MWhitelist): Future[MandrillResponse[MWhitelistAddResponse]] = {
+    executeQuery[MWhitelist, MWhitelistAddResponse](wlistadd, mail)
+  }
+
+  /**
+    * Removes an email address from the whitelist.
+    *
+    * @param mail - the mail to be removed from the whitelist
+    * @return a status object containing the address and whether the deletion succeeded
+    */
+  def whitelistDelete(mail: MWhitelist): Future[MandrillResponse[MWhitelistDeleteResponse]] = {
+    executeQuery[MWhitelist, MWhitelistDeleteResponse](wlistdelete, mail)
+  }
+
+  /**
+    * Retrieves your email rejection whitelist. You can provide an email address or search prefix to limit the results.
+    *
+    * @param mail - the list of mails to be returned
+    * @return up to 1000 results
+    */
+  def whitelistList(mail: MWhitelist): Future[MandrillResponse[List[MWhitelistListResponse]]] = {
+    executeQuery[MWhitelist, List[MWhitelistListResponse]](wlistlist, mail)
+  }
+
+  //////////////////////////////////////////////////////////////////
+  //SENDERS calls https://mandrillapp.com/api/docs/senders.JSON.html
+  //////////////////////////////////////////////////////////////////
+
+  /**
+    * Return the senders that have tried to use this account.
+    *
+    * @return the senders that have tried to use this account.
+    */
+  def sendersList: Future[MandrillResponse[List[MSendersListResp]]] = {
+    executeQuery[MVoid, List[MSendersListResp]](senderslist, MVoid())
+  }
+
+  /**
+    * Returns the sender domains that have been added to this account.
+    *
+    * @return the sender domains that have been added to this account.
+    */
+  def sendersDomains(): Future[MandrillResponse[List[MSendersDomainResponses]]] = {
+    executeQuery[MVoid, List[MSendersDomainResponses]](sendersdomains, MVoid())
+  }
+
+  /**
+    * Adds a sender domain to your account. Sender domains are added automatically as you send,
+    * but you can use this call to add them ahead of time.
+    *
+    * @param snd - the domain to add
+    * @return information about the domain
+    */
+  def sendersAddDomain(snd: MSenderDomain): Future[MandrillResponse[MSendersDomainResponses]] = {
+    executeQuery[MSenderDomain, MSendersDomainResponses](sendersadddom, snd)
+  }
+
+
 //  /**
 //    * Checks the SPF and DKIM settings for a domain.
 //    * If you haven't already added this domain to your account, it will be added automatically.
@@ -1018,7 +1019,7 @@ object MandrillClient {
     //rejects
     val rejadd = Value("rejadd", "/rejects/add.json")
     val rejlist = Value("rejlist", "/rejects/list.json")
-    val regdelete = Value("regdelete", "/rejects/delete.json")
+    val rejdelete = Value("rejdelete", "/rejects/delete.json")
     //whitelist
     val wlistadd = Value("wlistadd", "/whitelists/add.json")
     val wlistdelete = Value("wlistdelete", "/whitelists/delete.json")
