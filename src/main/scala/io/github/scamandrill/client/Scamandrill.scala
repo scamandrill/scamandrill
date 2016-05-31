@@ -4,8 +4,8 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import play.api.{Configuration, Environment, Mode}
-import play.api.libs.ws.{WSClient, WSConfigParser}
-import play.api.libs.ws.ahc.{AhcConfigBuilder, AhcWSClient, AhcWSClientConfig}
+import play.api.libs.ws.{WSClient, WSClientConfig, WSConfigParser}
+import play.api.libs.ws.ahc.{AhcConfigBuilder, AhcWSClient, AhcWSClientConfig, AhcWSClientConfigParser}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -20,10 +20,15 @@ object Scamandrill extends ((WSClient, ExecutionContext, () => Future[Unit]) => 
   def apply(implicit ec: ExecutionContext): Scamandrill = {
     implicit val system = ActorSystem("scamandrill")
     implicit val mat = ActorMaterializer()
-    val configuration = Configuration.reference ++ Configuration(ConfigFactory.load("io.github.scamandrill.conf"))
-    val parser = new WSConfigParser(configuration, Environment.simple(mode = Mode.Prod))
-    val config = new AhcWSClientConfig(wsClientConfig = parser.parse())
-    val builder = new AhcConfigBuilder(config)
+    val env: Environment = Environment.simple(mode = Mode.Prod)
+
+    val configuration = Configuration.reference ++
+      Configuration(ConfigFactory.load("io.github.scamandrill.conf")) ++
+      Configuration(ConfigFactory.load("application")).getConfig("Mandrill").getOrElse(Configuration.empty)
+
+    val wsParser = new WSConfigParser(configuration, env)
+    val ahcParse = new AhcWSClientConfigParser(wsParser.parse(), configuration, env)
+    val builder = new AhcConfigBuilder(ahcParse.parse())
 
     apply(new AhcWSClient(builder.configure().build()), ec, () => {
       system.terminate().map(_ => ())
