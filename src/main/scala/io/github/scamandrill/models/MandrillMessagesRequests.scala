@@ -293,18 +293,16 @@ case class MSearchTimeSeries(query: String,
 /**
   * Message information
   *
-  * @param key - a valid API key
   * @param id  - the unique id of the message to get - passed as the "_id" field in webhooks, send calls, or search calls
   */
-case class MMessageInfo(key: String = DefaultConfig.defaultKeyFromConfig, id: String) extends MandrillRequest
+case class MMessageInfo(id: String) extends MandrillRequest
 
 /**
   * The raw message to parse
   *
-  * @param key         - a valid API key
   * @param raw_message - the raw message
   */
-case class MParse(key: String = DefaultConfig.defaultKeyFromConfig, raw_message: String) extends MandrillRequest
+case class MParse(raw_message: String) extends MandrillRequest
 
 /**
   * The raw message to send

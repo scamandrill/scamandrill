@@ -7,7 +7,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class MandrillClient(
   val ws: WSClient,
-  val key: APIKey = APIKey(DefaultConfig.defaultKeyFromConfig),
+  val key: APIKey = APIKey(),
   val onShutdown: () => Future[Unit] = () => Future.successful(())
 )(implicit val ec: ExecutionContext) extends ScamandrillSendReceive with MandrillClientProvider {
   import MandrillClient.Endpoints._

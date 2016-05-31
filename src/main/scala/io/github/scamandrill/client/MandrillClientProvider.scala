@@ -2,8 +2,9 @@ package io.github.scamandrill.client
 
 import javax.inject.Provider
 
-import io.github.scamandrill.models.DefaultConfig
+import com.typesafe.config.ConfigFactory
 import io.github.scamandrill.utils.SimpleLogger
+import play.api.Configuration
 import play.api.libs.ws.WSClient
 import play.api.libs.json.{JsString, JsValue, Writes}
 
@@ -28,15 +29,26 @@ trait MandrillClientProvider extends SimpleLogger with Provider[MandrillClient] 
     getClient()
   }
 
-  def getClient(key: APIKey = APIKey(DefaultConfig.defaultKeyFromConfig)): MandrillClient = {
+  def getClient(key: APIKey = APIKey()): MandrillClient = {
     new MandrillClient(ws = ws, key = key)
+  }
+
+  def getClient(key: String): MandrillClient = {
+    getClient(APIKey(key))
   }
 
 }
 
-case class APIKey(key: String)
-case object APIKey {
+case class APIKey(key: String = APIKey.defaultKey)
+case object APIKey extends SimpleLogger{
   implicit val writes = new Writes[APIKey] {
     override def writes(key: APIKey): JsValue = JsString(key.key)
+  }
+
+  def defaultKey = {
+    Configuration(ConfigFactory.load("application.conf")).getString("mandrill.key").getOrElse {
+      logger.error("Unable to locate mandrill.key in application.conf")
+      ""
+    }
   }
 }
