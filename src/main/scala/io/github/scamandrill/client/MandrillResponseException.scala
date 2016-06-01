@@ -1,12 +1,12 @@
 package io.github.scamandrill.client
 
 import play.api.libs.json.Json
+import play.api.libs.ws.WSResponse
 
 case class MandrillError(status: String, code: Int, name: String, message: String)
 case object MandrillError {
   implicit val reads = Json.reads[MandrillError]
 }
 
-case class MandrillResponseException(httpCode: Int,
-                                     httpReason: String,
-                                     mandrillError: MandrillError) extends RuntimeException {}
+case class MandrillResponseException(override val response: WSResponse,
+                                     mandrillError: MandrillError) extends UnsuccessfulResponseException(response) {}

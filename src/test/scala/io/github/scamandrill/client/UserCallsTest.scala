@@ -10,8 +10,8 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   "Ping" should "work getting a valid MPingResponse" in {
-    WsTestClient.withClient { wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+    withClient("/users/ping.json") { ws =>
+      val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.usersPing, defaultTimeout) { res =>
         res shouldBe MandrillSuccess(MPingResponse("PONG!"))
       }
@@ -19,7 +19,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
   }
 
   "Ping (version 2)" should "work getting a valid MPingResponse" in {
-    WsTestClient.withClient { wc =>
+    withClient("/users/ping2.json") { wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersPing2, defaultTimeout) { res =>
         res shouldBe MandrillSuccess(MPingResponse("PONG!"))
@@ -28,26 +28,26 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
   }
 
   "Sender" should "work getting a valid List[MSenderDataResponse]" in {
-    WsTestClient.withClient { wc =>
+    withClient("/users/senders.json") { wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersSenders, defaultTimeout) {
         case MandrillSuccess(senders) =>
           senders.head.getClass shouldBe classOf[MSenderDataResponse]
-          senders.exists(_.address == "scamandrill@test.com") shouldBe true
+          senders.exists(_.address == "sender.example@mandrillapp.com") shouldBe true
         case MandrillFailure(t) => fail(t)
       }
     }
   }
 
   "Info" should "work getting a valid MInfoResponse" in {
-    WsTestClient.withClient { wc =>
+    withClient("/users/info.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersInfo, defaultTimeout) {
         case MandrillSuccess(info) =>
-          info.username shouldBe "30909130"
-          info.created_at shouldBe "2016-05-05 15:25:38.62985"
-          info.hourly_quota shouldBe 25
-          info.public_id shouldBe "ALLdCj8lhM94O0jL0V3VLQ"
+          info.username shouldBe "myusername"
+          info.created_at shouldBe "2013-01-01 15:30:27"
+          info.hourly_quota shouldBe 42
+          info.public_id shouldBe "aaabbbccc112233"
         case MandrillFailure(t) => fail(t)
       }
     }

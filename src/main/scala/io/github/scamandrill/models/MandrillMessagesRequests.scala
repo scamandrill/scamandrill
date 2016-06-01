@@ -1,6 +1,6 @@
 package io.github.scamandrill.models
 
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json._
 
 
 /**
@@ -51,26 +51,6 @@ case object MTo {
 }
 
 /**
-  * A message to be sent through a template
-  *
-  * @param template_name    - the immutable name or slug of a template that exists in the user's account. For backwards-compatibility, the template name may also be used but the immutable slug is preferred.
-  * @param template_content - an array of template content to send. Each item in the array should be a struct with two keys - name: the name of the content block to set the content for, and content: the actual content to put into the block
-  * @param message          - the information on the message to send
-  * @param async            - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
-  * @param ip_pool          - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-  * @param send_at          - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
-  */
-case class MSendTemplateMessage(template_name: String,
-                                template_content: List[MVars],
-                                message: MSendMsg,
-                                async: Boolean = false,
-                                ip_pool: Option[String] = None,
-                                send_at: Option[String] = None)
-case object MSendTemplateMessage {
-  implicit val writes = Json.writes[MSendTemplateMessage]
-}
-
-/**
   * An Header
   *
   * @param name  - the key the header
@@ -100,7 +80,12 @@ case object MMetadata {
   */
 case class MRecipientMetadata(rcpt: String, values: List[MMetadata])
 case object MRecipientMetadata {
-  implicit val writes = Json.writes[MRecipientMetadata]
+  implicit val writes = new Writes[MRecipientMetadata] {
+    override def writes(m: MRecipientMetadata): JsValue = Json.obj(
+      "rcpt" -> m.rcpt,
+      "values" -> JsObject(m.values.map(v => (v.name, JsString(v.value))))
+    )
+  }
 }
 
 /**
@@ -157,6 +142,7 @@ class MSendMsg(val html: String,
                val signing_domain: Option[String] = None,
                val return_path_domain: Option[String] = None,
                val merge: Boolean = false,
+               val merge_language: Option[String] = None,
                val global_merge_vars: List[MVars] = List.empty,
                val merge_vars: List[MMergeVars] = List.empty,
                val tags: List[String] = List.empty,
@@ -189,6 +175,7 @@ class MSendMsg(val html: String,
            signing_domain: Option[String] = this.signing_domain,
            return_path_domain: Option[String] = this.return_path_domain,
            merge: Boolean = this.merge,
+           merge_language: Option[String] = this.merge_language,
            global_merge_vars: List[MVars] = this.global_merge_vars,
            merge_vars: List[MMergeVars] = this.merge_vars,
            tags: List[String] = this.tags,
@@ -221,6 +208,7 @@ class MSendMsg(val html: String,
       signing_domain,
       return_path_domain,
       merge: Boolean,
+      merge_language,
       global_merge_vars,
       merge_vars,
       tags,
@@ -265,7 +253,8 @@ class MSendMsg(val html: String,
         o.metadata == this.metadata &&
         o.recipient_metadata == this.recipient_metadata &&
         o.attachments == this.attachments &&
-        o.images == this.images
+        o.images == this.images &&
+        o.merge_language == this.merge_language
     case _ => false
   }
 }
@@ -278,7 +267,7 @@ object MSendMsg {
       "from_email" -> msg.from_email,
       "from_name" -> msg.from_name,
       "to" -> msg.to,
-      "headers" -> msg.headers,
+      "headers" -> msg.headers.map(headers => JsObject(headers.map(h => (h.name, JsString(h.value))))),
       "important" -> msg.important,
       "track_opens" -> msg.track_opens,
       "track_clicks" -> msg.track_clicks,
@@ -299,10 +288,11 @@ object MSendMsg {
       "subaccount" -> msg.subaccount,
       "google_analytics_domains" -> msg.google_analytics_domains,
       "google_analytics_campaign" -> msg.google_analytics_campaign,
-      "metadata" -> msg.metadata,
+      "metadata" -> JsObject(msg.metadata.map(m => (m.name, JsString(m.value)))),
       "recipient_metadata" -> msg.recipient_metadata,
       "attachments" -> msg.attachments,
-      "images" -> msg.images
+      "images" -> msg.images,
+      "merge_language" -> msg.merge_language
     )
   }
 }
@@ -323,6 +313,26 @@ case class MSendMessage(message: MSendMsg,
 
 case object MSendMessage {
   implicit val writes = Json.writes[MSendMessage]
+}
+
+/**
+  * A message to be sent through a template
+  *
+  * @param template_name    - the immutable name or slug of a template that exists in the user's account. For backwards-compatibility, the template name may also be used but the immutable slug is preferred.
+  * @param template_content - an array of template content to send. Each item in the array should be a struct with two keys - name: the name of the content block to set the content for, and content: the actual content to put into the block
+  * @param message          - the information on the message to send
+  * @param async            - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+  * @param ip_pool          - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
+  * @param send_at          - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
+  */
+case class MSendTemplateMessage(template_name: String,
+                                template_content: List[MVars],
+                                message: MSendMsg,
+                                async: Boolean = false,
+                                ip_pool: Option[String] = None,
+                                send_at: Option[String] = None)
+case object MSendTemplateMessage {
+  implicit val writes = Json.writes[MSendTemplateMessage]
 }
 
 /**

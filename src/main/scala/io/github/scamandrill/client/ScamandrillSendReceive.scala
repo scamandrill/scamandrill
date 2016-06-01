@@ -14,7 +14,7 @@ import scala.language.postfixOps
   */
 trait ScamandrillSendReceive extends SimpleLogger {
 
-  private val serviceRoot: String = "https://mandrillapp.com/api/1.0/"
+  private val serviceRoot: String = "https://mandrillapp.com/api/1.0"
 
   val ws: WSClient
   val key: APIKey
@@ -40,11 +40,10 @@ trait ScamandrillSendReceive extends SimpleLogger {
   def executeQuery[Req, Res](endpoint: Endpoint, model: Req)(implicit writes: Writes[Req], reads: Reads[Res]): Future[MandrillResponse[Res]] = {
     def handleError(res: WSResponse): MandrillResponse[Res] = {
       res.json.validate[MandrillError].fold(
-        invalid = _ => MandrillFailure(new Exception("Unable to parse response")),
-        valid = me => MandrillFailure[Res](new MandrillResponseException(res.status, res.body, me))
+        invalid = _ => MandrillFailure(new UnsuccessfulResponseException(res)),
+        valid = me => MandrillFailure[Res](new MandrillResponseException(res, me))
       )
     }
-
     ws.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes))) map {
       case res if res.status == 200 =>
         res.json.validate[Res](reads).fold(
