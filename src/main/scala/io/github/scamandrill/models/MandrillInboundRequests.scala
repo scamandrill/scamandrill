@@ -1,11 +1,16 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The inbound domain
   *
   * @param domain - a domain name
   */
 case class MInboundDomain(domain: String) extends MandrillRequest
+case object MInboundDomain {
+  implicit val writes = Json.writes[MInboundDomain]
+}
 
 /**
   * The Route
@@ -17,6 +22,10 @@ case class MInboundDomain(domain: String) extends MandrillRequest
 case class MInboundRoute(domain: String,
                          pattern: String,
                          url: String) extends MandrillRequest
+case object MInboundRoute {
+  implicit val writes = Json.writes[MInboundRoute]
+}
+
 
 /**
   * The Route
@@ -28,6 +37,9 @@ case class MInboundRoute(domain: String,
 case class MInboundUpdateRoute(id: String,
                                pattern: String,
                                url: String) extends MandrillRequest
+case object MInboundUpdateRoute {
+  implicit val writes = Json.writes[MInboundUpdateRoute]
+}
 
 /**
   * The route
@@ -35,6 +47,9 @@ case class MInboundUpdateRoute(id: String,
   * @param id  - the unique identifier of an existing route
   */
 case class MInboundDelRoute(id: String) extends MandrillRequest
+case object MInboundDelRoute {
+  implicit val writes = Json.writes[MInboundDelRoute]
+}
 
 /**
   * Inbound raw
@@ -50,5 +65,8 @@ case class MInboundRaw(raw_message: String,
                        mail_from: String,
                        helo: String,
                        client_address: String) extends MandrillRequest
+case object MInboundRaw {
+  implicit val writes = Json.writes[MInboundRaw]
+}
 
 

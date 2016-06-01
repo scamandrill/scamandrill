@@ -1,11 +1,16 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The export information
   *
   * @param id  - an export job identifier
   */
 case class MExportInfo(id: String) extends MandrillRequest
+case object MExportInfo {
+  implicit val writes = Json.writes[MExportInfo]
+}
 
 /**
   * The export notify info
@@ -32,4 +37,7 @@ case class MExportActivity(notify_email: String,
                            senders: List[String],
                            states: List[String],
                            api_keys: List[String]) extends MandrillRequest
+case object MExportActivity {
+  implicit val writes = Json.writes[MExportActivity]
+}
 
