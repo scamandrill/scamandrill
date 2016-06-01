@@ -27,7 +27,7 @@ case object MUrlCname {
 case class MUrlResponse(url: String,
                         sent: Int,
                         clicks: Int,
-                        unique_clicks: Int) extends MandrillResponse
+                        unique_clicks: Int)
 case object MUrlResponse {
   implicit val reads = Json.reads[MUrlResponse]
 }
@@ -43,7 +43,7 @@ case object MUrlResponse {
 case class MUrlTimeResponse(time: String,
                             sent: Int,
                             clicks: Int,
-                            unique_clicks: Int) extends MandrillResponse
+                            unique_clicks: Int)
 case object MUrlTimeResponse {
   implicit val reads = Json.reads[MUrlTimeResponse]
 }
@@ -61,7 +61,7 @@ case class MUrlDomainResponse(domain: String,
                               created_at: String,
                               last_tested_at: String,
                               valid_tracking: Boolean,
-                              cname: MUrlCname) extends MandrillResponse
+                              cname: MUrlCname)
 case object MUrlDomainResponse {
   implicit val reads = Json.reads[MUrlDomainResponse]
 }

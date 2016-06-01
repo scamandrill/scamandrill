@@ -65,7 +65,7 @@ case class MSendTemplateMessage(template_name: String,
                                 message: MSendMsg,
                                 async: Boolean = false,
                                 ip_pool: Option[String] = None,
-                                send_at: Option[String] = None) extends MandrillRequest
+                                send_at: Option[String] = None)
 case object MSendTemplateMessage {
   implicit val writes = Json.writes[MSendTemplateMessage]
 }
@@ -319,7 +319,7 @@ object MSendMsg {
 case class MSendMessage(message: MSendMsg,
                         async: Boolean = false,
                         ip_pool: Option[String] = None,
-                        send_at: Option[String] = None) extends MandrillRequest
+                        send_at: Option[String] = None)
 
 case object MSendMessage {
   implicit val writes = Json.writes[MSendMessage]
@@ -342,7 +342,7 @@ case class MSearch(query: String,
                    tags: List[String] = List.empty,
                    senders: List[String] = List.empty,
                    api_keys: List[String] = List.empty,
-                   limit: Int = 100) extends MandrillRequest
+                   limit: Int = 100)
 case object MSearch {
   implicit val writes = Json.writes[MSearch]
 }
@@ -360,7 +360,7 @@ case class MSearchTimeSeries(query: String,
                              date_from: String,
                              date_to: String,
                              tags: List[String] = List.empty,
-                             senders: List[String] = List.empty) extends MandrillRequest
+                             senders: List[String] = List.empty)
 case object MSearchTimeSeries {
   implicit val writes = Json.writes[MSearchTimeSeries]
 }
@@ -370,7 +370,7 @@ case object MSearchTimeSeries {
   *
   * @param id  - the unique id of the message to get - passed as the "_id" field in webhooks, send calls, or search calls
   */
-case class MMessageInfo(id: String) extends MandrillRequest
+case class MMessageInfo(id: String)
 case object MMessageInfo {
   implicit val writes = Json.writes[MMessageInfo]
 }
@@ -380,7 +380,7 @@ case object MMessageInfo {
   *
   * @param raw_message - the raw message
   */
-case class MParse(raw_message: String) extends MandrillRequest
+case class MParse(raw_message: String)
 case object MParse {
   implicit val writes = Json.writes[MParse]
 }
@@ -414,7 +414,7 @@ case object MSendRaw {
   *
   * @param to  - an optional recipient address to restrict results to
   */
-case class MListSchedule(to: String) extends MandrillRequest
+case class MListSchedule(to: String)
 case object MListSchedule {
   implicit val writes = Json.writes[MListSchedule]
 }
@@ -424,7 +424,7 @@ case object MListSchedule {
   *
   * @param id  - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   */
-case class MCancelSchedule(id: String) extends MandrillRequest
+case class MCancelSchedule(id: String)
 case object MCancelSchedule {
   implicit val writes = Json.writes[MCancelSchedule]
 }
@@ -435,7 +435,7 @@ case object MCancelSchedule {
   * @param id      - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   * @param send_at - the new UTC timestamp when the message should sent. Mandrill can't time travel, so if you specify a time in past the message will be sent immediately
   */
-case class MReSchedule(id: String, send_at: String) extends MandrillRequest
+case class MReSchedule(id: String, send_at: String)
 case object MReSchedule {
   implicit val writes = Json.writes[MReSchedule]
 }

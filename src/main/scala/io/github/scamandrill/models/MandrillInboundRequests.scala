@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param domain - a domain name
   */
-case class MInboundDomain(domain: String) extends MandrillRequest
+case class MInboundDomain(domain: String)
 case object MInboundDomain {
   implicit val writes = Json.writes[MInboundDomain]
 }
@@ -21,7 +21,7 @@ case object MInboundDomain {
   */
 case class MInboundRoute(domain: String,
                          pattern: String,
-                         url: String) extends MandrillRequest
+                         url: String)
 case object MInboundRoute {
   implicit val writes = Json.writes[MInboundRoute]
 }
@@ -36,7 +36,7 @@ case object MInboundRoute {
   */
 case class MInboundUpdateRoute(id: String,
                                pattern: String,
-                               url: String) extends MandrillRequest
+                               url: String)
 case object MInboundUpdateRoute {
   implicit val writes = Json.writes[MInboundUpdateRoute]
 }
@@ -46,7 +46,7 @@ case object MInboundUpdateRoute {
   *
   * @param id  - the unique identifier of an existing route
   */
-case class MInboundDelRoute(id: String) extends MandrillRequest
+case class MInboundDelRoute(id: String)
 case object MInboundDelRoute {
   implicit val writes = Json.writes[MInboundDelRoute]
 }
@@ -64,7 +64,7 @@ case class MInboundRaw(raw_message: String,
                        to: List[String],
                        mail_from: String,
                        helo: String,
-                       client_address: String) extends MandrillRequest
+                       client_address: String)
 case object MInboundRaw {
   implicit val writes = Json.writes[MInboundRaw]
 }

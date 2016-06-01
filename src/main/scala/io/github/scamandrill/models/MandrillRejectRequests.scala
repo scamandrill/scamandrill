@@ -11,7 +11,7 @@ import play.api.libs.json.Json
   */
 case class MRejectAdd(email: String,
                       comment: Option[String] = None,
-                      subaccount: Option[String] = None) extends MandrillRequest
+                      subaccount: Option[String] = None)
 case object MRejectAdd {
   implicit val writes = Json.writes[MRejectAdd]
 }
@@ -25,7 +25,7 @@ case object MRejectAdd {
   */
 case class MRejectList(email: String,
                        include_expired: Boolean = false,
-                       subaccount: Option[String] = None) extends MandrillRequest
+                       subaccount: Option[String] = None)
 case object MRejectList {
   implicit val writes = Json.writes[MRejectList]
 }
@@ -37,7 +37,7 @@ case object MRejectList {
   * @param subaccount an optional unique identifier for the subaccount to limit the blacklist entry
   */
 case class MRejectDelete(email: String,
-                         subaccount: Option[String] = None) extends MandrillRequest
+                         subaccount: Option[String] = None)
 case object MRejectDelete {
   implicit val writes = Json.writes[MRejectDelete]
 }

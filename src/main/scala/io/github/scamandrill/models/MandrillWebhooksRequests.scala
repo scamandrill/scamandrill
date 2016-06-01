@@ -11,7 +11,7 @@ import play.api.libs.json.Json
   */
 case class MWebhook(url: String,
                     description: String,
-                    events: List[String]) extends MandrillRequest
+                    events: List[String])
 case object MWebhook {
   implicit val writes = Json.writes[MWebhook]
 }
@@ -21,7 +21,7 @@ case object MWebhook {
   *
   * @param id  - a unique integer indentifier for the webhook
   */
-case class MWebhookInfo(id: Int) extends MandrillRequest
+case class MWebhookInfo(id: Int)
 case object MWebhookInfo {
   implicit val writes = Json.writes[MWebhookInfo]
 }
@@ -37,7 +37,7 @@ case object MWebhookInfo {
 case class MWebhookUpdate(id: Int,
                           url: String,
                           description: String,
-                          events: List[String]) extends MandrillRequest
+                          events: List[String])
 case object MWebhookUpdate {
   implicit val writes = Json.writes[MWebhookUpdate]
 }

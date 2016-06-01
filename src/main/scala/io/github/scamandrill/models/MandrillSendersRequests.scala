@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param domain - a domain name at which you can receive email
   */
-case class MSenderDomain(domain: String) extends MandrillRequest
+case class MSenderDomain(domain: String)
 case object MSenderDomain {
   implicit val writes = Json.writes[MSenderDomain]
 }
@@ -19,7 +19,7 @@ case object MSenderDomain {
   * @param mailbox - a mailbox at the domain where the verification email should be sent
   */
 case class MSenderVerifyDomain(domain: String,
-                               mailbox: String) extends MandrillRequest
+                               mailbox: String)
 case object MSenderVerifyDomain {
   implicit val writes = Json.writes[MSenderVerifyDomain]
 }
@@ -29,7 +29,7 @@ case object MSenderVerifyDomain {
   *
   * @param address - the email address of the sender
   */
-case class MSenderAddress(address: String) extends MandrillRequest
+case class MSenderAddress(address: String)
 case object MSenderAddress {
   implicit val writes = Json.writes[MSenderAddress]
 }

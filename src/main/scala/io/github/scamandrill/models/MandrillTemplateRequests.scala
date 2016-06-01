@@ -21,7 +21,7 @@ case class MTemplate(name: String,
                      code: String,
                      text: String,
                      publish: Boolean,
-                     labels: List[String]) extends MandrillRequest
+                     labels: List[String])
 case object MTemplate {
   implicit val writes = Json.writes[MTemplate]
 }
@@ -31,7 +31,7 @@ case object MTemplate {
   *
   * @param name - the name for the new template - must be unique
   */
-case class MTemplateInfo(name: String) extends MandrillRequest
+case class MTemplateInfo(name: String)
 case object MTemplateInfo {
   implicit val writes = Json.writes[MTemplateInfo]
 }
@@ -41,7 +41,7 @@ case object MTemplateInfo {
   *
   * @param label - an optional label to filter the templates
   */
-case class MTemplateList(label: String) extends MandrillRequest
+case class MTemplateList(label: String)
 case object MTemplateList {
   implicit val writes = Json.writes[MTemplateList]
 }
@@ -66,7 +66,7 @@ case object MTemplateCnt {
   */
 case class MTemplateRender(template_name: String,
                            template_content: List[MTemplateCnt],
-                           merge_vars: List[MTemplateCnt]) extends MandrillRequest
+                           merge_vars: List[MTemplateCnt])
 case object MTemplateRender {
   implicit val writes = Json.writes[MTemplateRender]
 }

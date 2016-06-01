@@ -45,7 +45,7 @@ case class MIspResponse(ip: String,
                         pool: String,
                         domain: String,
                         custom_dns: MIspDnsResp,
-                        warmup: MIspWarmupResp) extends MandrillResponse
+                        warmup: MIspWarmupResp)
 case object MIspResponse {
   implicit val reads = Json.reads[MIspResponse]
 }
@@ -55,7 +55,7 @@ case object MIspResponse {
   *
   * @param requested_at - the date and time that the request was created as a UTC timestamp in YYYY-MM-DD HH:MM:SS format
   */
-case class MIspProvisionResp(requested_at: String) extends MandrillResponse
+case class MIspProvisionResp(requested_at: String)
 case object MIspProvisionResp {
   implicit val reads = Json.reads[MIspProvisionResp]
 }
@@ -65,7 +65,7 @@ case object MIspProvisionResp {
   * @param ip      - the ip address
   * @param deleted - a boolean indicating whether the ip was successfully deleted
   */
-case class MIspDelete(ip: String, deleted: Boolean) extends MandrillResponse
+case class MIspDelete(ip: String, deleted: Boolean)
 case object MIspDelete {
   implicit val reads = Json.reads[MIspDelete]
 }
@@ -79,7 +79,7 @@ case object MIspDelete {
   */
 case class MIspInfoPool(name: String,
                         created_at: String,
-                        ips: List[MIspResponse]) extends MandrillResponse
+                        ips: List[MIspResponse])
 case object MIspInfoPool {
   implicit val reads = Json.reads[MIspInfoPool]
 }
@@ -90,7 +90,7 @@ case object MIspInfoPool {
   * @param valid - whether the domain name has a correctly-configured A record pointing to the ip address
   * @param error - if valid is false, this will contain details about why the domain's A record is incorrect
   */
-case class MIspDnsResponse(valid: Boolean, error: String) extends MandrillResponse
+case class MIspDnsResponse(valid: Boolean, error: String)
 case object MIspDnsResponse {
   implicit val reads = Json.reads[MIspDnsResponse]
 }
@@ -101,7 +101,7 @@ case object MIspDnsResponse {
   * @param pool    - the name of the pool
   * @param deleted - whether the pool was deleted
   */
-case class MIspDeletePoolResponse(pool: String, deleted: Boolean) extends MandrillResponse
+case class MIspDeletePoolResponse(pool: String, deleted: Boolean)
 case object MIspDeletePoolResponse {
   implicit val reads = Json.reads[MIspDeletePoolResponse]
 }

@@ -7,7 +7,7 @@ import play.api.libs.json._
   *
   * @param PING - the string "PONG!" if the operation is successful
   */
-case class MPingResponse(PING: String) extends MandrillResponse
+case class MPingResponse(PING: String)
 case object MPingResponse {
   val readsObj = Json.reads[MPingResponse]
   implicit val reads: Reads[MPingResponse] = new Reads[MPingResponse] {
@@ -44,7 +44,7 @@ case class MSenderDataResponse(address: String,
                                opens: Int,
                                clicks: Int,
                                unique_opens: Int,
-                               unique_clicks: Int) extends MandrillResponse
+                               unique_clicks: Int)
 case object MSenderDataResponse {
   implicit val reads = Json.reads[MSenderDataResponse]
 }
@@ -114,7 +114,7 @@ case class MInfoResponse(username: String,
                          reputation: Int,
                          hourly_quota: Int,
                          backlog: Int,
-                         stats: MStats) extends MandrillResponse
+                         stats: MStats)
 case object MInfoResponse {
   implicit val reads = Json.reads[MInfoResponse]
 }

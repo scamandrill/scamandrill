@@ -25,7 +25,7 @@ case class MSubaccountsResponse(id: String,
                                 //first_sent_at: String,
                                 sent_weekly: Int,
                                 sent_monthly: Int,
-                                sent_total: Int) extends MandrillResponse
+                                sent_total: Int)
 case object MSubaccountsResponse {
   implicit val reads = Json.reads[MSubaccountsResponse]
 }
@@ -60,7 +60,7 @@ case class MSubaccountsInfoResponse(id: String,
                                     sent_total: Int,
                                     sent_hourly: Int,
                                     hourly_quota: Int,
-                                    last_30_days: MStat) extends MandrillResponse
+                                    last_30_days: MStat)
 case object MSubaccountsInfoResponse {
   implicit val reads = Json.reads[MSubaccountsInfoResponse]
 }

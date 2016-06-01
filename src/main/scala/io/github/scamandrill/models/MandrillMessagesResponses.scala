@@ -150,7 +150,7 @@ case object MTimeSeriesResponse {
 case class MSendResponse(_id: String,
                          email: String,
                          status: String,
-                         reject_reason: Option[String]) extends MandrillResponse
+                         reject_reason: Option[String])
 case object MSendResponse {
   implicit val reads = Json.reads[MSendResponse]
 }

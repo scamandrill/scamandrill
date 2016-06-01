@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param id  - th unique identifier
   */
-case class MIspId(id: String) extends MandrillRequest
+case class MIspId(id: String)
 
 case object MIspId {
   implicit val writes = Json.writes[MIspId]
@@ -17,7 +17,7 @@ case object MIspId {
   *
   * @param ip  - a dedicated IP address
   */
-case class MIspIp(ip: String) extends MandrillRequest
+case class MIspIp(ip: String)
 case object MIspIp {
   implicit val writes = Json.writes[MIspIp]
 }
@@ -29,7 +29,7 @@ case object MIspIp {
   * @param pool   - the name of the new pool to add the dedicated ip to
   */
 case class MIspPool(warmup: Boolean,
-                    pool: String) extends MandrillRequest
+                    pool: String)
 case object MIspPool {
   implicit val writes = Json.writes[MIspPool]
 }
@@ -39,7 +39,7 @@ case object MIspPool {
   *
   * @param pool - the name of the new pool to add the dedicated ip to
   */
-case class MIspPoolInfo(pool: String) extends MandrillRequest
+case class MIspPoolInfo(pool: String)
 case object MIspPoolInfo {
   implicit val writes = Json.writes[MIspPoolInfo]
 }
@@ -53,7 +53,7 @@ case object MIspPoolInfo {
   */
 case class MIspSetPool(ip: String,
                        pool: String,
-                       create_pool: Boolean) extends MandrillRequest
+                       create_pool: Boolean)
 case object MIspSetPool {
   implicit val writes = Json.writes[MIspSetPool]
 }
@@ -65,7 +65,7 @@ case object MIspSetPool {
   * @param domain - the domain name to test
   */
 case class MIspDns(ip: String,
-                   domain: String) extends MandrillRequest
+                   domain: String)
 case object MIspDns {
   implicit val writes = Json.writes[MIspDns]
 }

@@ -29,7 +29,7 @@ case class MSendersListResp(address: String,
                             opens: Int,
                             clicks: Int,
                             unique_opens: Int,
-                            unique_clicks: Int) extends MandrillResponse
+                            unique_clicks: Int)
 case object MSendersListResp {
   implicit val reads = Json.reads[MSendersListResp]
 }
@@ -65,7 +65,7 @@ case class MSendersDomainResponses(domain: String,
                                    spf: MSendersDom,
                                    dkim: MSendersDom,
                                    verified_at: Option[String],
-                                   valid_signing: Boolean) extends MandrillResponse
+                                   valid_signing: Boolean)
 case object MSendersDomainResponses {
   implicit val reads = Json.reads[MSendersDomainResponses]
 }
@@ -80,7 +80,7 @@ case object MSendersDomainResponses {
   */
 case class MSendersVerifyDomResp(status: String,
                                  domain: String,
-                                 email: String) extends MandrillResponse
+                                 email: String)
 case object MSendersVerifyDomResp {
   implicit val reads = Json.reads[MSendersVerifyDomResp]
 }
@@ -128,7 +128,7 @@ case class MSendersInfoResp(address: String,
                             unsubs: Int,
                             opens: Int,
                             clicks: Int,
-                            stats: MSendersStats) extends MandrillResponse
+                            stats: MSendersStats)
 case object MSendersInfoResp {
   implicit val reads = Json.reads[MSendersInfoResp]
 }
@@ -158,7 +158,7 @@ case class MSenderTSResponse(time: String,
                              opens: Int,
                              unique_opens: Int,
                              clicks: Int,
-                             unique_clicks: Int) extends MandrillResponse
+                             unique_clicks: Int)
 case object MSenderTSResponse {
   implicit val reads = Json.reads[MSenderTSResponse]
 }

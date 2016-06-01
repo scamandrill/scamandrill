@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param id  - an export job identifier
   */
-case class MExportInfo(id: String) extends MandrillRequest
+case class MExportInfo(id: String)
 case object MExportInfo {
   implicit val writes = Json.writes[MExportInfo]
 }
@@ -17,7 +17,7 @@ case object MExportInfo {
   *
   * @param notify_email - an optional email address to notify when the export job has finished
   */
-case class MExportNotify(notify_email: String) extends MandrillRequest
+case class MExportNotify(notify_email: String)
 case object MExportNotify {
   implicit val writes = Json.writes[MExportNotify]
 }
@@ -39,7 +39,7 @@ case class MExportActivity(notify_email: String,
                            tags: List[String],
                            senders: List[String],
                            states: List[String],
-                           api_keys: List[String]) extends MandrillRequest
+                           api_keys: List[String])
 case object MExportActivity {
   implicit val writes = Json.writes[MExportActivity]
 }

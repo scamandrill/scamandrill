@@ -11,7 +11,7 @@ import play.api.libs.json.Json
   */
 case class MInboundDomainResponse(domain: String,
                                   created_at: String,
-                                  valid_mx: Boolean) extends MandrillResponse
+                                  valid_mx: Boolean)
 case object MInboundDomainResponse {
   implicit val reads = Json.reads[MInboundDomainResponse]
 }
@@ -25,7 +25,7 @@ case object MInboundDomainResponse {
   */
 case class MInboundRouteResponse(id: String,
                                  pattern: String,
-                                 url: Boolean) extends MandrillResponse
+                                 url: Boolean)
 case object MInboundRouteResponse {
   implicit val reads = Json.reads[MInboundRouteResponse]
 }
@@ -39,7 +39,7 @@ case object MInboundRouteResponse {
   */
 case class MInboundRawResponse(email: String,
                                pattern: String,
-                               url: Boolean) extends MandrillResponse
+                               url: Boolean)
 case object MInboundRawResponse {
   implicit val reads = Json.reads[MInboundRawResponse]
 }

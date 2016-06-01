@@ -8,7 +8,7 @@ import play.api.libs.json.Json
   * @param email - the email address you provided
   * @param added - true if the operation succeeded
   */
-case class MWhitelistAddResponse(email: String, added: Boolean) extends MandrillResponse
+case class MWhitelistAddResponse(email: String, added: Boolean)
 case object MWhitelistAddResponse {
   implicit val reads = Json.reads[MWhitelistAddResponse]
 }
@@ -22,7 +22,7 @@ case object MWhitelistAddResponse {
   */
 case class MWhitelistListResponse(email: String,
                                   detail: String,
-                                  created_at: String) extends MandrillResponse
+                                  created_at: String)
 case object MWhitelistListResponse {
   implicit val reads = Json.reads[MWhitelistListResponse]
 }
@@ -33,7 +33,7 @@ case object MWhitelistListResponse {
   * @param email   - the email address that was removed from the blacklist
   * @param deleted - whether the address was deleted successfully
   */
-case class MWhitelistDeleteResponse(email: String, deleted: Boolean) extends MandrillResponse
+case class MWhitelistDeleteResponse(email: String, deleted: Boolean)
 case object MWhitelistDeleteResponse {
   implicit val reads = Json.reads[MWhitelistDeleteResponse]
 }

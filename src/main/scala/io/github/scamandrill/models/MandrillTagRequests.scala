@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param tag - an existing tag name
   */
-case class MTagRequest(tag: String) extends MandrillRequest
+case class MTagRequest(tag: String)
 case object MTagRequest {
   implicit val writes = Json.writes[MTagRequest]
 }

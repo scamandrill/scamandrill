@@ -7,7 +7,7 @@ import play.api.libs.json.Json
   *
   * @param email - an email address for the whitelist
   */
-case class MWhitelist(email: String) extends MandrillRequest
+case class MWhitelist(email: String)
 case object MWhitelist {
   implicit val writes = Json.writes[MWhitelist]
 }
