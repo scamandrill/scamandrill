@@ -18,6 +18,9 @@ case object MExportInfo {
   * @param notify_email - an optional email address to notify when the export job has finished
   */
 case class MExportNotify(notify_email: String) extends MandrillRequest
+case object MExportNotify {
+  implicit val writes = Json.writes[MExportNotify]
+}
 
 /**
   * The export activity

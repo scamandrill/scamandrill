@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The webhook info
   *
@@ -10,6 +12,9 @@ package io.github.scamandrill.models
 case class MWebhook(url: String,
                     description: String,
                     events: List[String]) extends MandrillRequest
+case object MWebhook {
+  implicit val writes = Json.writes[MWebhook]
+}
 
 /**
   * The webhook info
@@ -17,6 +22,9 @@ case class MWebhook(url: String,
   * @param id  - a unique integer indentifier for the webhook
   */
 case class MWebhookInfo(id: Int) extends MandrillRequest
+case object MWebhookInfo {
+  implicit val writes = Json.writes[MWebhookInfo]
+}
 
 /**
   * The webhook to update
@@ -30,5 +38,8 @@ case class MWebhookUpdate(id: Int,
                           url: String,
                           description: String,
                           events: List[String]) extends MandrillRequest
+case object MWebhookUpdate {
+  implicit val writes = Json.writes[MWebhookUpdate]
+}
 
 

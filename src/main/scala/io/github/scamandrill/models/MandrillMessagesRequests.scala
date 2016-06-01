@@ -1,17 +1,54 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.{JsValue, Json, Writes}
+
+
 /**
-  * A message to be sent
+  * a single embedded image or attachment
   *
-  * @param message - the information on the message to send
-  * @param async   - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
-  * @param ip_pool - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-  * @param send_at - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
+  * @param `type`  - the MIME type of the image
+  * @param name    - the Content ID of the image - use <img src="cid:THIS_VALUE"> to reference the image in your HTML content
+  * @param content - the content of the image as a base64-encoded string
   */
-case class MSendMessage(message: MSendMsg,
-                        async: Boolean = false,
-                        ip_pool: Option[String] = None,
-                        send_at: Option[String] = None) extends MandrillRequest
+case class MAttachmetOrImage(`type`: String, name: String, content: String)
+case object MAttachmetOrImage {
+  implicit val writes = Json.writes[MAttachmetOrImage]
+  implicit val reads = Json.reads[MAttachmetOrImage]
+}
+
+/**
+  * A single merge variable
+  *
+  * @param name    - the merge variable's name. Merge variable names are case-insensitive and may not start with _
+  * @param content - the merge variable's content
+  */
+case class MVars(name: String, content: String)
+case object MVars {
+  implicit val writes = Json.writes[MVars]
+}
+
+/**
+  * Per-recipient merge variables, which override global merge variables with the same name.
+  *
+  * @param rcpt - the email address of the recipient that the merge variables should apply to
+  * @param vars - the recipient's merge variables
+  */
+case class MMergeVars(rcpt: String, vars: List[MVars])
+case object MMergeVars {
+  implicit val writes = Json.writes[MMergeVars]
+}
+
+/**
+  * A single recipient's information.
+  *
+  * @param email  - the email address of the recipient
+  * @param name   - the optional display name to use for the recipient
+  * @param `type` - the header type to use for the recipient, defaults to "to" if not provided
+  */
+case class MTo(email: String, name: Option[String] = None, `type`: String = "to")
+case object MTo {
+  implicit val writes = Json.writes[MTo]
+}
 
 /**
   * A message to be sent through a template
@@ -29,6 +66,9 @@ case class MSendTemplateMessage(template_name: String,
                                 async: Boolean = false,
                                 ip_pool: Option[String] = None,
                                 send_at: Option[String] = None) extends MandrillRequest
+case object MSendTemplateMessage {
+  implicit val writes = Json.writes[MSendTemplateMessage]
+}
 
 /**
   * An Header
@@ -37,6 +77,9 @@ case class MSendTemplateMessage(template_name: String,
   * @param value - the value of the header
   */
 case class MHeader(name: String, value: String)
+case object MHeader {
+  implicit val writes = Json.writes[MHeader]
+}
 
 /**
   * A metadata wrapper
@@ -45,6 +88,9 @@ case class MHeader(name: String, value: String)
   * @param value - the value of the metadata
   */
 case class MMetadata(name: String, value: String)
+case object MMetadata {
+  implicit val writes = Json.writes[MMetadata]
+}
 
 /**
   * Metadata for a single recipient
@@ -53,7 +99,9 @@ case class MMetadata(name: String, value: String)
   * @param values - an associated array containing the recipient's unique metadata. If a key exists in both the per-recipient metadata and the global metadata, the per-recipient metadata will be used.
   */
 case class MRecipientMetadata(rcpt: String, values: List[MMetadata])
-
+case object MRecipientMetadata {
+  implicit val writes = Json.writes[MRecipientMetadata]
+}
 
 /**
   * The message to be sent
@@ -221,40 +269,61 @@ class MSendMsg(val html: String,
     case _ => false
   }
 }
+object MSendMsg {
+  implicit val writes = new Writes[MSendMsg] {
+    override def writes(msg: MSendMsg): JsValue = Json.obj(
+      "html" -> msg.html,
+      "text" -> msg.text,
+      "subject" -> msg.subject,
+      "from_email" -> msg.from_email,
+      "from_name" -> msg.from_name,
+      "to" -> msg.to,
+      "headers" -> msg.headers,
+      "important" -> msg.important,
+      "track_opens" -> msg.track_opens,
+      "track_clicks" -> msg.track_clicks,
+      "auto_text" -> msg.auto_text,
+      "auto_html" -> msg.auto_html,
+      "inline_css" -> msg.inline_css,
+      "url_strip_qs" -> msg.url_strip_qs,
+      "preserve_recipients" -> msg.preserve_recipients,
+      "view_content_link" -> msg.view_content_link,
+      "bcc_address" -> msg.bcc_address,
+      "tracking_domain" -> msg.tracking_domain,
+      "signing_domain" -> msg.signing_domain,
+      "return_path_domain" -> msg.return_path_domain,
+      "merge" -> msg.merge,
+      "global_merge_vars" -> msg.global_merge_vars,
+      "merge_vars" -> msg.merge_vars,
+      "tags" -> msg.tags,
+      "subaccount" -> msg.subaccount,
+      "google_analytics_domains" -> msg.google_analytics_domains,
+      "google_analytics_campaign" -> msg.google_analytics_campaign,
+      "metadata" -> msg.metadata,
+      "recipient_metadata" -> msg.recipient_metadata,
+      "attachments" -> msg.attachments,
+      "images" -> msg.images
+    )
+  }
+}
+
 
 /**
-  * a single embedded image or attachment
+  * A message to be sent
   *
-  * @param `type`  - the MIME type of the image
-  * @param name    - the Content ID of the image - use <img src="cid:THIS_VALUE"> to reference the image in your HTML content
-  * @param content - the content of the image as a base64-encoded string
+  * @param message - the information on the message to send
+  * @param async   - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+  * @param ip_pool - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
+  * @param send_at - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
   */
-case class MAttachmetOrImage(`type`: String, name: String, content: String)
+case class MSendMessage(message: MSendMsg,
+                        async: Boolean = false,
+                        ip_pool: Option[String] = None,
+                        send_at: Option[String] = None) extends MandrillRequest
 
-/**
-  * Per-recipient merge variables, which override global merge variables with the same name.
-  *
-  * @param rcpt - the email address of the recipient that the merge variables should apply to
-  * @param vars - the recipient's merge variables
-  */
-case class MMergeVars(rcpt: String, vars: List[MVars])
-
-/**
-  * A single merge variable
-  *
-  * @param name    - the merge variable's name. Merge variable names are case-insensitive and may not start with _
-  * @param content - the merge variable's content
-  */
-case class MVars(name: String, content: String)
-
-/**
-  * A single recipient's information.
-  *
-  * @param email  - the email address of the recipient
-  * @param name   - the optional display name to use for the recipient
-  * @param `type` - the header type to use for the recipient, defaults to "to" if not provided
-  */
-case class MTo(email: String, name: Option[String] = None, `type`: String = "to")
+case object MSendMessage {
+  implicit val writes = Json.writes[MSendMessage]
+}
 
 /**
   * The information about the search
@@ -274,6 +343,9 @@ case class MSearch(query: String,
                    senders: List[String] = List.empty,
                    api_keys: List[String] = List.empty,
                    limit: Int = 100) extends MandrillRequest
+case object MSearch {
+  implicit val writes = Json.writes[MSearch]
+}
 
 /**
   * The information about the search
@@ -289,6 +361,9 @@ case class MSearchTimeSeries(query: String,
                              date_to: String,
                              tags: List[String] = List.empty,
                              senders: List[String] = List.empty) extends MandrillRequest
+case object MSearchTimeSeries {
+  implicit val writes = Json.writes[MSearchTimeSeries]
+}
 
 /**
   * Message information
@@ -296,6 +371,9 @@ case class MSearchTimeSeries(query: String,
   * @param id  - the unique id of the message to get - passed as the "_id" field in webhooks, send calls, or search calls
   */
 case class MMessageInfo(id: String) extends MandrillRequest
+case object MMessageInfo {
+  implicit val writes = Json.writes[MMessageInfo]
+}
 
 /**
   * The raw message to parse
@@ -303,6 +381,9 @@ case class MMessageInfo(id: String) extends MandrillRequest
   * @param raw_message - the raw message
   */
 case class MParse(raw_message: String) extends MandrillRequest
+case object MParse {
+  implicit val writes = Json.writes[MParse]
+}
 
 /**
   * The raw message to send
@@ -324,6 +405,9 @@ case class MSendRaw(raw_message: String,
                     ip_pool: Option[String] = None,
                     send_at: Option[String] = None,
                     return_path_domain: Option[String] = None)
+case object MSendRaw {
+  implicit val writes = Json.writes[MSendRaw]
+}
 
 /**
   * Parameter to list the scheduled mails
@@ -331,6 +415,9 @@ case class MSendRaw(raw_message: String,
   * @param to  - an optional recipient address to restrict results to
   */
 case class MListSchedule(to: String) extends MandrillRequest
+case object MListSchedule {
+  implicit val writes = Json.writes[MListSchedule]
+}
 
 /**
   * Info about the mail to cancel the schedule
@@ -338,6 +425,9 @@ case class MListSchedule(to: String) extends MandrillRequest
   * @param id  - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   */
 case class MCancelSchedule(id: String) extends MandrillRequest
+case object MCancelSchedule {
+  implicit val writes = Json.writes[MCancelSchedule]
+}
 
 /**
   * Info about the mail to cancel the schedule
@@ -346,3 +436,6 @@ case class MCancelSchedule(id: String) extends MandrillRequest
   * @param send_at - the new UTC timestamp when the message should sent. Mandrill can't time travel, so if you specify a time in past the message will be sent immediately
   */
 case class MReSchedule(id: String, send_at: String) extends MandrillRequest
+case object MReSchedule {
+  implicit val writes = Json.writes[MReSchedule]
+}

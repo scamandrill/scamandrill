@@ -70,4 +70,4 @@ sealed abstract class MandrillResponse[+T] {
 
 final class PredicateNotMatched extends Exception
 final case class MandrillSuccess[+T](value: T) extends MandrillResponse[T]
-final case class MandrillFailure[+T](error: Exception) extends MandrillResponse[T]
+final case class MandrillFailure[+T](error: Throwable) extends MandrillResponse[T]

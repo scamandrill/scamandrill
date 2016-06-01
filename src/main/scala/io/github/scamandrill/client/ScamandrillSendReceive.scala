@@ -1,7 +1,6 @@
 package io.github.scamandrill.client
 
 import play.api.libs.ws.{WSClient, WSResponse}
-import akka.http.scaladsl.model._
 import io.github.scamandrill.client.MandrillClient.Endpoints.Endpoint
 import io.github.scamandrill.utils.SimpleLogger
 import play.api.libs.json._
@@ -46,14 +45,16 @@ trait ScamandrillSendReceive extends SimpleLogger {
       )
     }
 
-    ws.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes)))
-    .map {
+    ws.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes))) map {
       case res if res.status == 200 =>
         res.json.validate[Res](reads).fold(
           invalid = _ => handleError(res),
           valid = MandrillSuccess.apply
         )
       case res => handleError(res)
+    } recover {
+      case e => MandrillFailure[Res](e)
     }
+
   }
 }

@@ -1,11 +1,16 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * Subaccounts to filter
   *
   * @param q   - an optional prefix to filter the subaccounts' ids and names
   */
 case class MSubaccountList(q: String) extends MandrillRequest
+case object MSubaccountList {
+  implicit val writes = Json.writes[MSubaccountList]
+}
 
 /**
   * The information about a subaccount
@@ -13,6 +18,9 @@ case class MSubaccountList(q: String) extends MandrillRequest
   * @param id  - a unique identifier for the subaccount to be used in sending calls
   */
 case class MSubaccountInfo(id: String) extends MandrillRequest
+case object MSubaccountInfo {
+  implicit val writes = Json.writes[MSubaccountInfo]
+}
 
 /**
   * A subaccount
@@ -26,3 +34,6 @@ case class MSubaccount(id: String,
                        name: String,
                        notes: String,
                        custom_quota: Int) extends MandrillRequest
+case object MSubaccount {
+  implicit val writes = Json.writes[MSubaccount]
+}

@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The metadata
   *
@@ -8,6 +10,9 @@ package io.github.scamandrill.models
   */
 case class MMeteadatapAdd(name: String,
                           view_template: String) extends MandrillRequest
+case object MMeteadatapAdd {
+  implicit val writes = Json.writes[MMeteadatapAdd]
+}
 
 /**
   * The metadata
@@ -15,3 +20,6 @@ case class MMeteadatapAdd(name: String,
   * @param name - the unique identifier of the metadata field to update
   */
 case class MMeteadatapDelete(name: String) extends MandrillRequest
+case object MMeteadatapDelete {
+  implicit val writes = Json.writes[MMeteadatapDelete]
+}

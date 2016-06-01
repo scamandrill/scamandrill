@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * An array of sender data, one for each sending addresses used by the account
   *
@@ -28,6 +30,23 @@ case class MSendersListResp(address: String,
                             clicks: Int,
                             unique_opens: Int,
                             unique_clicks: Int) extends MandrillResponse
+case object MSendersListResp {
+  implicit val reads = Json.reads[MSendersListResp]
+}
+
+/**
+  * Details about the domain's SPF record
+  *
+  * @param valid       - whether the domain's SPF record is valid for use with Mandrill
+  * @param valid_after - when the domain's SPF record will be considered valid for use with Mandrill as a UTC string in YYYY-MM-DD HH:MM:SS format. If set, this indicates that the record is valid now, but was previously invalid, and Mandrill will wait until the record's TTL elapses to start using it.
+  * @param error       - an error describing the spf record, or null if the record is correct
+  */
+case class MSendersDom(valid: Boolean,
+                       valid_after: Option[String],
+                       error: Option[String])
+case object MSendersDom {
+  implicit val reads = Json.reads[MSendersDom]
+}
 
 /**
   * The information on each sending domain for the account
@@ -47,17 +66,10 @@ case class MSendersDomainResponses(domain: String,
                                    dkim: MSendersDom,
                                    verified_at: Option[String],
                                    valid_signing: Boolean) extends MandrillResponse
+case object MSendersDomainResponses {
+  implicit val reads = Json.reads[MSendersDomainResponses]
+}
 
-/**
-  * Details about the domain's SPF record
-  *
-  * @param valid       - whether the domain's SPF record is valid for use with Mandrill
-  * @param valid_after - when the domain's SPF record will be considered valid for use with Mandrill as a UTC string in YYYY-MM-DD HH:MM:SS format. If set, this indicates that the record is valid now, but was previously invalid, and Mandrill will wait until the record's TTL elapses to start using it.
-  * @param error       - an error describing the spf record, or null if the record is correct
-  */
-case class MSendersDom(valid: Boolean,
-                       valid_after: Option[String],
-                       error: Option[String])
 
 /**
   * Information about the verification that was sent
@@ -69,6 +81,27 @@ case class MSendersDom(valid: Boolean,
 case class MSendersVerifyDomResp(status: String,
                                  domain: String,
                                  email: String) extends MandrillResponse
+case object MSendersVerifyDomResp {
+  implicit val reads = Json.reads[MSendersVerifyDomResp]
+}
+
+/**
+  * An aggregate summary of the sender's sending stats
+  *
+  * @param today        - stats for this sender today
+  * @param last_7_days  - stats for this sender in the last 7 days
+  * @param last_30_days - stats for this sender in the last 30 days
+  * @param last_60_days - stats for this sender in the last 60 days
+  * @param last_90_days - stats for this sender in the last 90 days
+  */
+case class MSendersStats(today: MStat,
+                         last_7_days: MStat,
+                         last_30_days: MStat,
+                         last_60_days: MStat,
+                         last_90_days: MStat)
+case object MSendersStats {
+  implicit val reads = Json.reads[MSendersStats]
+}
 
 /**
   * The detailed information on the sender
@@ -96,21 +129,9 @@ case class MSendersInfoResp(address: String,
                             opens: Int,
                             clicks: Int,
                             stats: MSendersStats) extends MandrillResponse
-
-/**
-  * An aggregate summary of the sender's sending stats
-  *
-  * @param today        - stats for this sender today
-  * @param last_7_days  - stats for this sender in the last 7 days
-  * @param last_30_days - stats for this sender in the last 30 days
-  * @param last_60_days - stats for this sender in the last 60 days
-  * @param last_90_days - stats for this sender in the last 90 days
-  */
-case class MSendersStats(today: MStat,
-                         last_7_days: MStat,
-                         last_30_days: MStat,
-                         last_60_days: MStat,
-                         last_90_days: MStat)
+case object MSendersInfoResp {
+  implicit val reads = Json.reads[MSendersInfoResp]
+}
 
 /**
   * The stats for a single hour
@@ -138,3 +159,6 @@ case class MSenderTSResponse(time: String,
                              unique_opens: Int,
                              clicks: Int,
                              unique_clicks: Int) extends MandrillResponse
+case object MSenderTSResponse {
+  implicit val reads = Json.reads[MSenderTSResponse]
+}

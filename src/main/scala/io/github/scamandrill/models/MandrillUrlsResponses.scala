@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * Details about the domain's CNAME record
   *
@@ -10,6 +12,9 @@ package io.github.scamandrill.models
 case class MUrlCname(valid: Boolean,
                      valid_after: Option[String],
                      error: Option[String])
+case object MUrlCname {
+  implicit val reads = Json.reads[MUrlCname]
+}
 
 /**
   * The individual URL stats
@@ -23,6 +28,9 @@ case class MUrlResponse(url: String,
                         sent: Int,
                         clicks: Int,
                         unique_clicks: Int) extends MandrillResponse
+case object MUrlResponse {
+  implicit val reads = Json.reads[MUrlResponse]
+}
 
 /**
   * The information for a single hour
@@ -36,6 +44,9 @@ case class MUrlTimeResponse(time: String,
                             sent: Int,
                             clicks: Int,
                             unique_clicks: Int) extends MandrillResponse
+case object MUrlTimeResponse {
+  implicit val reads = Json.reads[MUrlTimeResponse]
+}
 
 /**
   * The individual tracking domain
@@ -51,6 +62,9 @@ case class MUrlDomainResponse(domain: String,
                               last_tested_at: String,
                               valid_tracking: Boolean,
                               cname: MUrlCname) extends MandrillResponse
+case object MUrlDomainResponse {
+  implicit val reads = Json.reads[MUrlDomainResponse]
+}
 
 
 

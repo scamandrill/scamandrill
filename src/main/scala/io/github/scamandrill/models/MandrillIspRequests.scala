@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The Isp
   *
@@ -7,12 +9,18 @@ package io.github.scamandrill.models
   */
 case class MIspId(id: String) extends MandrillRequest
 
+case object MIspId {
+  implicit val writes = Json.writes[MIspId]
+}
 /**
   * The Isp
   *
   * @param ip  - a dedicated IP address
   */
 case class MIspIp(ip: String) extends MandrillRequest
+case object MIspIp {
+  implicit val writes = Json.writes[MIspIp]
+}
 
 /**
   * The Isp pool
@@ -22,6 +30,9 @@ case class MIspIp(ip: String) extends MandrillRequest
   */
 case class MIspPool(warmup: Boolean,
                     pool: String) extends MandrillRequest
+case object MIspPool {
+  implicit val writes = Json.writes[MIspPool]
+}
 
 /**
   * The Isp pool info
@@ -29,6 +40,9 @@ case class MIspPool(warmup: Boolean,
   * @param pool - the name of the new pool to add the dedicated ip to
   */
 case class MIspPoolInfo(pool: String) extends MandrillRequest
+case object MIspPoolInfo {
+  implicit val writes = Json.writes[MIspPoolInfo]
+}
 
 /**
   * The Isp pool info
@@ -40,6 +54,9 @@ case class MIspPoolInfo(pool: String) extends MandrillRequest
 case class MIspSetPool(ip: String,
                        pool: String,
                        create_pool: Boolean) extends MandrillRequest
+case object MIspSetPool {
+  implicit val writes = Json.writes[MIspSetPool]
+}
 
 /**
   * The dns
@@ -49,6 +66,9 @@ case class MIspSetPool(ip: String,
   */
 case class MIspDns(ip: String,
                    domain: String) extends MandrillRequest
+case object MIspDns {
+  implicit val writes = Json.writes[MIspDns]
+}
 
 
 

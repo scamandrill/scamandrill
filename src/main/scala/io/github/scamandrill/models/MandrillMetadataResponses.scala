@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The metadata information
   *
@@ -10,3 +12,6 @@ package io.github.scamandrill.models
 case class MIMetadataResponse(name: String,
                               state: String,
                               view_template: String) extends MandrillResponse
+case object MIMetadataResponse {
+  implicit val reads = Json.reads[MIMetadataResponse]
+}

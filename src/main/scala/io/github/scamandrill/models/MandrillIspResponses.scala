@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * Information about the ip's custom dns, if it has been configured
   *
@@ -10,6 +12,9 @@ package io.github.scamandrill.models
 case class MIspDnsResp(enabled: Boolean,
                        valid: Boolean,
                        error: String)
+case object MIspDnsResp {
+  implicit val reads = Json.reads[MIspDnsResp]
+}
 
 /**
   * Information about the ip's warmup status
@@ -21,6 +26,9 @@ case class MIspDnsResp(enabled: Boolean,
 case class MIspWarmupResp(warming_up: Boolean,
                           start_at: String,
                           end_at: String)
+case object MIspWarmupResp {
+  implicit val reads = Json.reads[MIspWarmupResp]
+}
 
 /**
   * Isp response
@@ -38,6 +46,9 @@ case class MIspResponse(ip: String,
                         domain: String,
                         custom_dns: MIspDnsResp,
                         warmup: MIspWarmupResp) extends MandrillResponse
+case object MIspResponse {
+  implicit val reads = Json.reads[MIspResponse]
+}
 
 /**
   * A description of the provisioning request that was created
@@ -45,7 +56,9 @@ case class MIspResponse(ip: String,
   * @param requested_at - the date and time that the request was created as a UTC timestamp in YYYY-MM-DD HH:MM:SS format
   */
 case class MIspProvisionResp(requested_at: String) extends MandrillResponse
-
+case object MIspProvisionResp {
+  implicit val reads = Json.reads[MIspProvisionResp]
+}
 /**
   * The isp to delete
   *
@@ -53,6 +66,9 @@ case class MIspProvisionResp(requested_at: String) extends MandrillResponse
   * @param deleted - a boolean indicating whether the ip was successfully deleted
   */
 case class MIspDelete(ip: String, deleted: Boolean) extends MandrillResponse
+case object MIspDelete {
+  implicit val reads = Json.reads[MIspDelete]
+}
 
 /**
   * The pool information
@@ -64,6 +80,9 @@ case class MIspDelete(ip: String, deleted: Boolean) extends MandrillResponse
 case class MIspInfoPool(name: String,
                         created_at: String,
                         ips: List[MIspResponse]) extends MandrillResponse
+case object MIspInfoPool {
+  implicit val reads = Json.reads[MIspInfoPool]
+}
 
 /**
   * Validation results for the domain
@@ -72,6 +91,9 @@ case class MIspInfoPool(name: String,
   * @param error - if valid is false, this will contain details about why the domain's A record is incorrect
   */
 case class MIspDnsResponse(valid: Boolean, error: String) extends MandrillResponse
+case object MIspDnsResponse {
+  implicit val reads = Json.reads[MIspDnsResponse]
+}
 
 /**
   * Information about the status of the pool that was deleted
@@ -80,3 +102,6 @@ case class MIspDnsResponse(valid: Boolean, error: String) extends MandrillRespon
   * @param deleted - whether the pool was deleted
   */
 case class MIspDeletePoolResponse(pool: String, deleted: Boolean) extends MandrillResponse
+case object MIspDeletePoolResponse {
+  implicit val reads = Json.reads[MIspDeletePoolResponse]
+}
