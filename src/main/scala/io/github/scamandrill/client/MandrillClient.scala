@@ -339,646 +339,645 @@ class MandrillClient(
   }
 
 
-//  /**
-//    * Checks the SPF and DKIM settings for a domain.
-//    * If you haven't already added this domain to your account, it will be added automatically.
-//    *
-//    * @param snd - the domain to add
-//    * @return information about the domain
-//    */
-//  def sendersCheckDomain(snd: MSenderDomain): Future[MSendersDomainResponses] = {
-//    executeQuery[MSendersDomainResponses](MandrillClient.Endpoints.senderschkdom.endpoint, marshal(snd))(unmarshal[MSendersDomainResponses])
-//  }
-//
-//  /**
-//    * Sends a verification email in order to verify ownership of a domain. Domain verification is an optional step to
-//    * confirm ownership of a domain. Once a domain has been verified in a Mandrill account, other accounts may not have
-//    * their messages signed by that domain unless they also verify the domain.
-//    * This prevents other Mandrill accounts from sending mail signed by your domain.
-//    *
-//    * @param snd - the verification email to send
-//    * @return information about the verification that was sent
-//    */
-//  def sendersVerifyDomain(snd: MSenderVerifyDomain): Future[MSendersVerifyDomResp] = {
-//    executeQuery[MSendersVerifyDomResp](MandrillClient.Endpoints.sendersverdom.endpoint, marshal(snd))(unmarshal[MSendersVerifyDomResp])
-//  }
-//
-//  /**
-//    * Return more detailed information about a single sender, including aggregates of recent stats
-//    *
-//    * @param snd - the email address of the sender
-//    * @return the detailed information on the sender
-//    */
-//  def sendersInfo(snd: MSenderAddress): Future[MSendersInfoResp] = {
-//    executeQuery[MSendersInfoResp](MandrillClient.Endpoints.sendersinfo.endpoint, marshal(snd))(unmarshal[MSendersInfoResp])
-//  }
-//
-//  /**
-//    * Return the recent history (hourly stats for the last 30 days) for a sender
-//    *
-//    * @param snd - the email address of the sender
-//    * @return the array of history information
-//    */
-//  def sendersTimeSeries(snd: MSenderAddress): Future[List[MSenderTSResponse]] = {
-//    executeQuery[List[MSenderTSResponse]](MandrillClient.Endpoints.sendersts.endpoint, marshal(snd))(unmarshal[List[MSenderTSResponse]])
-//  }
-//
-//  ////////////////////////////////////////////////////////////
-//  //URLS calls https://mandrillapp.com/api/docs/urls.JSON.html
-//  ////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Get the 100 most clicked URLs
-//    *
-//    * @return the 100 most clicked URLs
-//    */
-//  def urlsList(): Future[List[MUrlResponse]] = {
-//    executeQuery[List[MUrlResponse]](MandrillClient.Endpoints.urllist.endpoint, marshal(MVoid()))(unmarshal[List[MUrlResponse]])
-//  }
-//
-//  /**
-//    * Return the 100 most clicked URLs that match the search query given
-//    *
-//    * @param url - a search query
-//    * @return the 100 most clicked URLs that match the search query given
-//    */
-//  def urlsSearch(url: MUrlSearch): Future[List[MUrlResponse]] = {
-//    executeQuery[List[MUrlResponse]](MandrillClient.Endpoints.urlsearch.endpoint, marshal(url))(unmarshal[List[MUrlResponse]])
-//  }
-//
-//  /**
-//    * Return the recent history (hourly stats for the last 30 days) for a url
-//    *
-//    * @param url - a search query
-//    * @return the recent history (hourly stats for the last 30 days) for a url
-//    */
-//  def urlsTimeSeries(url: MUrlTimeSeries): Future[List[MUrlTimeResponse]] = {
-//    executeQuery[List[MUrlTimeResponse]](MandrillClient.Endpoints.urlts.endpoint, marshal(url))(unmarshal[List[MUrlTimeResponse]])
-//  }
-//
-//  /**
-//    * Get the list of tracking domains set up for this account
-//    *
-//    * @return the list of tracking domains set up for this account
-//    */
-//  def urlsTrackingDomain(): Future[List[MUrlDomainResponse]] = {
-//    executeQuery[List[MUrlDomainResponse]](MandrillClient.Endpoints.urltrackdom.endpoint, marshal(MVoid()))(unmarshal[List[MUrlDomainResponse]])
-//  }
-//
-//  /**
-//    * Checks the CNAME settings for a tracking domain. The domain must have been added already with the add-tracking-domain call
-//    *
-//    * @param url - an existing tracking domain name
-//    * @return information about the tracking domain
-//    */
-//  def urlsCheckTrackingDomain(url: MUrlDomain): Future[MUrlDomainResponse] = {
-//    executeQuery[MUrlDomainResponse](MandrillClient.Endpoints.urlchktrackdom.endpoint, marshal(url))(unmarshal[MUrlDomainResponse])
-//  }
-//
-//  /**
-//    * Add a tracking domain to your account
-//    *
-//    * @param url - a domain
-//    * @return information about the domain
-//    */
-//  def urlsAddTrackingDomain(url: MUrlDomain): Future[MUrlDomainResponse] = {
-//    executeQuery[MUrlDomainResponse](MandrillClient.Endpoints.urladdtrackdom.endpoint, marshal(url))(unmarshal[MUrlDomainResponse])
-//  }
-//
-//  /////////////////////////////////////////////////////////////////////
-//  //TEMPLATE calls https://mandrillapp.com/api/docs/templates.JSON.html
-//  /////////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Add a new template
-//    *
-//    * @param template - the template
-//    * @return the information saved about the new template
-//    */
-//  def templateAdd(template: MTemplate): Future[MTemplateAddResponses] = {
-//    executeQuery[MTemplateAddResponses](MandrillClient.Endpoints.tmpadd.endpoint, marshal(template))(unmarshal[MTemplateAddResponses])
-//  }
-//
-//  /**
-//    * Get the information for an existing template
-//    *
-//    * @param template - the template
-//    * @return the requested template information
-//    */
-//  def templateInfo(template: MTemplateInfo): Future[MTemplateAddResponses] = {
-//    executeQuery[MTemplateAddResponses](MandrillClient.Endpoints.tmpinfo.endpoint, marshal(template))(unmarshal[MTemplateAddResponses])
-//  }
-//
-//  /**
-//    * Update the code for an existing template. If null is provided for any fields, the values will remain unchanged
-//    *
-//    * @param template - the template
-//    * @return the template that was updated
-//    */
-//  def templateUpdate(template: MTemplate): Future[MTemplateAddResponses] = {
-//    executeQuery[MTemplateAddResponses](MandrillClient.Endpoints.tmpupdate.endpoint, marshal(template))(unmarshal[MTemplateAddResponses])
-//  }
-//
-//  /**
-//    * Publish the content for the template. Any new messages sent using this template will start using the content that was previously in draft.
-//    *
-//    * @param template - the template
-//    * @return the template that was published
-//    */
-//  def templatePublish(template: MTemplateInfo): Future[MTemplateAddResponses] = {
-//    executeQuery[MTemplateAddResponses](MandrillClient.Endpoints.tmppublish.endpoint, marshal(template))(unmarshal[MTemplateAddResponses])
-//  }
-//
-//  /**
-//    * Delete a template
-//    *
-//    * @param template - the template
-//    * @return the template that was deleted
-//    */
-//  def templateDelete(template: MTemplateInfo): Future[MTemplateAddResponses] = {
-//    executeQuery[MTemplateAddResponses](MandrillClient.Endpoints.tmpdelete.endpoint, marshal(template))(unmarshal[MTemplateAddResponses])
-//  }
-//
-//  /**
-//    * Return a list of all the templates available to this user
-//    *
-//    * @param template - the template
-//    * @return an array of objects with information about each template
-//    */
-//  def templateList(template: MTemplateList): Future[List[MTemplateAddResponses]] = {
-//    executeQuery[List[MTemplateAddResponses]](MandrillClient.Endpoints.tmplist.endpoint, marshal(template))(unmarshal[List[MTemplateAddResponses]])
-//  }
-//
-//  /**
-//    * Return the recent history (hourly stats for the last 30 days) for a template
-//    *
-//    * @param template - the template
-//    * @return an array of history information
-//    */
-//  def templateTimeSeries(template: MTemplateInfo): Future[List[MTimeSeriesResponse]] = {
-//    executeQuery[List[MTimeSeriesResponse]](MandrillClient.Endpoints.tmpts.endpoint, marshal(template))(unmarshal[List[MTimeSeriesResponse]])
-//  }
-//
-//  /**
-//    * Inject content and optionally merge fields into a template, returning the HTML that results
-//    *
-//    * @param template - the template
-//    * @return the result of rendering the given template with the content and merge field values injected
-//    */
-//  def templateRender(template: MTemplateRender): Future[MTemplateRenderResponse] = {
-//    executeQuery[MTemplateRenderResponse](MandrillClient.Endpoints.tmprender.endpoint, marshal(template))(unmarshal[MTemplateRenderResponse])
-//  }
-//
-//  ////////////////////////////////////////////////////////////////////
-//  //WEBHOOKS calls https://mandrillapp.com/api/docs/webhooks.JSON.html
-//  ////////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Get the list of all webhooks defined on the account
-//    *
-//    * @return the webhooks associated with the account
-//    */
-//  def webhookList(): Future[List[MWebhooksResponse]] = {
-//    executeQuery[List[MWebhooksResponse]](MandrillClient.Endpoints.webhlist.endpoint, marshal(MVoid()))(unmarshal[List[MWebhooksResponse]])
-//  }
-//
-//  /**
-//    * Add a new webhook
-//    *
-//    * @param webhook
-//    * @return the information saved about the new webhook
-//    */
-//  def webhookAdd(webhook: MWebhook): Future[MWebhooksResponse] = {
-//    executeQuery[MWebhooksResponse](MandrillClient.Endpoints.webhadd.endpoint, marshal(webhook))(unmarshal[MWebhooksResponse])
-//  }
-//
-//  /**
-//    * Given the ID of an existing webhook, return the data about it
-//    *
-//    * @param webhook - the existing webhook
-//    * @return the information saved about the new webhook
-//    */
-//  def webhookInfo(webhook: MWebhookInfo): Future[MWebhooksResponse] = {
-//    executeQuery[MWebhooksResponse](MandrillClient.Endpoints.webhinfo.endpoint, marshal(webhook))(unmarshal[MWebhooksResponse])
-//  }
-//
-//  /**
-//    * Update an existing webhook
-//    *
-//    * @param webhook - the existing webhook to update
-//    * @return the information saved about the new webhook
-//    */
-//  def webhookUpdate(webhook: MWebhookUpdate): Future[MWebhooksResponse] = {
-//    executeQuery[MWebhooksResponse](MandrillClient.Endpoints.webhupdate.endpoint, marshal(webhook))(unmarshal[MWebhooksResponse])
-//  }
-//
-//  /**
-//    * Delete an existing webhook
-//    *
-//    * @param webhook - the webhook to delete
-//    * @return the information saved about the new webhook
-//    */
-//  def webhookDelete(webhook: MWebhookInfo): Future[MWebhooksResponse] = {
-//    executeQuery[MWebhooksResponse](MandrillClient.Endpoints.webhdelete.endpoint, marshal(webhook))(unmarshal[MWebhooksResponse])
-//  }
-//
-//  //////////////////////////////////////////////////////////////////////////
-//  //SUBACCOUNTS calls https://mandrillapp.com/api/docs/subaccounts.JSON.html
-//  //////////////////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Get the list of subaccounts defined for the account, optionally filtered by a prefix
-//    *
-//    * @param subacc - the prefix
-//    * @return the subaccounts for the account, up to a maximum of 1,000
-//    */
-//  def subaccountList(subacc: MSubaccountList): Future[List[MSubaccountsResponse]] = {
-//    executeQuery[List[MSubaccountsResponse]](MandrillClient.Endpoints.sublist.endpoint, marshal(subacc))(unmarshal[List[MSubaccountsResponse]])
-//  }
-//
-//  /**
-//    * Add a new subaccount
-//    *
-//    * @param subacc - the subaccount to add
-//    * @return the information saved about the new subaccount
-//    */
-//  def subaccountAdd(subacc: MSubaccount): Future[MSubaccountsResponse] = {
-//    executeQuery[MSubaccountsResponse](MandrillClient.Endpoints.subadd.endpoint, marshal(subacc))(unmarshal[MSubaccountsResponse])
-//  }
-//
-//  /**
-//    * Given the ID of an existing subaccount, return the data about it
-//    *
-//    * @param subacc - the existing subaccount
-//    * @return the information about the subaccount
-//    */
-//  def subaccountInfo(subacc: MSubaccountInfo): Future[MSubaccountsInfoResponse] = {
-//    executeQuery[MSubaccountsInfoResponse](MandrillClient.Endpoints.subinfo.endpoint, marshal(subacc))(unmarshal[MSubaccountsInfoResponse])
-//  }
-//
-//  /**
-//    * Update an existing subaccount
-//    *
-//    * @param subacc - the existing subaccount to update
-//    * @return the information for the updated subaccount
-//    */
-//  def subaccountUpdate(subacc: MSubaccount): Future[MSubaccountsResponse] = {
-//    executeQuery[MSubaccountsResponse](MandrillClient.Endpoints.subupdate.endpoint, marshal(subacc))(unmarshal[MSubaccountsResponse])
-//  }
-//
-//  /**
-//    * Delete an existing subaccount. Any email related to the subaccount will be saved, but stats will be removed and any future sending calls to this subaccount will fail.
-//    *
-//    * @param subacc - the subaccount to delete
-//    * @return the information for the deleted subaccount
-//    */
-//  def subaccountDelete(subacc: MSubaccountInfo): Future[MSubaccountsResponse] = {
-//    executeQuery[MSubaccountsResponse](MandrillClient.Endpoints.subdelete.endpoint, marshal(subacc))(unmarshal[MSubaccountsResponse])
-//  }
-//
-//  /**
-//    * Pause a subaccount's sending. Any future emails delivered to this subaccount will be queued for a maximum of 3 days until the subaccount is resumed.
-//    *
-//    * @param subacc - the subaccount to pause
-//    * @return the information for the paused subaccount
-//    */
-//  def subaccountPause(subacc: MSubaccountInfo): Future[MSubaccountsResponse] = {
-//    executeQuery[MSubaccountsResponse](MandrillClient.Endpoints.subpause.endpoint, marshal(subacc))(unmarshal[MSubaccountsResponse])
-//  }
-//
-//  /**
-//    * Resume a paused subaccount's sending
-//    *
-//    * @param subacc - the subaccount to resume
-//    * @return the information for the resumed subaccount
-//    */
-//  def subaccountResume(subacc: MSubaccountInfo): Future[MSubaccountsResponse] = {
-//    executeQuery[MSubaccountsResponse](MandrillClient.Endpoints.subresume.endpoint, marshal(subacc))(unmarshal[MSubaccountsResponse])
-//  }
-//
-//  ////////////////////////////////////////////////////////////
-//  //INBOUND https://mandrillapp.com/api/docs/key.JSON.html
-//  ////////////////////////////////////////////////////////////
-//
-//  /**
-//    * List the domains that have been configured for inbound delivery
-//    *
-//    * @return the inbound domains associated with the account
-//    */
-//  def inboundDomains(): Future[List[MInboundDomainResponse]] = {
-//    executeQuery[List[MInboundDomainResponse]](MandrillClient.Endpoints.inbdom.endpoint, marshal(MVoid()))(unmarshal[List[MInboundDomainResponse]])
-//  }
-//
-//  /**
-//    * Add an inbound domain to your account
-//    *
-//    * @param inbound - the domain to add
-//    * @return information about the domain
-//    */
-//  def inboundAddDomain(inbound: MInboundDomain): Future[MInboundDomainResponse] = {
-//    executeQuery[MInboundDomainResponse](MandrillClient.Endpoints.inbadddom.endpoint, marshal(inbound))(unmarshal[MInboundDomainResponse])
-//  }
-//
-//  /**
-//    * Check the MX settings for an inbound domain. The domain must have already been added with the add-domain call
-//    *
-//    * @param inbound - the domain to check
-//    * @return information about the inbound domain
-//    */
-//  def inboundCheckDomain(inbound: MInboundDomain): Future[MInboundDomainResponse] = {
-//    executeQuery[MInboundDomainResponse](MandrillClient.Endpoints.inbchkdom.endpoint, marshal(inbound))(unmarshal[MInboundDomainResponse])
-//  }
-//
-//  /**
-//    * Delete an inbound domain from the account. All mail will stop routing for this domain immediately.
-//    *
-//    * @param inbound - the domain to delete
-//    * @return information about the inbound domain
-//    */
-//  def inboundDeleteDomain(inbound: MInboundDomain): Future[MInboundDomainResponse] = {
-//    executeQuery[MInboundDomainResponse](MandrillClient.Endpoints.inbdeldom.endpoint, marshal(inbound))(unmarshal[MInboundDomainResponse])
-//  }
-//
-//  /**
-//    * List the mailbox routes defined for an inbound domain
-//    *
-//    * @param inbound - the domain
-//    * @return the routes associated with the domain
-//    */
-//  def inboundRoutes(inbound: MInboundDomain): Future[List[MInboundRouteResponse]] = {
-//    executeQuery[List[MInboundRouteResponse]](MandrillClient.Endpoints.inbroutes.endpoint, marshal(inbound))(unmarshal[List[MInboundRouteResponse]])
-//  }
-//
-//  /**
-//    * Add a new mailbox route to an inbound domain
-//    *
-//    * @param inbound - the domain
-//    * @return the added mailbox route information
-//    */
-//  def inboundAddRoute(inbound: MInboundRoute): Future[MInboundRouteResponse] = {
-//    executeQuery[MInboundRouteResponse](MandrillClient.Endpoints.inbaddroute.endpoint, marshal(inbound))(unmarshal[MInboundRouteResponse])
-//  }
-//
-//  /**
-//    * Update the pattern or webhook of an existing inbound mailbox route. If null is provided for any fields, the values will remain unchanged.
-//    *
-//    * @param inbound - the route to update
-//    * @return the updated mailbox route information
-//    */
-//  def inboundUpdateRoute(inbound: MInboundUpdateRoute): Future[MInboundRouteResponse] = {
-//    executeQuery[MInboundRouteResponse](MandrillClient.Endpoints.inbdelroute.endpoint, marshal(inbound))(unmarshal[MInboundRouteResponse])
-//  }
-//
-//  /**
-//    * Delete an existing inbound mailbox route
-//    *
-//    * @param inbound - the route to delete
-//    * @return the deleted mailbox route information
-//    */
-//  def inboundDeleteRoute(inbound: MInboundDelRoute): Future[MInboundRouteResponse] = {
-//    executeQuery[MInboundRouteResponse](MandrillClient.Endpoints.inbdelroute.endpoint, marshal(inbound))(unmarshal[MInboundRouteResponse])
-//  }
-//
-//  /**
-//    * Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP
-//    *
-//    * @param inbound - raw MIME document
-//    * @return an array of the information for each recipient in the message (usually one) that matched an inbound route
-//    */
-//  def inboundSendRaw(inbound: MInboundRaw): Future[List[MInboundRawResponse]] = {
-//    executeQuery[List[MInboundRawResponse]](MandrillClient.Endpoints.inbraw.endpoint, marshal(inbound))(unmarshal[List[MInboundRawResponse]])
-//  }
-//
-//  ////////////////////////////////////////////////////////////
-//  //EXPORT https://mandrillapp.com/api/docs/exports.JSON.html
-//  ////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Returns information about an export job. If the export job's state is 'complete', the returned data will include
-//    * a URL you can use to fetch the results. Every export job produces a zip archive, but the format of the archive
-//    * is distinct for each job type.
-//    * The api calls that initiate exports include more details about the output format for that job type.
-//    *
-//    * @param export - the export type
-//    * @return the information about the export
-//    */
-//  def exportInfo(export: MExportInfo): Future[MExportResponse] = {
-//    executeQuery[MExportResponse](MandrillClient.Endpoints.expinfo.endpoint, marshal(export))(unmarshal[MExportResponse])
-//  }
-//
-//  /**
-//    * Returns a list of your exports.
-//    *
-//    * @return the account's exports
-//    */
-//  def exportList(): Future[List[MExportResponse]] = {
-//    executeQuery[List[MExportResponse]](MandrillClient.Endpoints.explist.endpoint, marshal(MVoid()))(unmarshal[List[MExportResponse]])
-//  }
-//
-//  /**
-//    * Begins an export of your rejection blacklist. The blacklist will be exported to a zip archive containing a single
-//    * file named rejects.csv that includes the following fields: email, reason, detail, created_at, expires_at, last_event_at, expires_at.
-//    *
-//    * @param export - the export job
-//    * @return information about the rejects export job that was started
-//    */
-//  def exportReject(export: MExportNotify): Future[MExportResponse] = {
-//    executeQuery[MExportResponse](MandrillClient.Endpoints.exprec.endpoint, marshal(export))(unmarshal[MExportResponse])
-//  }
-//
-//  /**
-//    * Begins an export of your rejection whitelist. The whitelist will be exported to a zip archive containing a single
-//    * file named whitelist.csv that includes the following fields: email, detail, created_at.
-//    *
-//    * @param export - the export job
-//    * @return information about the whitelist export job that was started
-//    */
-//  def exportWhitelist(export: MExportNotify): Future[MExportResponse] = {
-//    executeQuery[MExportResponse](MandrillClient.Endpoints.expwhite.endpoint, marshal(export))(unmarshal[MExportResponse])
-//  }
-//
-//  /**
-//    * Begins an export of your activity history. The activity will be exported to a zip archive containing a single file
-//    * named activity.csv in the same format as you would be able to export from your account's activity view.
-//    * It includes the following fields: Date, Email Address, Sender, Subject, Status, Tags, Opens, Clicks, Bounce Detail.
-//    * If you have configured any custom metadata fields, they will be included in the exported data.
-//    *
-//    * @param export - the export activity
-//    * @return information about the activity export job that was started
-//    */
-//  def exportActivity(export: MExportActivity): Future[MExportResponse] = {
-//    executeQuery[MExportResponse](MandrillClient.Endpoints.expactivity.endpoint, marshal(export))(unmarshal[MExportResponse])
-//  }
-//
-//  ////////////////////////////////////////////////////
-//  //ISP https://mandrillapp.com/api/docs/ips.JSON.html
-//  ////////////////////////////////////////////////////
-//
-//  /**
-//    * Lists your dedicated IPs.
-//    *
-//    * @return an array of structs for each dedicated IP
-//    */
-//  def ispList(): Future[List[MIspResponse]] = {
-//    executeQuery[List[MIspResponse]](MandrillClient.Endpoints.isplist.endpoint, marshal(MVoid()))(unmarshal[List[MIspResponse]])
-//  }
-//
-//  /**
-//    * Retrieves information about a single dedicated ip.
-//    *
-//    * @param isp - the isp
-//    * @return Information about the dedicated ip
-//    */
-//  def ispInfo(isp: MIspIp): Future[MIspResponse] = {
-//    executeQuery[MIspResponse](MandrillClient.Endpoints.ispinfo.endpoint, marshal(isp))(unmarshal[MIspResponse])
-//  }
-//
-//  /**
-//    * Requests an additional dedicated IP for your account. Accounts may have one outstanding request at any time,
-//    * and provisioning requests are processed within 24 hours.
-//    *
-//    * @param isp - the isp
-//    * @return a description of the provisioning request that was created
-//    */
-//  def ispProvision(isp: MIspPool): Future[MIspProvisionResp] = {
-//    executeQuery[MIspProvisionResp](MandrillClient.Endpoints.ispprov.endpoint, marshal(isp))(unmarshal[MIspProvisionResp])
-//  }
-//
-//  /**
-//    * Begins the warmup process for a dedicated IP. During the warmup process, Mandrill will gradually increase the
-//    * percentage of your mail that is sent over the warming-up IP, over a period of roughly 30 days. The rest of your
-//    * mail will be sent over shared IPs or other dedicated IPs in the same pool.
-//    *
-//    * @param isp - the isp
-//    * @return Information about the dedicated IP
-//    */
-//  def ispStartWarmup(isp: MIspIp): Future[MIspResponse] = {
-//    executeQuery[MIspResponse](MandrillClient.Endpoints.ispstwarm.endpoint, marshal(isp))(unmarshal[MIspResponse])
-//  }
-//
-//  /**
-//    * Cancels the warmup process for a dedicated IP.
-//    *
-//    * @param isp - the isp
-//    * @return Information about the dedicated IP
-//    */
-//  def ispCancelWarmup(isp: MIspIp): Future[MIspResponse] = {
-//    executeQuery[MIspResponse](MandrillClient.Endpoints.ispcancwarm.endpoint, marshal(isp))(unmarshal[MIspResponse])
-//  }
-//
-//  /**
-//    * Moves a dedicated IP to a different pool.
-//    *
-//    * @param isp - the isp
-//    * @return Information about the updated state of the dedicated IP
-//    */
-//  def ispSetPool(isp: MIspSetPool): Future[MIspResponse] = {
-//    executeQuery[MIspResponse](MandrillClient.Endpoints.ispsetpool.endpoint, marshal(isp))(unmarshal[MIspResponse])
-//  }
-//
-//  /**
-//    * Deletes a dedicated IP. This is permanent and cannot be undone.
-//    *
-//    * @param isp - the ip
-//    * @return a description of the ip that was removed from your account.
-//    */
-//  def ispDelete(isp: MIspIp): Future[MIspDelete] = {
-//    executeQuery[MIspDelete](MandrillClient.Endpoints.ispdel.endpoint, marshal(isp))(unmarshal[MIspDelete])
-//  }
-//
-//  /**
-//    * Lists your dedicated IP pools.
-//    *
-//    * @param key - the key of the account to use
-//    * @return the dedicated IP pools for your account, up to a maximum of 1,000
-//    */
-//  def ispListPool(): Future[List[MIspInfoPool]] = {
-//    executeQuery[List[MIspInfoPool]](MandrillClient.Endpoints.isplistpool.endpoint, marshal(MVoid()))(unmarshal[List[MIspInfoPool]])
-//  }
-//
-//  /**
-//    * Describes a single dedicated IP pool.
-//    *
-//    * @param isp - the ip pool
-//    * @return Information about the dedicated ip pool
-//    */
-//  def ispPoolInfo(isp: MIspPoolInfo): Future[MIspInfoPool] = {
-//    executeQuery[MIspInfoPool](MandrillClient.Endpoints.isppoolinfo.endpoint, marshal(isp))(unmarshal[MIspInfoPool])
-//  }
-//
-//  /**
-//    * Creates a pool and returns it. If a pool already exists with this name, no action will be performed.
-//    *
-//    * @param isp - the pool
-//    * @return Information about the dedicated ip pool
-//    */
-//  def ispCreatePool(isp: MIspPoolInfo): Future[MIspInfoPool] = {
-//    executeQuery[MIspInfoPool](MandrillClient.Endpoints.ispcreatep.endpoint, marshal(isp))(unmarshal[MIspInfoPool])
-//  }
-//
-//  /**
-//    * Deletes a pool. A pool must be empty before you can delete it, and you cannot delete your default pool.
-//    *
-//    * @param isp - the pool
-//    * @return information about the status of the pool that was deleted
-//    */
-//  def ispDeletePool(isp: MIspPoolInfo): Future[MIspDeletePoolResponse] = {
-//    executeQuery[MIspDeletePoolResponse](MandrillClient.Endpoints.ispdeletep.endpoint, marshal(isp))(unmarshal[MIspDeletePoolResponse])
-//  }
-//
-//  /**
-//    * Configures the custom DNS name for a dedicated IP.
-//    *
-//    * @param isp - custom dns
-//    * @return information about the dedicated IP's new configuration
-//    */
-//  def ispSetCustomDns(isp: MIspDns): Future[MIspDnsResponse] = {
-//    executeQuery[MIspDnsResponse](MandrillClient.Endpoints.ispdns.endpoint, marshal(isp))(unmarshal[MIspDnsResponse])
-//  }
-//
-//  //////////////////////////////////////////////////////////////
-//  //METADATA https://mandrillapp.com/api/docs/metadata.JSON.html
-//  //////////////////////////////////////////////////////////////
-//
-//  /**
-//    * Get the list of custom metadata fields indexed for the account.
-//    *
-//    * @return the custom metadata fields for the account
-//    */
-//  def metadataList(): Future[List[MIMetadataResponse]] = {
-//    executeQuery[List[MIMetadataResponse]](MandrillClient.Endpoints.metalist.endpoint, marshal(MVoid()))(unmarshal[List[MIMetadataResponse]])
-//  }
-//
-//  /**
-//    * Add a new custom metadata field to be indexed for the account.
-//    *
-//    * @param meta - the metadata to add
-//    * @return the information saved about the new metadata field
-//    */
-//  def metadataAdd(meta: MMeteadatapAdd): Future[MIMetadataResponse] = {
-//    executeQuery[MIMetadataResponse](MandrillClient.Endpoints.metaadd.endpoint, marshal(meta))(unmarshal[MIMetadataResponse])
-//  }
-//
-//  /**
-//    * Update an existing custom metadata field.
-//    *
-//    * @param meta - the metadata to update
-//    * @return the information for the updated metadata field
-//    */
-//  def metadataUpdate(meta: MMeteadatapAdd): Future[MIMetadataResponse] = {
-//    executeQuery[MIMetadataResponse](MandrillClient.Endpoints.metaupdate.endpoint, marshal(meta))(unmarshal[MIMetadataResponse])
-//  }
-//
-//  /**
-//    * Delete an existing custom metadata field. Deletion isn't instataneous, and /metadata/list will continue to return
-//    * the field until the asynchronous deletion process is complete.
-//    *
-//    * @param meta - the metadata to delete
-//    * @return the information for the deleted metadata field
-//    */
-//  def metadataDelete(meta: MMeteadatapDelete): Future[MIMetadataResponse] = {
-//    executeQuery[MIMetadataResponse](MandrillClient.Endpoints.metadel.endpoint, marshal(meta))(unmarshal[MIMetadataResponse])
-//  }
+  /**
+    * Checks the SPF and DKIM settings for a domain.
+    * If you haven't already added this domain to your account, it will be added automatically.
+    *
+    * @param snd - the domain to add
+    * @return information about the domain
+    */
+  def sendersCheckDomain(snd: MSenderDomain): Future[MandrillResponse[MSendersDomainResponses]] = {
+    executeQuery[MSenderDomain,MSendersDomainResponses](senderschkdom, snd)
+  }
+
+  /**
+    * Sends a verification email in order to verify ownership of a domain. Domain verification is an optional step to
+    * confirm ownership of a domain. Once a domain has been verified in a Mandrill account, other accounts may not have
+    * their messages signed by that domain unless they also verify the domain.
+    * This prevents other Mandrill accounts from sending mail signed by your domain.
+    *
+    * @param snd - the verification email to send
+    * @return information about the verification that was sent
+    */
+  def sendersVerifyDomain(snd: MSenderVerifyDomain): Future[MandrillResponse[MSendersVerifyDomResp]] = {
+    executeQuery[MSenderVerifyDomain,MSendersVerifyDomResp](sendersverdom, snd)
+  }
+
+  /**
+    * Return more detailed information about a single sender, including aggregates of recent stats
+    *
+    * @param snd - the email address of the sender
+    * @return the detailed information on the sender
+    */
+  def sendersInfo(snd: MSenderAddress): Future[MandrillResponse[MSendersInfoResp]] = {
+    executeQuery[MSenderAddress,MSendersInfoResp](sendersinfo, snd)
+  }
+
+  /**
+    * Return the recent history (hourly stats for the last 30 days) for a sender
+    *
+    * @param snd - the email address of the sender
+    * @return the array of history information
+    */
+  def sendersTimeSeries(snd: MSenderAddress): Future[MandrillResponse[List[MSenderTSResponse]]] = {
+    executeQuery[MSenderAddress,List[MSenderTSResponse]](sendersts, snd)
+  }
+
+  ////////////////////////////////////////////////////////////
+  //URLS calls https://mandrillapp.com/api/docs/urls.JSON.html
+  ////////////////////////////////////////////////////////////
+
+  /**
+    * Get the 100 most clicked URLs
+    *
+    * @return the 100 most clicked URLs
+    */
+  def urlsList(): Future[MandrillResponse[List[MUrlResponse]]] = {
+    executeQuery[MVoid, List[MUrlResponse]](urllist, MVoid())
+  }
+
+  /**
+    * Return the 100 most clicked URLs that match the search query given
+    *
+    * @param url - a search query
+    * @return the 100 most clicked URLs that match the search query given
+    */
+  def urlsSearch(url: MUrlSearch): Future[MandrillResponse[List[MUrlResponse]]] = {
+    executeQuery[MUrlSearch,List[MUrlResponse]](urlsearch, url)
+  }
+
+  /**
+    * Return the recent history (hourly stats for the last 30 days) for a url
+    *
+    * @param url - a search query
+    * @return the recent history (hourly stats for the last 30 days) for a url
+    */
+  def urlsTimeSeries(url: MUrlTimeSeries): Future[MandrillResponse[List[MUrlTimeResponse]]] = {
+    executeQuery[MUrlTimeSeries,List[MUrlTimeResponse]](urlts, url)
+  }
+
+  /**
+    * Get the list of tracking domains set up for this account
+    *
+    * @return the list of tracking domains set up for this account
+    */
+  def urlsTrackingDomain(): Future[MandrillResponse[List[MUrlDomainResponse]]] = {
+    executeQuery[MVoid,List[MUrlDomainResponse]](urltrackdom, MVoid())
+  }
+
+  /**
+    * Checks the CNAME settings for a tracking domain. The domain must have been added already with the add-tracking-domain call
+    *
+    * @param url - an existing tracking domain name
+    * @return information about the tracking domain
+    */
+  def urlsCheckTrackingDomain(url: MUrlDomain): Future[MandrillResponse[MUrlDomainResponse]] = {
+    executeQuery[MUrlDomain,MUrlDomainResponse](urlchktrackdom, url)
+  }
+
+  /**
+    * Add a tracking domain to your account
+    *
+    * @param url - a domain
+    * @return information about the domain
+    */
+  def urlsAddTrackingDomain(url: MUrlDomain): Future[MandrillResponse[MUrlDomainResponse]] = {
+    executeQuery[MUrlDomain,MUrlDomainResponse](urladdtrackdom, url)
+  }
+
+  /////////////////////////////////////////////////////////////////////
+  //TEMPLATE calls https://mandrillapp.com/api/docs/templates.JSON.html
+  /////////////////////////////////////////////////////////////////////
+
+  /**
+    * Add a new template
+    *
+    * @param template - the template
+    * @return the information saved about the new template
+    */
+  def templateAdd(template: MTemplate): Future[MandrillResponse[MTemplateAddResponses]] = {
+    executeQuery[MTemplate,MTemplateAddResponses](tmpadd, template)
+  }
+
+  /**
+    * Get the information for an existing template
+    *
+    * @param template - the template
+    * @return the requested template information
+    */
+  def templateInfo(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+    executeQuery[MTemplateInfo,MTemplateAddResponses](tmpinfo, template)
+  }
+
+  /**
+    * Update the code for an existing template. If null is provided for any fields, the values will remain unchanged
+    *
+    * @param template - the template
+    * @return the template that was updated
+    */
+  def templateUpdate(template: MTemplate): Future[MandrillResponse[MTemplateAddResponses]] = {
+    executeQuery[MTemplate,MTemplateAddResponses](tmpupdate, template)
+  }
+
+  /**
+    * Publish the content for the template. Any new messages sent using this template will start using the content that was previously in draft.
+    *
+    * @param template - the template
+    * @return the template that was published
+    */
+  def templatePublish(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+    executeQuery[MTemplateInfo,MTemplateAddResponses](tmppublish, template)
+  }
+
+  /**
+    * Delete a template
+    *
+    * @param template - the template
+    * @return the template that was deleted
+    */
+  def templateDelete(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+    executeQuery[MTemplateInfo,MTemplateAddResponses](tmpdelete, template)
+  }
+
+  /**
+    * Return a list of all the templates available to this user
+    *
+    * @param template - the template
+    * @return an array of objects with information about each template
+    */
+  def templateList(template: MTemplateList): Future[MandrillResponse[List[MTemplateAddResponses]]] = {
+    executeQuery[MTemplateList,List[MTemplateAddResponses]](tmplist, template)
+  }
+
+  /**
+    * Return the recent history (hourly stats for the last 30 days) for a template
+    *
+    * @param template - the template
+    * @return an array of history information
+    */
+  def templateTimeSeries(template: MTemplateInfo): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+    executeQuery[MTemplateInfo,List[MTimeSeriesResponse]](tmpts, template)
+  }
+
+  /**
+    * Inject content and optionally merge fields into a template, returning the HTML that results
+    *
+    * @param template - the template
+    * @return the result of rendering the given template with the content and merge field values injected
+    */
+  def templateRender(template: MTemplateRender): Future[MandrillResponse[MTemplateRenderResponse]] = {
+    executeQuery[MTemplateRender,MTemplateRenderResponse](tmprender, template)
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  //WEBHOOKS calls https://mandrillapp.com/api/docs/webhooks.JSON.html
+  ////////////////////////////////////////////////////////////////////
+
+  /**
+    * Get the list of all webhooks defined on the account
+    *
+    * @return the webhooks associated with the account
+    */
+  def webhookList(): Future[MandrillResponse[List[MWebhooksResponse]]] = {
+    executeQuery[MVoid,List[MWebhooksResponse]](webhlist, MVoid())
+  }
+
+  /**
+    * Add a new webhook
+    *
+    * @param webhook
+    * @return the information saved about the new webhook
+    */
+  def webhookAdd(webhook: MWebhook): Future[MandrillResponse[MWebhooksResponse]] = {
+    executeQuery[MWebhook,MWebhooksResponse](webhadd, webhook)
+  }
+
+  /**
+    * Given the ID of an existing webhook, return the data about it
+    *
+    * @param webhook - the existing webhook
+    * @return the information saved about the new webhook
+    */
+  def webhookInfo(webhook: MWebhookInfo): Future[MandrillResponse[MWebhooksResponse]] = {
+    executeQuery[MWebhookInfo,MWebhooksResponse](webhinfo, webhook)
+  }
+
+  /**
+    * Update an existing webhook
+    *
+    * @param webhook - the existing webhook to update
+    * @return the information saved about the new webhook
+    */
+  def webhookUpdate(webhook: MWebhookUpdate): Future[MandrillResponse[MWebhooksResponse]] = {
+    executeQuery[MWebhookUpdate,MWebhooksResponse](webhupdate, webhook)
+  }
+
+  /**
+    * Delete an existing webhook
+    *
+    * @param webhook - the webhook to delete
+    * @return the information saved about the new webhook
+    */
+  def webhookDelete(webhook: MWebhookInfo): Future[MandrillResponse[MWebhooksResponse]] = {
+    executeQuery[MWebhookInfo,MWebhooksResponse](webhdelete, webhook)
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  //SUBACCOUNTS calls https://mandrillapp.com/api/docs/subaccounts.JSON.html
+  //////////////////////////////////////////////////////////////////////////
+
+  /**
+    * Get the list of subaccounts defined for the account, optionally filtered by a prefix
+    *
+    * @param subacc - the prefix
+    * @return the subaccounts for the account, up to a maximum of 1,000
+    */
+  def subaccountList(subacc: MSubaccountList): Future[MandrillResponse[List[MSubaccountsResponse]]] = {
+    executeQuery[MSubaccountList,List[MSubaccountsResponse]](sublist, subacc)
+  }
+
+  /**
+    * Add a new subaccount
+    *
+    * @param subacc - the subaccount to add
+    * @return the information saved about the new subaccount
+    */
+  def subaccountAdd(subacc: MSubaccount): Future[MandrillResponse[MSubaccountsResponse]] = {
+    executeQuery[MSubaccount,MSubaccountsResponse](subadd, subacc)
+  }
+
+  /**
+    * Given the ID of an existing subaccount, return the data about it
+    *
+    * @param subacc - the existing subaccount
+    * @return the information about the subaccount
+    */
+  def subaccountInfo(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsInfoResponse]] = {
+    executeQuery[MSubaccountInfo,MSubaccountsInfoResponse](subinfo, subacc)
+  }
+
+  /**
+    * Update an existing subaccount
+    *
+    * @param subacc - the existing subaccount to update
+    * @return the information for the updated subaccount
+    */
+  def subaccountUpdate(subacc: MSubaccount): Future[MandrillResponse[MSubaccountsResponse]] = {
+    executeQuery[MSubaccount,MSubaccountsResponse](subupdate, subacc)
+  }
+
+  /**
+    * Delete an existing subaccount. Any email related to the subaccount will be saved, but stats will be removed and any future sending calls to this subaccount will fail.
+    *
+    * @param subacc - the subaccount to delete
+    * @return the information for the deleted subaccount
+    */
+  def subaccountDelete(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+    executeQuery[MSubaccountInfo,MSubaccountsResponse](subdelete, subacc)
+  }
+
+  /**
+    * Pause a subaccount's sending. Any future emails delivered to this subaccount will be queued for a maximum of 3 days until the subaccount is resumed.
+    *
+    * @param subacc - the subaccount to pause
+    * @return the information for the paused subaccount
+    */
+  def subaccountPause(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+    executeQuery[MSubaccountInfo,MSubaccountsResponse](subpause, subacc)
+  }
+
+  /**
+    * Resume a paused subaccount's sending
+    *
+    * @param subacc - the subaccount to resume
+    * @return the information for the resumed subaccount
+    */
+  def subaccountResume(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+    executeQuery[MSubaccountInfo,MSubaccountsResponse](subresume, subacc)
+  }
+
+  ////////////////////////////////////////////////////////////
+  //INBOUND https://mandrillapp.com/api/docs/key.JSON.html
+  ////////////////////////////////////////////////////////////
+
+  /**
+    * List the domains that have been configured for inbound delivery
+    *
+    * @return the inbound domains associated with the account
+    */
+  def inboundDomains(): Future[MandrillResponse[List[MInboundDomainResponse]]] = {
+    executeQuery[MVoid,List[MInboundDomainResponse]](inbdom, MVoid())
+  }
+
+  /**
+    * Add an inbound domain to your account
+    *
+    * @param inbound - the domain to add
+    * @return information about the domain
+    */
+  def inboundAddDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+    executeQuery[MInboundDomain,MInboundDomainResponse](inbadddom, inbound)
+  }
+
+  /**
+    * Check the MX settings for an inbound domain. The domain must have already been added with the add-domain call
+    *
+    * @param inbound - the domain to check
+    * @return information about the inbound domain
+    */
+  def inboundCheckDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+    executeQuery[MInboundDomain,MInboundDomainResponse](inbchkdom, inbound)
+  }
+
+  /**
+    * Delete an inbound domain from the account. All mail will stop routing for this domain immediately.
+    *
+    * @param inbound - the domain to delete
+    * @return information about the inbound domain
+    */
+  def inboundDeleteDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+    executeQuery[MInboundDomain,MInboundDomainResponse](inbdeldom, inbound)
+  }
+
+  /**
+    * List the mailbox routes defined for an inbound domain
+    *
+    * @param inbound - the domain
+    * @return the routes associated with the domain
+    */
+  def inboundRoutes(inbound: MInboundDomain): Future[MandrillResponse[List[MInboundRouteResponse]]] = {
+    executeQuery[MInboundDomain,List[MInboundRouteResponse]](inbroutes, inbound)
+  }
+
+  /**
+    * Add a new mailbox route to an inbound domain
+    *
+    * @param inbound - the domain
+    * @return the added mailbox route information
+    */
+  def inboundAddRoute(inbound: MInboundRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+    executeQuery[MInboundRoute,MInboundRouteResponse](inbaddroute, inbound)
+  }
+
+  /**
+    * Update the pattern or webhook of an existing inbound mailbox route. If null is provided for any fields, the values will remain unchanged.
+    *
+    * @param inbound - the route to update
+    * @return the updated mailbox route information
+    */
+  def inboundUpdateRoute(inbound: MInboundUpdateRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+    executeQuery[MInboundUpdateRoute,MInboundRouteResponse](inbdelroute, inbound)
+  }
+
+  /**
+    * Delete an existing inbound mailbox route
+    *
+    * @param inbound - the route to delete
+    * @return the deleted mailbox route information
+    */
+  def inboundDeleteRoute(inbound: MInboundDelRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+    executeQuery[MInboundDelRoute,MInboundRouteResponse](inbdelroute, inbound)
+  }
+
+  /**
+    * Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP
+    *
+    * @param inbound - raw MIME document
+    * @return an array of the information for each recipient in the message (usually one) that matched an inbound route
+    */
+  def inboundSendRaw(inbound: MInboundRaw): Future[MandrillResponse[List[MInboundRawResponse]]] = {
+    executeQuery[MInboundRaw,List[MInboundRawResponse]](inbraw, inbound)
+  }
+
+  ////////////////////////////////////////////////////////////
+  //EXPORT https://mandrillapp.com/api/docs/exports.JSON.html
+  ////////////////////////////////////////////////////////////
+
+  /**
+    * Returns information about an export job. If the export job's state is 'complete', the returned data will include
+    * a URL you can use to fetch the results. Every export job produces a zip archive, but the format of the archive
+    * is distinct for each job type.
+    * The api calls that initiate exports include more details about the output format for that job type.
+    *
+    * @param export - the export type
+    * @return the information about the export
+    */
+  def exportInfo(export: MExportInfo): Future[MandrillResponse[MExportResponse]] = {
+    executeQuery[MExportInfo,MExportResponse](expinfo, export)
+  }
+
+  /**
+    * Returns a list of your exports.
+    *
+    * @return the account's exports
+    */
+  def exportList(): Future[MandrillResponse[List[MExportResponse]]] = {
+    executeQuery[MVoid,List[MExportResponse]](explist, MVoid())
+  }
+
+  /**
+    * Begins an export of your rejection blacklist. The blacklist will be exported to a zip archive containing a single
+    * file named rejects.csv that includes the following fields: email, reason, detail, created_at, expires_at, last_event_at, expires_at.
+    *
+    * @param export - the export job
+    * @return information about the rejects export job that was started
+    */
+  def exportReject(export: MExportNotify): Future[MandrillResponse[MExportResponse]] = {
+    executeQuery[MExportNotify,MExportResponse](exprec, export)
+  }
+
+  /**
+    * Begins an export of your rejection whitelist. The whitelist will be exported to a zip archive containing a single
+    * file named whitelist.csv that includes the following fields: email, detail, created_at.
+    *
+    * @param export - the export job
+    * @return information about the whitelist export job that was started
+    */
+  def exportWhitelist(export: MExportNotify): Future[MandrillResponse[MExportResponse]] = {
+    executeQuery[MExportNotify,MExportResponse](expwhite, export)
+  }
+
+  /**
+    * Begins an export of your activity history. The activity will be exported to a zip archive containing a single file
+    * named activity.csv in the same format as you would be able to export from your account's activity view.
+    * It includes the following fields: Date, Email Address, Sender, Subject, Status, Tags, Opens, Clicks, Bounce Detail.
+    * If you have configured any custom metadata fields, they will be included in the exported data.
+    *
+    * @param export - the export activity
+    * @return information about the activity export job that was started
+    */
+  def exportActivity(export: MExportActivity): Future[MandrillResponse[MExportResponse]] = {
+    executeQuery[MExportActivity,MExportResponse](expactivity, export)
+  }
+
+  ////////////////////////////////////////////////////
+  //ISP https://mandrillapp.com/api/docs/ips.JSON.html
+  ////////////////////////////////////////////////////
+
+  /**
+    * Lists your dedicated IPs.
+    *
+    * @return an array of structs for each dedicated IP
+    */
+  def ispList(): Future[MandrillResponse[List[MIspResponse]]] = {
+    executeQuery[MVoid,List[MIspResponse]](isplist, MVoid())
+  }
+
+  /**
+    * Retrieves information about a single dedicated ip.
+    *
+    * @param isp - the isp
+    * @return Information about the dedicated ip
+    */
+  def ispInfo(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
+    executeQuery[MIspIp,MIspResponse](ispinfo, isp)
+  }
+
+  /**
+    * Requests an additional dedicated IP for your account. Accounts may have one outstanding request at any time,
+    * and provisioning requests are processed within 24 hours.
+    *
+    * @param isp - the isp
+    * @return a description of the provisioning request that was created
+    */
+  def ispProvision(isp: MIspPool): Future[MandrillResponse[MIspProvisionResp]] = {
+    executeQuery[MIspPool,MIspProvisionResp](ispprov, isp)
+  }
+
+  /**
+    * Begins the warmup process for a dedicated IP. During the warmup process, Mandrill will gradually increase the
+    * percentage of your mail that is sent over the warming-up IP, over a period of roughly 30 days. The rest of your
+    * mail will be sent over shared IPs or other dedicated IPs in the same pool.
+    *
+    * @param isp - the isp
+    * @return Information about the dedicated IP
+    */
+  def ispStartWarmup(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
+    executeQuery[MIspIp,MIspResponse](ispstwarm, isp)
+  }
+
+  /**
+    * Cancels the warmup process for a dedicated IP.
+    *
+    * @param isp - the isp
+    * @return Information about the dedicated IP
+    */
+  def ispCancelWarmup(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
+    executeQuery[MIspIp,MIspResponse](ispcancwarm, isp)
+  }
+
+  /**
+    * Moves a dedicated IP to a different pool.
+    *
+    * @param isp - the isp
+    * @return Information about the updated state of the dedicated IP
+    */
+  def ispSetPool(isp: MIspSetPool): Future[MandrillResponse[MIspResponse]] = {
+    executeQuery[MIspSetPool,MIspResponse](ispsetpool, isp)
+  }
+
+  /**
+    * Deletes a dedicated IP. This is permanent and cannot be undone.
+    *
+    * @param isp - the ip
+    * @return a description of the ip that was removed from your account.
+    */
+  def ispDelete(isp: MIspIp): Future[MandrillResponse[MIspDelete]] = {
+    executeQuery[MIspIp,MIspDelete](ispdel, isp)
+  }
+
+  /**
+    * Lists your dedicated IP pools.
+    *
+    * @return the dedicated IP pools for your account, up to a maximum of 1,000
+    */
+  def ispListPool(): Future[MandrillResponse[List[MIspInfoPool]]] = {
+    executeQuery[MVoid,List[MIspInfoPool]](isplistpool, MVoid())
+  }
+
+  /**
+    * Describes a single dedicated IP pool.
+    *
+    * @param isp - the ip pool
+    * @return Information about the dedicated ip pool
+    */
+  def ispPoolInfo(isp: MIspPoolInfo): Future[MandrillResponse[MIspInfoPool]] = {
+    executeQuery[MIspPoolInfo,MIspInfoPool](isppoolinfo, isp)
+  }
+
+  /**
+    * Creates a pool and returns it. If a pool already exists with this name, no action will be performed.
+    *
+    * @param isp - the pool
+    * @return Information about the dedicated ip pool
+    */
+  def ispCreatePool(isp: MIspPoolInfo): Future[MandrillResponse[MIspInfoPool]] = {
+    executeQuery[MIspPoolInfo,MIspInfoPool](ispcreatep, isp)
+  }
+
+  /**
+    * Deletes a pool. A pool must be empty before you can delete it, and you cannot delete your default pool.
+    *
+    * @param isp - the pool
+    * @return information about the status of the pool that was deleted
+    */
+  def ispDeletePool(isp: MIspPoolInfo): Future[MandrillResponse[MIspDeletePoolResponse]] = {
+    executeQuery[MIspPoolInfo,MIspDeletePoolResponse](ispdeletep, isp)
+  }
+
+  /**
+    * Configures the custom DNS name for a dedicated IP.
+    *
+    * @param isp - custom dns
+    * @return information about the dedicated IP's new configuration
+    */
+  def ispSetCustomDns(isp: MIspDns): Future[MandrillResponse[MIspDnsResponse]] = {
+    executeQuery[MIspDns,MIspDnsResponse](ispdns, isp)
+  }
+
+  //////////////////////////////////////////////////////////////
+  //METADATA https://mandrillapp.com/api/docs/metadata.JSON.html
+  //////////////////////////////////////////////////////////////
+
+  /**
+    * Get the list of custom metadata fields indexed for the account.
+    *
+    * @return the custom metadata fields for the account
+    */
+  def metadataList(): Future[MandrillResponse[List[MIMetadataResponse]]] = {
+    executeQuery[MVoid,List[MIMetadataResponse]](metalist, MVoid())
+  }
+
+  /**
+    * Add a new custom metadata field to be indexed for the account.
+    *
+    * @param meta - the metadata to add
+    * @return the information saved about the new metadata field
+    */
+  def metadataAdd(meta: MMeteadatapAdd): Future[MandrillResponse[MIMetadataResponse]] = {
+    executeQuery[MMeteadatapAdd,MIMetadataResponse](metaadd, meta)
+  }
+
+  /**
+    * Update an existing custom metadata field.
+    *
+    * @param meta - the metadata to update
+    * @return the information for the updated metadata field
+    */
+  def metadataUpdate(meta: MMeteadatapAdd): Future[MandrillResponse[MIMetadataResponse]] = {
+    executeQuery[MMeteadatapAdd,MIMetadataResponse](metaupdate, meta)
+  }
+
+  /**
+    * Delete an existing custom metadata field. Deletion isn't instataneous, and /metadata/list will continue to return
+    * the field until the asynchronous deletion process is complete.
+    *
+    * @param meta - the metadata to delete
+    * @return the information for the deleted metadata field
+    */
+  def metadataDelete(meta: MMeteadatapDelete): Future[MandrillResponse[MIMetadataResponse]] = {
+    executeQuery[MMeteadatapDelete,MIMetadataResponse](metadel, meta)
+  }
 
 }
 
