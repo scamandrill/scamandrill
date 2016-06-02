@@ -25,7 +25,7 @@ case object MInboundDomainResponse {
   */
 case class MInboundRouteResponse(id: String,
                                  pattern: String,
-                                 url: Boolean)
+                                 url: String)
 case object MInboundRouteResponse {
   implicit val reads = Json.reads[MInboundRouteResponse]
 }

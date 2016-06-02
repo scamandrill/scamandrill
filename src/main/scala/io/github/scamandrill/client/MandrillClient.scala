@@ -726,7 +726,7 @@ class MandrillClient(
     * @return the updated mailbox route information
     */
   def inboundUpdateRoute(inbound: MInboundUpdateRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
-    executeQuery[MInboundUpdateRoute,MInboundRouteResponse](inbdelroute, inbound)
+    executeQuery[MInboundUpdateRoute,MInboundRouteResponse](inbuproute, inbound)
   }
 
   /**
