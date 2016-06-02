@@ -159,7 +159,7 @@ class MessageCallsTest extends MandrillSpec {
         soft_bounces = 42,
         rejects = 42,
         complaints = 42,
-        unsubs = 42,
+        unsubs = Some(42),
         opens = 42,
         unique_opens = 42,
         clicks = 42,
