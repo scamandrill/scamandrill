@@ -24,7 +24,9 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
     }
   }
 
-  def withClient(path: String)(f: (WSClient) => Unit) = {
+  def SCAMANDRILL_API_KEY = sys.env.get("SCAMANDRILL_API_KEY")
+
+  def withClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
     f(MockWS {
       case (POST, p) if p == s"https://mandrillapp.com/api/1.0$path" => Action(request => {
         (request.body.asJson, Option(this.getClass.getClassLoader.getResourceAsStream(s"requests$path")).map(Json.parse)) match {
@@ -32,7 +34,13 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
             actual shouldBe expected
           case _ => fail(s"Unable to get actual and expected requests for $path")
         }
-        Results.Ok.sendResource(s"responses$path")
+        if(returnError) {
+          Results.InternalServerError.sendResource(s"errors$path")
+        } else if(raiseException) {
+          throw new RuntimeException("This is a simulated unhandled exception")
+        } else {
+          Results.Ok.sendResource(s"responses$path")
+        }
       })
       case _ => Action(request => fail(s"expected: https://mandrillapp.com/api/1.0$path, actual: ${request.uri}"))
     })
