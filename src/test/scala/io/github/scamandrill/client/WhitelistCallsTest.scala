@@ -6,22 +6,42 @@ import io.github.scamandrill.models._
 import scala.concurrent.Await
 
 class WhitelistCallsTest extends MandrillSpec {
-//
-//  "WhitelistAdd" should "work getting a valid MWhitelistAddResponse" in {
-//    val res = Await.result(client.whitelistAdd(MWhitelist(email = "whitelist@example.com")), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MWhitelistAddResponse]
-//    res shouldBe MWhitelistAddResponse("whitelist@example.com", true)
-//  }
-//
-//  "WhitelistList" should "work getting a valid List[MWhitelistDeleteResponse]" in {
-//    val res = Await.result(client.whitelistList(MWhitelist(email = "whitelist@example.com")), DefaultConfig.defaultTimeout)
-//    res.head.getClass shouldBe classOf[MWhitelistListResponse]
-//    res.head.email shouldBe "whitelist@example.com"
-//  }
-//
-//  "WhitelistDelete" should "work getting a valid MWhitelistDeleteResponse" in {
-//    val res = Await.result(client.whitelistDelete(MWhitelist(email = "whitelist@example.com")), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MWhitelistDeleteResponse]
-//    res shouldBe MWhitelistDeleteResponse("whitelist@example.com", true)
-//  }
+
+  "WhitelistAdd" should "handle the example at https://mandrillapp.com/api/docs/whitelists.JSON.html#method=add" in {
+    withClient("/whitelists/add.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.whitelistAdd(MWhitelistAdd(
+        email = "email@example.com",
+        comment = "Internal support address".?
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWhitelistAddResponse(
+        email = "example email",
+        added = true
+      )))
+    }
+  }
+
+  "WhitelistList" should "handle the example at https://mandrillapp.com/api/docs/whitelists.JSON.html#method=list" in {
+    withClient("/whitelists/list.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.whitelistList(MWhitelist(
+        email = "example email"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MWhitelistListResponse(
+        email = "example email",
+        detail = "Whitelisted internal address",
+        created_at = "2013-01-01 15:30:32"
+      ))))
+    }
+  }
+
+  "WhitelistDelete" should "handle the example at https://mandrillapp.com/api/docs/whitelists.JSON.html#method=delete" in {
+    withClient("/whitelists/delete.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.whitelistDelete(MWhitelist(
+        email = "email@example.com"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWhitelistDeleteResponse(
+        email = "email@example.com",
+        deleted = true
+      )))
+    }
+  }
 }

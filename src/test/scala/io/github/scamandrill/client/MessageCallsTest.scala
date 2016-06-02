@@ -2,20 +2,15 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
-import org.scalatest.concurrent.ScalaFutures
 
-import scala.concurrent.Await
-
-class MessageCallsTest extends MandrillSpec with ScalaFutures {
-
-  import scala.concurrent.ExecutionContext.Implicits.global
+class MessageCallsTest extends MandrillSpec {
 
   "Send" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send" in {
     withClient("/messages/send.json") { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.messagesSend(MSendMessage(
         async = false,
-        ip_pool = Some("Main Pool"),
+        ip_pool = "Main Pool".?,
         message = new MSendMsg(
           html = "<p>Example HTML content</p>",
           text = "Example text content",
@@ -24,30 +19,30 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
           from_name = "Example Name",
           to = List(MTo(
             email = "recipient.email@example.com",
-            name = Some("Recipient Name")
+            name = "Recipient Name".?
           )),
           headers = Some(List(MHeader("Reply-To", "message.reply@example.com"))),
           important = false,
-          bcc_address = Some("message.bcc_address@example.com"),
+          bcc_address = "message.bcc_address@example.com".?,
           merge = true,
           global_merge_vars = List(MVars("merge1", "merge1 content")),
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", "merge2 content")))),
           tags = List("password-resets"),
-          subaccount = Some("customer-123"),
+          subaccount = "customer-123".?,
           metadata = List(MMetadata("website", "www.example.com")),
           recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", List(MMetadata("user_id", "123456")))),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
-          google_analytics_campaign = Some("message.from_email@example.com"),
+          google_analytics_campaign = "message.from_email@example.com".?,
           google_analytics_domains = List("example.com"),
-          merge_language = Some("handlebars")
+          merge_language = "handlebars".?
         )
       )), defaultTimeout) {
         case MandrillSuccess(res) =>
           res.size shouldBe 1
           res.head.status shouldBe "sent"
           res.head.email shouldBe "recipient.email@example.com"
-          res.head.reject_reason shouldBe Some("hard-bounce")
+          res.head.reject_reason shouldBe "hard-bounce".?
           res.head._id shouldBe "abc123abc123abc123abc123abc123"
         case x@_ => fail(s"Unsuccessful call: Should be MandrillSuccess, got $x")
       }
@@ -61,7 +56,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
         template_name = "example template_name",
         template_content = List(MVars("example name", "example content")),
         async = false,
-        ip_pool = Some("Main Pool"),
+        ip_pool = "Main Pool".?,
         message = new MSendMsg(
           html = "<p>Example HTML content</p>",
           text = "Example text content",
@@ -70,30 +65,30 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
           from_name = "Example Name",
           to = List(MTo(
             email = "recipient.email@example.com",
-            name = Some("Recipient Name")
+            name = "Recipient Name".?
           )),
           headers = Some(List(MHeader("Reply-To", "message.reply@example.com"))),
           important = false,
-          bcc_address = Some("message.bcc_address@example.com"),
+          bcc_address = "message.bcc_address@example.com".?,
           merge = true,
           global_merge_vars = List(MVars("merge1", "merge1 content")),
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", "merge2 content")))),
           tags = List("password-resets"),
-          subaccount = Some("customer-123"),
+          subaccount = "customer-123".?,
           metadata = List(MMetadata("website", "www.example.com")),
           recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", List(MMetadata("user_id", "123456")))),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
-          google_analytics_campaign = Some("message.from_email@example.com"),
+          google_analytics_campaign = "message.from_email@example.com".?,
           google_analytics_domains = List("example.com"),
-          merge_language = Some("handlebars")
+          merge_language = "handlebars".?
         )
       )), defaultTimeout) {
         case MandrillSuccess(res) =>
           res.size shouldBe 1
           res.head.status shouldBe "sent"
           res.head.email shouldBe "recipient.email@example.com"
-          res.head.reject_reason shouldBe Some("hard-bounce")
+          res.head.reject_reason shouldBe "hard-bounce".?
           res.head._id shouldBe "abc123abc123abc123abc123abc123"
         case x@_ => fail(s"Unsuccessful call: Should be MandrillSuccess, got $x")
       }
@@ -116,7 +111,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
           ts = 1365190000,
           _id = "abc123abc123abc123abc123",
           sender = "sender@example.com",
-          template = Some("example-template"),
+          template = "example-template".?,
           subject = "example subject",
           email = "recipient.email@example.com",
           tags = List(
@@ -182,7 +177,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
         ts = 1365190000,
         _id = "abc123abc123abc123abc123",
         sender = "sender@example.com",
-        template = Some("example-template"),
+        template = "example-template".?,
         subject = "example subject",
         email = "recipient.email@example.com",
         tags = List(
@@ -225,17 +220,17 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
       whenReady(instance.messagesParse(MParse(
         raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content."
       )), defaultTimeout)(_ shouldBe MandrillSuccess(MParseResponse(
-        subject = Some("Some Subject"),
-        from_email = Some("sender@example.com"),
-        from_name = Some("Sender Name"),
+        subject = "Some Subject".?,
+        from_email = "sender@example.com".?,
+        from_name = "Sender Name".?,
         to = Some(List(
           MToResponse(
             email = "recipient.email@example.com",
             name = "Recipient Name"
           )
         )),
-        text = Some("Some text content"),
-        html = Some("<p>Some HTML content</p>"),
+        text = "Some text content".?,
+        html = "<p>Some HTML content</p>".?,
         attachments = Some(List(
           MAttachmetOrImage(
             name = "example.txt",
@@ -259,17 +254,17 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesSendRaw(MSendRaw(
         raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content.",
-        from_email = Some("sender@example.com"),
-        from_name = Some("From Name"),
+        from_email = "sender@example.com".?,
+        from_name = "From Name".?,
         to = List("recipient.email@example.com"),
         async = false,
-        ip_pool = Some("Main Pool"),
-        send_at = Some("example send_at"),
-        return_path_domain = Some("mail.com")
+        ip_pool = "Main Pool".?,
+        send_at = "example send_at".?,
+        return_path_domain = "mail.com".?
       )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSendResponse(
         email = "recipient.email@example.com",
         status = "sent",
-        reject_reason = Some("hard-bounce"),
+        reject_reason = "hard-bounce".?,
         _id = "abc123abc123abc123abc123"
       ))))
     }
@@ -343,7 +338,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
           "password-reset"
         ),
         text = "Some text content",
-        html = Some("<p>Some HTML content</p>"),
+        html = "<p>Some HTML content</p>".?,
         attachments = List(
           MAttachmetOrImage(
             name = "example.txt",

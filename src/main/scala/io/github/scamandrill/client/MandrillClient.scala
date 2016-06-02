@@ -281,8 +281,8 @@ class MandrillClient(
     * @param mail - the mail to be added to the whitelist
     * @return an object containing the address and the result of the operation
     */
-  def whitelistAdd(mail: MWhitelist): Future[MandrillResponse[MWhitelistAddResponse]] = {
-    executeQuery[MWhitelist, MWhitelistAddResponse](wlistadd, mail)
+  def whitelistAdd(mail: MWhitelistAdd): Future[MandrillResponse[MWhitelistAddResponse]] = {
+    executeQuery[MWhitelistAdd, MWhitelistAddResponse](wlistadd, mail)
   }
 
   /**

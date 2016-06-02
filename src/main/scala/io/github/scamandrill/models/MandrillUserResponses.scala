@@ -92,7 +92,7 @@ case class MStats(today: MStat,
                   last_30_days: MStat,
                   last_60_days: MStat,
                   last_90_days: MStat,
-                  all_time: Option[MStat])
+                  all_time: Option[MStat] = None)
 case object MStats {
   implicit val reads = Json.reads[MStats]
 }

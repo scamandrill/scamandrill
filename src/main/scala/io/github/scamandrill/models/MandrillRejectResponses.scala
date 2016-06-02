@@ -43,7 +43,7 @@ case class MRejectListResponse(email: String,
                                detail: Option[String],
                                created_at: String,
                                last_event_at: String,
-                               expires_at: Option[Boolean],
+                               expires_at: Option[String],
                                expired: Boolean,
                                subaccount: Option[String],
                                sender: Option[MSenderDataResponse])
