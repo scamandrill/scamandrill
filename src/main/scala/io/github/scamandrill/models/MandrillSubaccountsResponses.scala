@@ -22,7 +22,7 @@ case class MSubaccountsResponse(id: String,
                                 status: String,
                                 reputation: Int,
                                 created_at: String,
-                                //first_sent_at: String,
+                                first_sent_at: Option[String],
                                 sent_weekly: Int,
                                 sent_monthly: Int,
                                 sent_total: Int)

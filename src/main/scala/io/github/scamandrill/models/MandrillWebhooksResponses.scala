@@ -23,7 +23,8 @@ case class MWebhooksResponse(id: Int,
                              last_sent_at: String,
                              batches_sent: Int,
                              events_sent: Int,
-                             last_error: Option[String])
+                             last_error: Option[String],
+                             events: Option[List[String]] = None)
 case object MWebhooksResponse {
   implicit val reads = Json.reads[MWebhooksResponse]
 }
