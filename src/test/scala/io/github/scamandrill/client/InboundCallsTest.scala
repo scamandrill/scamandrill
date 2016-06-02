@@ -3,8 +3,6 @@ package io.github.scamandrill.client
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 
-import scala.concurrent.Await
-
 class InboundCallsTest extends MandrillSpec {
 
   "InboundDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=domain" in {
