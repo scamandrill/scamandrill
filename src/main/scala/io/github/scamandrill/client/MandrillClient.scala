@@ -819,29 +819,29 @@ class MandrillClient(
     *
     * @return an array of structs for each dedicated IP
     */
-  def ispList(): Future[MandrillResponse[List[MIspResponse]]] = {
-    executeQuery[MVoid,List[MIspResponse]](isplist, MVoid())
+  def ipsList(): Future[MandrillResponse[List[MIpsResponse]]] = {
+    executeQuery[MVoid,List[MIpsResponse]](ipslist, MVoid())
   }
 
   /**
     * Retrieves information about a single dedicated ip.
     *
-    * @param isp - the isp
+    * @param ip - the ip
     * @return Information about the dedicated ip
     */
-  def ispInfo(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
-    executeQuery[MIspIp,MIspResponse](ispinfo, isp)
+  def ipsInfo(ip: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+    executeQuery[MIpsIp,MIpsResponse](ipsinfo, ip)
   }
 
   /**
     * Requests an additional dedicated IP for your account. Accounts may have one outstanding request at any time,
     * and provisioning requests are processed within 24 hours.
     *
-    * @param isp - the isp
+    * @param ip - the isp
     * @return a description of the provisioning request that was created
     */
-  def ispProvision(isp: MIspPool): Future[MandrillResponse[MIspProvisionResp]] = {
-    executeQuery[MIspPool,MIspProvisionResp](ispprov, isp)
+  def ipsProvision(ip: MIpsPool): Future[MandrillResponse[MIpsProvisionResp]] = {
+    executeQuery[MIpsPool,MIpsProvisionResp](ipsprov, ip)
   }
 
   /**
@@ -852,38 +852,38 @@ class MandrillClient(
     * @param isp - the isp
     * @return Information about the dedicated IP
     */
-  def ispStartWarmup(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
-    executeQuery[MIspIp,MIspResponse](ispstwarm, isp)
+  def ipsStartWarmup(isp: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+    executeQuery[MIpsIp,MIpsResponse](ipsstwarm, isp)
   }
 
   /**
     * Cancels the warmup process for a dedicated IP.
     *
-    * @param isp - the isp
+    * @param ip - the isp
     * @return Information about the dedicated IP
     */
-  def ispCancelWarmup(isp: MIspIp): Future[MandrillResponse[MIspResponse]] = {
-    executeQuery[MIspIp,MIspResponse](ispcancwarm, isp)
+  def ipsCancelWarmup(ip: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+    executeQuery[MIpsIp,MIpsResponse](ipscancwarm, ip)
   }
 
   /**
     * Moves a dedicated IP to a different pool.
     *
-    * @param isp - the isp
+    * @param pool - the ip pool
     * @return Information about the updated state of the dedicated IP
     */
-  def ispSetPool(isp: MIspSetPool): Future[MandrillResponse[MIspResponse]] = {
-    executeQuery[MIspSetPool,MIspResponse](ispsetpool, isp)
+  def ipsSetPool(pool: MIpsSetPool): Future[MandrillResponse[MIpsResponse]] = {
+    executeQuery[MIpsSetPool,MIpsResponse](ipssetpool, pool)
   }
 
   /**
     * Deletes a dedicated IP. This is permanent and cannot be undone.
     *
-    * @param isp - the ip
+    * @param ip - the ip
     * @return a description of the ip that was removed from your account.
     */
-  def ispDelete(isp: MIspIp): Future[MandrillResponse[MIspDelete]] = {
-    executeQuery[MIspIp,MIspDelete](ispdel, isp)
+  def ipsDelete(ip: MIpsIp): Future[MandrillResponse[MIpsDelete]] = {
+    executeQuery[MIpsIp,MIpsDelete](ipsdel, ip)
   }
 
   /**
@@ -891,48 +891,58 @@ class MandrillClient(
     *
     * @return the dedicated IP pools for your account, up to a maximum of 1,000
     */
-  def ispListPool(): Future[MandrillResponse[List[MIspInfoPool]]] = {
-    executeQuery[MVoid,List[MIspInfoPool]](isplistpool, MVoid())
+  def ipsListPool(): Future[MandrillResponse[List[MIpsInfoPoolResponse]]] = {
+    executeQuery[MVoid,List[MIpsInfoPoolResponse]](ipslistpool, MVoid())
   }
 
   /**
     * Describes a single dedicated IP pool.
     *
-    * @param isp - the ip pool
+    * @param pool - the ip pool
     * @return Information about the dedicated ip pool
     */
-  def ispPoolInfo(isp: MIspPoolInfo): Future[MandrillResponse[MIspInfoPool]] = {
-    executeQuery[MIspPoolInfo,MIspInfoPool](isppoolinfo, isp)
+  def ipsPoolInfo(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsInfoPoolResponse]] = {
+    executeQuery[MIpsPoolInfo,MIpsInfoPoolResponse](ipspoolinfo, pool)
   }
 
   /**
     * Creates a pool and returns it. If a pool already exists with this name, no action will be performed.
     *
-    * @param isp - the pool
+    * @param pool - the pool
     * @return Information about the dedicated ip pool
     */
-  def ispCreatePool(isp: MIspPoolInfo): Future[MandrillResponse[MIspInfoPool]] = {
-    executeQuery[MIspPoolInfo,MIspInfoPool](ispcreatep, isp)
+  def ipsCreatePool(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsInfoPoolResponse]] = {
+    executeQuery[MIpsPoolInfo,MIpsInfoPoolResponse](ipscreatep, pool)
   }
 
   /**
     * Deletes a pool. A pool must be empty before you can delete it, and you cannot delete your default pool.
     *
-    * @param isp - the pool
+    * @param pool - the pool
     * @return information about the status of the pool that was deleted
     */
-  def ispDeletePool(isp: MIspPoolInfo): Future[MandrillResponse[MIspDeletePoolResponse]] = {
-    executeQuery[MIspPoolInfo,MIspDeletePoolResponse](ispdeletep, isp)
+  def ipsDeletePool(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsDeletePoolResponse]] = {
+    executeQuery[MIpsPoolInfo,MIpsDeletePoolResponse](ipsdeletep, pool)
   }
 
   /**
     * Configures the custom DNS name for a dedicated IP.
     *
-    * @param isp - custom dns
+    * @param dns - custom dns
     * @return information about the dedicated IP's new configuration
     */
-  def ispSetCustomDns(isp: MIspDns): Future[MandrillResponse[MIspDnsResponse]] = {
-    executeQuery[MIspDns,MIspDnsResponse](ispdns, isp)
+  def ipsSetCustomDns(dns: MIpsDns): Future[MandrillResponse[MIpsResponse]] = {
+    executeQuery[MIpsDns,MIpsResponse](ipsetdns, dns)
+  }
+
+  /**
+    * Checks the status of custom DNS on a dedicated IP.
+    *
+    * @param dns - custom dns
+    * @return information about the dedicated IP's new configuration
+    */
+  def ipsCheckCustomDns(dns: MIpsDns): Future[MandrillResponse[MIpsDnsResponse]] = {
+    executeQuery[MIpsDns,MIpsDnsResponse](ipchkdns, dns)
   }
 
   //////////////////////////////////////////////////////////////
@@ -1078,18 +1088,19 @@ object MandrillClient {
     val expwhite = Value("expwhite", "/exports/whitelist.json")
     val expactivity = Value("expact", "/exports/activity.json")
     //key
-    val isplist = Value("isplist", "/ips/list.json")
-    val ispinfo = Value("ispinfo", "/ips/info.json")
-    val ispprov = Value("ispprov", "/ips/provision.json")
-    val ispstwarm = Value("isplistw", "/ips/start-warmup.json")
-    val ispcancwarm = Value("ispcancw", "/ips/cancel-warmup.json")
-    val ispsetpool = Value("ispsetpool", "/ips/set-pool.json")
-    val ispdel = Value("ispdel", "/ips/delete.json")
-    val isplistpool = Value("isplistpool", "/ips/list-pools.json")
-    val isppoolinfo = Value("ispoolinfo", "/ips/pool-info.json")
-    val ispcreatep = Value("ispcreatep", "/ips/create-pool.json")
-    val ispdeletep = Value("ispdelpool", "/ips/delete-pool.json")
-    val ispdns = Value("ispdns", "/ips/set-custom-dns.json")
+    val ipslist = Value("ipslist", "/ips/list.json")
+    val ipsinfo = Value("ipsinfo", "/ips/info.json")
+    val ipsprov = Value("ipsprov", "/ips/provision.json")
+    val ipsstwarm = Value("ipslistw", "/ips/start-warmup.json")
+    val ipscancwarm = Value("ispcancw", "/ips/cancel-warmup.json")
+    val ipssetpool = Value("ipssetpool", "/ips/set-pool.json")
+    val ipsdel = Value("ipsdel", "/ips/delete.json")
+    val ipslistpool = Value("ipslistpool", "/ips/list-pools.json")
+    val ipspoolinfo = Value("ipspoolinfo", "/ips/pool-info.json")
+    val ipscreatep = Value("ipscreatep", "/ips/create-pool.json")
+    val ipsdeletep = Value("ipsdelpool", "/ips/delete-pool.json")
+    val ipsetdns = Value("ipsetdns", "/ips/set-custom-dns.json")
+    val ipchkdns = Value("ipchkdns", "/ips/check-custom-dns.json")
     //metadata
     val metalist = Value("metalist", "/metadata/list.json")
     val metaadd = Value("metaadd", "/metadata/add.json")

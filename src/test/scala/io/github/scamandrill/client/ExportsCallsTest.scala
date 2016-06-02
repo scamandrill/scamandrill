@@ -5,7 +5,7 @@ import io.github.scamandrill.models._
 
 class ExportsCallsTest extends MandrillSpec {
 
-  "ExportsInfo" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=info" in {
+  "Info" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=info" in {
     withClient("/exports/info.json") { wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.exportInfo(MExportInfo(
@@ -23,7 +23,7 @@ class ExportsCallsTest extends MandrillSpec {
     }
   }
 
-  "ExportsList" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=list" in {
+  "List" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=list" in {
     withClient("/exports/list.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.exportList(), defaultTimeout)(_ shouldBe MandrillSuccess(List(
@@ -39,7 +39,7 @@ class ExportsCallsTest extends MandrillSpec {
     }
   }
 
-  "ExportsRejects" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=rejects" in {
+  "Rejects" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=rejects" in {
     withClient("/exports/rejects.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.exportReject(MExportNotify(
@@ -57,7 +57,7 @@ class ExportsCallsTest extends MandrillSpec {
     }
   }
 
-  "ExportsWhitelist" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=whitelist" in {
+  "Whitelist" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=whitelist" in {
     withClient("/exports/whitelist.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.exportWhitelist(MExportNotify(
@@ -75,7 +75,7 @@ class ExportsCallsTest extends MandrillSpec {
     }
   }
 
-  "ExportsActivity" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=activity" in {
+  "Activity" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=activity" in {
     withClient("/exports/activity.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.exportActivity(MExportActivity(

@@ -7,19 +7,19 @@ import play.api.libs.json.Json
   *
   * @param id  - th unique identifier
   */
-case class MIspId(id: String)
+case class MIpsId(id: String)
 
-case object MIspId {
-  implicit val writes = Json.writes[MIspId]
+case object MIpsId {
+  implicit val writes = Json.writes[MIpsId]
 }
 /**
   * The Isp
   *
   * @param ip  - a dedicated IP address
   */
-case class MIspIp(ip: String)
-case object MIspIp {
-  implicit val writes = Json.writes[MIspIp]
+case class MIpsIp(ip: String)
+case object MIpsIp {
+  implicit val writes = Json.writes[MIpsIp]
 }
 
 /**
@@ -28,34 +28,34 @@ case object MIspIp {
   * @param warmup - whether the ip is currently in warmup mode
   * @param pool   - the name of the new pool to add the dedicated ip to
   */
-case class MIspPool(warmup: Boolean,
+case class MIpsPool(warmup: Boolean,
                     pool: String)
-case object MIspPool {
-  implicit val writes = Json.writes[MIspPool]
+case object MIpsPool {
+  implicit val writes = Json.writes[MIpsPool]
 }
 
 /**
-  * The Isp pool info
+  * The Ip pool info
   *
   * @param pool - the name of the new pool to add the dedicated ip to
   */
-case class MIspPoolInfo(pool: String)
-case object MIspPoolInfo {
-  implicit val writes = Json.writes[MIspPoolInfo]
+case class MIpsPoolInfo(pool: String)
+case object MIpsPoolInfo {
+  implicit val writes = Json.writes[MIpsPoolInfo]
 }
 
 /**
-  * The Isp pool info
+  * The Ip pool info
   *
   * @param ip          - a dedicated IP address
   * @param pool        - the name of the new pool to add the dedicated ip to
   * @param create_pool - whether to create the pool if it does not exist; if false and the pool does not exist, an Unknown_Pool will be thrown.
   */
-case class MIspSetPool(ip: String,
+case class MIpsSetPool(ip: String,
                        pool: String,
                        create_pool: Boolean)
-case object MIspSetPool {
-  implicit val writes = Json.writes[MIspSetPool]
+case object MIpsSetPool {
+  implicit val writes = Json.writes[MIpsSetPool]
 }
 
 /**
@@ -64,10 +64,10 @@ case object MIspSetPool {
   * @param ip     - a dedicated IP address
   * @param domain - the domain name to test
   */
-case class MIspDns(ip: String,
+case class MIpsDns(ip: String,
                    domain: String)
-case object MIspDns {
-  implicit val writes = Json.writes[MIspDns]
+case object MIpsDns {
+  implicit val writes = Json.writes[MIpsDns]
 }
 
 
