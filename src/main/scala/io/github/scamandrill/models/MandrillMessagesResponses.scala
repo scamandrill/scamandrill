@@ -184,7 +184,7 @@ case object MToResponse {
   * @param attachemnt - an array of any attachments that can be found in the message
   */
 case class MContentResponse(ts: Int,
-                            _id: Int,
+                            _id: String,
                             from_email: String,
                             from_name: String,
                             subject: String,
@@ -192,7 +192,7 @@ case class MContentResponse(ts: Int,
                             tags: List[String],
                             text: String,
                             html: Option[String],
-                            attachemnt: List[MAttachmetOrImage])
+                            attachments: List[MAttachmetOrImage])
 case object MContentResponse {
   implicit val reads = Json.reads[MContentResponse]
 }

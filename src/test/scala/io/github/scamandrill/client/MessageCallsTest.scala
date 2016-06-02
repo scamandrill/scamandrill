@@ -10,7 +10,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
-  "Send" should "work getting a valid List[MSendResponse]" in {
+  "Send" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send" in {
     withClient("/messages/send.json") { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.messagesSend(MSendMessage(
@@ -54,7 +54,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  "SendTemplate" should "work getting a valid List[MSendResponse]" in {
+  "SendTemplate" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template" in {
     withClient("/messages/send-template.json") { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.messagesSendTemplate(MSendTemplateMessage(
@@ -100,7 +100,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  "Search" should "work getting a valid List[MSearchResponse]" in {
+  "Search" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=search" in {
     withClient("/messages/search.json") { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.messagesSearch(MSearch(
@@ -173,7 +173,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  "MessageInfo" should "work getting a valid MMessageInfoResponse" in {
+  "MessageInfo" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=info" in {
     withClient("/messages/info.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesInfo(MMessageInfo(
@@ -219,7 +219,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  "Parse" should "work getting a valid MParseResponse" in {
+  "Parse" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=parse" in {
     withClient("/messages/parse.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesParse(MParse(
@@ -275,7 +275,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  "ListSchedule" should "work getting a valid List[MScheduleResponse]" in {
+  "ListSchedule" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=list-scheduled" in {
     withClient("/messages/list-scheduled.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesListSchedule(MListSchedule(
@@ -320,6 +320,37 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
         from_email = "sender@example.com",
         to = "test.recipient@example.com",
         subject = "This is a scheduled email"
+      )))
+    }
+  }
+
+  "Content" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=content" in {
+    withClient("/messages/content.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesContent(MMessageInfo(
+        id = "abc123abc123abc123abc123"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MContentResponse(
+        ts = 1365190000,
+        _id = "abc123abc123abc123abc123",
+        from_email = "sender@example.com",
+        from_name = "Sender Name",
+        subject = "example subject",
+        to = MToResponse(
+          email = "recipient.email@example.com",
+          name = "Recipient Name"
+        ),
+        tags = List(
+          "password-reset"
+        ),
+        text = "Some text content",
+        html = Some("<p>Some HTML content</p>"),
+        attachments = List(
+          MAttachmetOrImage(
+            name = "example.txt",
+            `type` = "text/plain",
+            content = "QSBzaW1wbGUgdGV4dCBzdHJpbmcgYXR0YWNobWVudA=="
+          )
+        )
       )))
     }
   }
