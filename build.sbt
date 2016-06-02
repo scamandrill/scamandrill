@@ -28,7 +28,6 @@ parallelExecution in Test := true
 libraryDependencies ++= {
   Seq(
     "com.typesafe.play" %% "play-ws"          % playVersion,
-    "com.typesafe"      % "config"            % "1.3.0",
     "org.slf4j"         % "slf4j-api"         % "1.7.21"
   ) ++ Seq(
     "org.scalatest"            %%  "scalatest"       % "2.2.6"     % "test->*",
