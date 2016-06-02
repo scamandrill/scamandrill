@@ -88,6 +88,7 @@ case object MRecipientMetadata {
   }
 }
 
+// TODO: Metadata should be "key" -> JsScalarValue
 /**
   * The message to be sent
   *

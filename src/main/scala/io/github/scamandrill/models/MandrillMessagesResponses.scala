@@ -74,6 +74,7 @@ case object MSmtpEvent {
   implicit val reads = Json.reads[MSmtpEvent]
 }
 
+// TODO: Missing metadata
 /**
   * The information for the message
   *
@@ -196,7 +197,7 @@ case object MContentResponse {
   implicit val reads = Json.reads[MContentResponse]
 }
 
-//TODO: headers
+//TODO: missing headers
 /**
   * The parsed message
   *

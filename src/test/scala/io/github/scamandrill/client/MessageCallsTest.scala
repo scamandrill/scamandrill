@@ -143,7 +143,7 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  ignore should "work getting a valid List[MSearchResponse] with a TimeSeries" in {
+  "searchTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=search-time-series" in {
     withClient("/messages/search-time-series.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesSearchTimeSeries(MSearchTimeSeries(
@@ -173,47 +173,154 @@ class MessageCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-//  "MessageInfo" should "work getting a valid MMessageInfoResponse" ignore {
-//    val res = Await.result(client.messagesInfo(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MMessageInfoResponse]
-//    res._id shouldBe idOfMailForInfoTest
-//    res.subject shouldBe "subject test"
-//    res.email shouldBe "test@example.com"
-//  }
+  "MessageInfo" should "work getting a valid MMessageInfoResponse" in {
+    withClient("/messages/info.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesInfo(MMessageInfo(
+        id = "abc123abc123abc123abc123"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MMessageInfoResponse(
+        ts = 1365190000,
+        _id = "abc123abc123abc123abc123",
+        sender = "sender@example.com",
+        template = Some("example-template"),
+        subject = "example subject",
+        email = "recipient.email@example.com",
+        tags = List(
+          "password-reset"
+        ),
+        opens = 42,
+        opens_detail = List(
+          MOpenDetail(
+            ts = 1365190001,
+            ip = "55.55.55.55",
+            location = "Georgia, US",
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+          )
+        ),
+        clicks = 42,
+        clicks_detail = List(
+          MClickDetails(
+            ts = 1365190001,
+            url = "http://www.example.com",
+            ip = "55.55.55.55",
+            location = "Georgia, US",
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+          )
+        ),
+        state = "sent",
+        smtp_events = List(
+          MSmtpEvent(
+            ts = 1365190001,
+            `type` = "sent",
+            diag = "250 OK"
+          )
+        )
+      )))
+    }
+  }
 
-  //  This call doesn't seem to work in the api
-  //  "MessageInfo" should "work getting a valid MContentResponse" in {
-  //    val res = Await.result(client.content(MMessageInfo(id = idOfMailForInfoTest)), DefaultConfig.defaultTimeout)
-  //    res.getClass shouldBe classOf[MMessageInfoResponse]
-  //    res._id shouldBe idOfMailForInfoTest
-  //    res.subject shouldBe "subject test"
-  //    println(res)
-  //    //res.email shouldBe "test@example.com"
-  //  }
-  //  it should "work getting a valid MContentResponse (blocking client)" in {
-  //    mandrillBlockingClient.content(MMessageInfo(id = idOfMailForInfoTest)) match {
-  //      case Success(res) =>
-  //        res.getClass shouldBe classOf[MMessageInfoResponse]
-  //        res._id shouldBe idOfMailForInfoTest
-  //        res.subject shouldBe "subject test"
-  //        //res.email shouldBe "test@example.com"
-  //      case Failure(ex) => fail(ex)
-  //    }
-  //  }
-//
-//  "Parse" should "work getting a valid MParseResponse" in {
-//    val res = Await.result(client.messagesParse(MParse(raw_message = """From: sender@example.com""")), DefaultConfig.defaultTimeout)
-//    res.getClass shouldBe classOf[MParseResponse]
-//    res.from_email shouldBe Some("sender@example.com")
-//  }
-//
-//  "SendRaw" should "work getting a valid MParseResponse" in {
-//    val res = Await.result(client.messagesSendRaw(validRawMessage), DefaultConfig.defaultTimeout)
-//    res shouldBe Nil
-//  }
-//
-//  "ListSchedule" should "work getting a valid List[MScheduleResponse]" in {
-//    val res = Await.result(client.messagesListSchedule(MListSchedule(to = "test@recipient.com")), DefaultConfig.defaultTimeout)
-//    res shouldBe Nil
-//  }
+  "Parse" should "work getting a valid MParseResponse" in {
+    withClient("/messages/parse.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesParse(MParse(
+        raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content."
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MParseResponse(
+        subject = Some("Some Subject"),
+        from_email = Some("sender@example.com"),
+        from_name = Some("Sender Name"),
+        to = Some(List(
+          MToResponse(
+            email = "recipient.email@example.com",
+            name = "Recipient Name"
+          )
+        )),
+        text = Some("Some text content"),
+        html = Some("<p>Some HTML content</p>"),
+        attachments = Some(List(
+          MAttachmetOrImage(
+            name = "example.txt",
+            `type`= "text/plain",
+            content = "example non-binary content"
+          )
+        )),
+        images = Some(List(
+          MAttachmetOrImage(
+            name = "IMAGEID",
+            `type` = "image/png",
+            content = "ZXhhbXBsZSBmaWxl"
+          )
+        ))
+      )))
+    }
+  }
+
+  "SendRaw" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send-raw" in {
+    withClient("/messages/send-raw.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesSendRaw(MSendRaw(
+        raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content.",
+        from_email = Some("sender@example.com"),
+        from_name = Some("From Name"),
+        to = List("recipient.email@example.com"),
+        async = false,
+        ip_pool = Some("Main Pool"),
+        send_at = Some("example send_at"),
+        return_path_domain = Some("mail.com")
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSendResponse(
+        email = "recipient.email@example.com",
+        status = "sent",
+        reject_reason = Some("hard-bounce"),
+        _id = "abc123abc123abc123abc123"
+      ))))
+    }
+  }
+
+  "ListSchedule" should "work getting a valid List[MScheduleResponse]" in {
+    withClient("/messages/list-scheduled.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesListSchedule(MListSchedule(
+        to = "test.recipient@example.com"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MScheduleResponse(
+        _id = "I_dtFt2ZNPW5QD9-FaDU1A",
+        created_at = "2013-01-20 12:13:01",
+        send_at = "2021-01-05 12:42:01",
+        from_email = "sender@example.com",
+        to = "test.recipient@example.com",
+        subject = "This is a scheduled email"
+      ))))
+    }
+  }
+
+  "CancelScheduled" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=cancel-scheduled" in {
+    withClient("/messages/cancel-scheduled.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesCancelSchedule(MCancelSchedule(
+        id = "I_dtFt2ZNPW5QD9-FaDU1A"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MScheduleResponse(
+        _id = "I_dtFt2ZNPW5QD9-FaDU1A",
+        created_at = "2013-01-20 12:13:01",
+        send_at = "2021-01-05 12:42:01",
+        from_email = "sender@example.com",
+        to = "test.recipient@example.com",
+        subject = "This is a scheduled email"
+      )))
+    }
+  }
+
+  "Reschedule" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=reschedule" in {
+    withClient("/messages/reschedule.json"){ wc =>
+      val instance = new MandrillClient(wc, new APIKey())
+      whenReady(instance.messagesReschedule(MReSchedule(
+        id = "I_dtFt2ZNPW5QD9-FaDU1A",
+        send_at = "20120-06-01 08:15:01"
+      )), defaultTimeout)(_ shouldBe MandrillSuccess(MScheduleResponse(
+        _id = "I_dtFt2ZNPW5QD9-FaDU1A",
+        created_at = "2013-01-20 12:13:01",
+        send_at = "2021-01-05 12:42:01",
+        from_email = "sender@example.com",
+        to = "test.recipient@example.com",
+        subject = "This is a scheduled email"
+      )))
+    }
+  }
 }
