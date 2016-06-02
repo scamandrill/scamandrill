@@ -142,7 +142,6 @@ case object MSendersInfoResp {
   * @param soft_bounces  - the total number of soft bounces by messages with this tag
   * @param rejects       - the total number of rejected messages with this tag
   * @param complaints    - the total number of spam complaints received for messages with this tag
-  * @param unsubs        - the total number of unsubscribe requests received for messages with this tag
   * @param opens         - the total number of times messages with this tag have been opened
   * @param clicks        - the total number of times tracked URLs in messages with this tag have been clicked
   * @param unique_opens  - the number of unique opens for emails sent with this tag
@@ -154,7 +153,6 @@ case class MSenderTSResponse(time: String,
                              soft_bounces: Int,
                              rejects: Int,
                              complaints: Int,
-                             unsubs: Int,
                              opens: Int,
                              unique_opens: Int,
                              clicks: Int,
