@@ -1,6 +1,6 @@
 package io.github.scamandrill.client
 
-import io.github.scamandrill.{MandrillSpec, client}
+import io.github.scamandrill.{ActualAPICall, MandrillSpec, client}
 import io.github.scamandrill.models._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Minute, Span}
@@ -40,7 +40,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  it should "handle calling the actual mandrillapp.com with a valid key" in {
+  it should "handle calling the actual mandrillapp.com with a valid key" taggedAs ActualAPICall in {
     assume(SCAMANDRILL_API_KEY.isDefined)
     val scamandrill = Scamandrill()
     try {
@@ -52,7 +52,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     }
   }
 
-  it should "handle calling the actual mandrillapp.com with an invalid key" in {
+  it should "handle calling the actual mandrillapp.com with an invalid key" taggedAs ActualAPICall in {
     assume(SCAMANDRILL_API_KEY.isDefined)
     val scamandrill = Scamandrill()
     try {

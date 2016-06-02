@@ -2,6 +2,7 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
+import play.api.libs.json.JsString
 
 class MessageCallsTest extends MandrillSpec {
 
@@ -25,8 +26,8 @@ class MessageCallsTest extends MandrillSpec {
           important = false,
           bcc_address = "message.bcc_address@example.com".?,
           merge = true,
-          global_merge_vars = List(MVars("merge1", "merge1 content")),
-          merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", "merge2 content")))),
+          global_merge_vars = List(MVars("merge1", JsString("merge1 content"))),
+          merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", JsString("merge2 content"))))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
           metadata = List(MMetadata("website", "www.example.com")),
@@ -54,7 +55,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.messagesSendTemplate(MSendTemplateMessage(
         template_name = "example template_name",
-        template_content = List(MVars("example name", "example content")),
+        template_content = List(MVars("example name", JsString("example content"))),
         async = false,
         ip_pool = "Main Pool".?,
         message = new MSendMsg(
@@ -71,8 +72,8 @@ class MessageCallsTest extends MandrillSpec {
           important = false,
           bcc_address = "message.bcc_address@example.com".?,
           merge = true,
-          global_merge_vars = List(MVars("merge1", "merge1 content")),
-          merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", "merge2 content")))),
+          global_merge_vars = List(MVars("merge1", JsString("merge1 content"))),
+          merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", JsString("merge2 content"))))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
           metadata = List(MMetadata("website", "www.example.com")),

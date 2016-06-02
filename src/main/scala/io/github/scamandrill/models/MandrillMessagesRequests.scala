@@ -22,9 +22,12 @@ case object MAttachmetOrImage {
   * @param name    - the merge variable's name. Merge variable names are case-insensitive and may not start with _
   * @param content - the merge variable's content
   */
-case class MVars(name: String, content: String)
-case object MVars {
+case class MVars(name: String, content: JsValue)
+case object MVars extends ((String, JsValue) => MVars) {
   implicit val writes = Json.writes[MVars]
+
+  @deprecated("should be MVars(name: String, content: JsValue)", "3.0.0")
+  def apply(name: String, content: String): MVars = new MVars(name, JsString(content))
 }
 
 /**

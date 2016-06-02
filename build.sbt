@@ -26,7 +26,6 @@ resolvers ++= Seq("spray repo" at "http://repo.spray.io/")
 parallelExecution in Test := true
 
 libraryDependencies ++= {
-  val akkaV = "2.4.2"
   Seq(
     "com.typesafe.play" %% "play-ws"          % playVersion,
     "com.typesafe"      % "config"            % "1.3.0",
