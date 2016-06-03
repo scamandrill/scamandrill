@@ -1,10 +1,8 @@
 package io.github.scamandrill.client
 
-import io.github.scamandrill.{ActualAPICall, MandrillSpec, client}
+import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.time.{Minute, Span}
-import play.api.test.WsTestClient
 
 class UserCallsTest extends MandrillSpec with ScalaFutures {
 

@@ -2,8 +2,7 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
-
-import scala.concurrent.Await
+import io.github.scamandrill.client.implicits._
 
 class WebhookCallsTest extends MandrillSpec {
   "WebhookList" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=list" in {
@@ -14,11 +13,11 @@ class WebhookCallsTest extends MandrillSpec {
         url = "http://example/webhook-url",
         description = "My Example Webhook",
         auth_key = "gplJ8yWptFTqCoq5S1SHPA",
-        events = Some(List(
+        events = List(
           "send",
           "open",
           "click"
-        )),
+        ).?,
         created_at = "2013-01-01 15:30:27",
         last_sent_at = "2013-01-01 15:30:49",
         batches_sent = 42,
@@ -44,11 +43,11 @@ class WebhookCallsTest extends MandrillSpec {
         url = "http://example/webhook-url",
         description = "My Example Webhook",
         auth_key = "gplJ8yWptFTqCoq5S1SHPA",
-        events = Some(List(
+        events = List(
           "send",
           "open",
           "click"
-        )),
+        ).?,
         created_at = "2013-01-01 15:30:27",
         last_sent_at = "2013-01-01 15:30:49",
         batches_sent = 42,
@@ -68,11 +67,11 @@ class WebhookCallsTest extends MandrillSpec {
         url = "http://example/webhook-url",
         description = "My Example Webhook",
         auth_key = "gplJ8yWptFTqCoq5S1SHPA",
-        events = Some(List(
+        events = List(
           "send",
           "open",
           "click"
-        )),
+        ).?,
         created_at = "2013-01-01 15:30:27",
         last_sent_at = "2013-01-01 15:30:49",
         batches_sent = 42,
@@ -99,11 +98,11 @@ class WebhookCallsTest extends MandrillSpec {
         url = "http://example/webhook-url",
         description = "My Example Webhook",
         auth_key = "gplJ8yWptFTqCoq5S1SHPA",
-        events = Some(List(
+        events = List(
           "send",
           "open",
           "click"
-        )),
+        ).?,
         created_at = "2013-01-01 15:30:27",
         last_sent_at = "2013-01-01 15:30:49",
         batches_sent = 42,
@@ -123,11 +122,11 @@ class WebhookCallsTest extends MandrillSpec {
         url = "http://example/webhook-url",
         description = "My Example Webhook",
         auth_key = "gplJ8yWptFTqCoq5S1SHPA",
-        events = Some(List(
+        events = List(
           "send",
           "open",
           "click"
-        )),
+        ).?,
         created_at = "2013-01-01 15:30:27",
         last_sent_at = "2013-01-01 15:30:49",
         batches_sent = 42,

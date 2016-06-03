@@ -2,7 +2,7 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models.{MRejectAdd, MRejectAddResponse, _}
-import org.scalatest.concurrent.ScalaFutures
+import io.github.scamandrill.client.implicits._
 
 class RejectCallsTest extends MandrillSpec {
 

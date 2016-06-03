@@ -46,10 +46,6 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
     })
   }
 
-  implicit class OptString(str: String) {
-    def ? = Some(str)
-  }
-
   import scala.concurrent.ExecutionContext.global
   implicit val ec: ExecutionContext = global
 }

@@ -3,8 +3,6 @@ package io.github.scamandrill.client
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 
-import scala.concurrent.Await
-
 class IpsCallsTest extends MandrillSpec {
 
   "List" should "handle the example at https://www.mandrillapp.com/api/docs/ips.JSON.html#method=list" in {

@@ -1,6 +1,7 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.client.implicits._
 import io.github.scamandrill.models._
 import play.api.libs.json.JsString
 
@@ -22,7 +23,7 @@ class MessageCallsTest extends MandrillSpec {
             email = "recipient.email@example.com",
             name = "Recipient Name".?
           )),
-          headers = Some(List(MHeader("Reply-To", "message.reply@example.com"))),
+          headers = MHeaders("Reply-To" -> "message.reply@example.com").?,
           important = false,
           bcc_address = "message.bcc_address@example.com".?,
           merge = true,
@@ -30,8 +31,10 @@ class MessageCallsTest extends MandrillSpec {
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", JsString("merge2 content"))))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
-          metadata = List(MMetadata("website", "www.example.com")),
-          recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", List(MMetadata("user_id", "123456")))),
+          metadata = MMetadata("website" -> "www.example.com".json).?,
+          recipient_metadata = List(
+            MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456.json))
+          ),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
           google_analytics_campaign = "message.from_email@example.com".?,
@@ -68,7 +71,7 @@ class MessageCallsTest extends MandrillSpec {
             email = "recipient.email@example.com",
             name = "Recipient Name".?
           )),
-          headers = Some(List(MHeader("Reply-To", "message.reply@example.com"))),
+          headers = MHeaders("Reply-To" -> "message.reply@example.com").?,
           important = false,
           bcc_address = "message.bcc_address@example.com".?,
           merge = true,
@@ -76,8 +79,8 @@ class MessageCallsTest extends MandrillSpec {
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", JsString("merge2 content"))))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
-          metadata = List(MMetadata("website", "www.example.com")),
-          recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", List(MMetadata("user_id", "123456")))),
+          metadata = MMetadata("website" -> "www.example.com".json).?,
+          recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456.json))),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
           google_analytics_campaign = "message.from_email@example.com".?,

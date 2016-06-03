@@ -53,6 +53,14 @@ case object MTo {
   implicit val writes = Json.writes[MTo]
 }
 
+case class MHeaders(underlying: Map[String, String]) extends Optional[MHeaders]
+case object MHeaders extends (Map[String,String] => MHeaders) {
+  implicit val writes = new Writes[MHeaders] {
+    override def writes(o: MHeaders): JsValue = Json.toJson(o.underlying)
+  }
+  def apply(entries: (String, String)*): MHeaders = MHeaders(Map(entries:_*))
+  def apply(entries: TraversableOnce[MHeader]): MHeaders = MHeaders(entries.map(e => (e.name, e.value)).toSeq:_*)
+}
 /**
   * An Header
   *
@@ -65,14 +73,16 @@ case object MHeader {
 }
 
 /**
-  * A metadata wrapper
+  * An object containing metadata which will be represented as a JSON Object
   *
-  * @param name  - the key the metadata
-  * @param value - the value of the metadata
+  * @param underlying - the underlying data for
   */
-case class MMetadata(name: String, value: String)
-case object MMetadata {
-  implicit val writes = Json.writes[MMetadata]
+case class MMetadata(underlying: Map[String, JsScalar]) extends Optional[MMetadata]
+case object MMetadata extends (Map[String,JsScalar] => MMetadata) {
+  implicit val writes = new Writes[MMetadata] {
+    override def writes(o: MMetadata): JsValue = Json.toJson(o.underlying)
+  }
+  def apply(entries: (String, JsScalar)*): MMetadata = MMetadata(Map(entries:_*))
 }
 
 /**
@@ -81,14 +91,9 @@ case object MMetadata {
   * @param rcpt   - the email address of the recipient that the metadata is associated with
   * @param values - an associated array containing the recipient's unique metadata. If a key exists in both the per-recipient metadata and the global metadata, the per-recipient metadata will be used.
   */
-case class MRecipientMetadata(rcpt: String, values: List[MMetadata])
+case class MRecipientMetadata(rcpt: String, values: MMetadata)
 case object MRecipientMetadata {
-  implicit val writes = new Writes[MRecipientMetadata] {
-    override def writes(m: MRecipientMetadata): JsValue = Json.obj(
-      "rcpt" -> m.rcpt,
-      "values" -> JsObject(m.values.map(v => (v.name, JsString(v.value))))
-    )
-  }
+  implicit val writes = Json.writes[MRecipientMetadata]
 }
 
 // TODO: Metadata should be "key" -> JsScalarValue
@@ -131,7 +136,7 @@ class MSendMsg(val html: String,
                val from_email: String,
                val from_name: String,
                val to: List[MTo],
-               val headers: Option[List[MHeader]] = None,
+               val headers: Option[MHeaders] = None,
                val important: Boolean = false,
                val track_opens: Boolean = false,
                val track_clicks: Boolean = false,
@@ -153,7 +158,7 @@ class MSendMsg(val html: String,
                val subaccount: Option[String] = None,
                val google_analytics_domains: List[String] = List.empty,
                val google_analytics_campaign: Option[String] = None,
-               val metadata: List[MMetadata] = List.empty,
+               val metadata: Option[MMetadata] = None,
                val recipient_metadata: List[MRecipientMetadata] = List.empty,
                val attachments: List[MAttachmetOrImage] = List.empty,
                val images: List[MAttachmetOrImage] = List.empty) {
@@ -164,7 +169,7 @@ class MSendMsg(val html: String,
            from_email: String = this.from_email,
            from_name: String = this.from_name,
            to: List[MTo] = this.to,
-           headers: Option[List[MHeader]] = this.headers,
+           headers: Option[MHeaders] = this.headers,
            important: Boolean = this.important,
            track_opens: Boolean = this.track_opens,
            track_clicks: Boolean = this.track_clicks,
@@ -186,7 +191,7 @@ class MSendMsg(val html: String,
            subaccount: Option[String] = this.subaccount,
            google_analytics_domains: List[String] = this.google_analytics_domains,
            google_analytics_campaign: Option[String] = this.google_analytics_campaign,
-           metadata: List[MMetadata] = this.metadata,
+           metadata: Option[MMetadata] = this.metadata,
            recipient_metadata: List[MRecipientMetadata] = this.recipient_metadata,
            attachments: List[MAttachmetOrImage] = this.attachments,
            images: List[MAttachmetOrImage] = this.images): MSendMsg = {
@@ -271,7 +276,7 @@ object MSendMsg {
       "from_email" -> msg.from_email,
       "from_name" -> msg.from_name,
       "to" -> msg.to,
-      "headers" -> msg.headers.map(headers => JsObject(headers.map(h => (h.name, JsString(h.value))))),
+      "headers" -> msg.headers,
       "important" -> msg.important,
       "track_opens" -> msg.track_opens,
       "track_clicks" -> msg.track_clicks,
@@ -292,7 +297,7 @@ object MSendMsg {
       "subaccount" -> msg.subaccount,
       "google_analytics_domains" -> msg.google_analytics_domains,
       "google_analytics_campaign" -> msg.google_analytics_campaign,
-      "metadata" -> JsObject(msg.metadata.map(m => (m.name, JsString(m.value)))),
+      "metadata" -> msg.metadata,
       "recipient_metadata" -> msg.recipient_metadata,
       "attachments" -> msg.attachments,
       "images" -> msg.images,

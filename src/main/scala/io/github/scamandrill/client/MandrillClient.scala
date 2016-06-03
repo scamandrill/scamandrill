@@ -1,5 +1,6 @@
 package io.github.scamandrill.client
 
+import io.github.scamandrill.models.JsScalar.{JsScalarBoolean, JsScalarNumber, JsScalarString}
 import play.api.libs.ws.WSClient
 import io.github.scamandrill.models._
 
@@ -1107,4 +1108,16 @@ object MandrillClient {
     val metaupdate = Value("metaupdate", "/metadata/update.json")
     val metadel = Value("metadel", "/metadata/delete.json")
   }
+}
+
+object implicits {
+  implicit class StringToJsScalar(v: String) { def json : JsScalar = JsScalarString(v)}
+  implicit class BooleanToJsScalar(v: Boolean) { def json : JsScalar = JsScalarBoolean(v)}
+  implicit class IntToJsScalar(v: Int) { def json : JsScalar = JsScalarNumber(v) }
+  implicit class BigDecimalToJsScalar(v: BigDecimal) { def json : JsScalar = JsScalarNumber(v) }
+
+  implicit class MakeOptional[T <: Optional[T]](o: T) { def ? : Option[T] = Some(o) }
+  implicit class OptionalString(s: String) { def ? : Option[String] = Some(s) }
+  implicit class OptionalBoolean(b: Boolean) { def ? : Option[Boolean] = Some(b) }
+  implicit class OptionalList[T](l: List[T]) { def ? : Option[List[T]] = Some(l) }
 }

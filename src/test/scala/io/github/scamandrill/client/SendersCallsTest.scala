@@ -2,6 +2,7 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
+import io.github.scamandrill.client.implicits._
 
 class SendersCallsTest extends MandrillSpec {
 

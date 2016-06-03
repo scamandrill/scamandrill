@@ -63,7 +63,7 @@
             {
                 "rcpt": "recipient.email@example.com",
                 "values": {
-                    "user_id": "123456"
+                    "user_id": 123456
                 }
             }
         ],
