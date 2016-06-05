@@ -1112,10 +1112,11 @@ object MandrillClient {
 }
 
 object implicits {
-  implicit class StringToJsScalar(v: String) { def json : JsScalar = JsScalarString(v)}
-  implicit class BooleanToJsScalar(v: Boolean) { def json : JsScalar = JsScalarBoolean(v)}
-  implicit class IntToJsScalar(v: Int) { def json : JsScalar = JsScalarNumber(v) }
-  implicit class BigDecimalToJsScalar(v: BigDecimal) { def json : JsScalar = JsScalarNumber(v) }
+  import scala.language.implicitConversions
+  implicit def stringEntryToJsScalarEntry(e: (String, String)) = MMetadataEntry(e._1, JsScalarString(e._2))
+  implicit def booleanEntryToJsScalarEntry(e: (String, Boolean)) = MMetadataEntry(e._1, JsScalarBoolean(e._2))
+  implicit def intEntryToJsScalarEntry(e: (String, Int)) = MMetadataEntry(e._1, JsScalarNumber(e._2))
+  implicit def bigDecimalEntryToJsScalarEntry(e: (String, BigDecimal)) = MMetadataEntry(e._1, JsScalarNumber(e._2))
 
   implicit class MakeOptional[T <: Optional[T]](o: T) { def ? : Option[T] = Some(o) }
   implicit class OptionalString(s: String) { def ? : Option[String] = Some(s) }

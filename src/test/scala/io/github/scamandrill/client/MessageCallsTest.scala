@@ -33,9 +33,9 @@ class MessageCallsTest extends MandrillSpec {
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", "merge2 content")))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
-          metadata = MMetadata("website" -> "www.example.com".json).?,
+          metadata = MMetadata("website" -> "www.example.com").?,
           recipient_metadata = List(
-            MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456.json))
+            MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456))
           ),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
@@ -81,8 +81,8 @@ class MessageCallsTest extends MandrillSpec {
           merge_vars = List(MMergeVars("recipient.email@example.com", List(MVars("merge2", JsString("merge2 content"))))),
           tags = List("password-resets"),
           subaccount = "customer-123".?,
-          metadata = MMetadata("website" -> "www.example.com".json).?,
-          recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456.json))),
+          metadata = MMetadata("website" -> "www.example.com").?,
+          recipient_metadata = List(MRecipientMetadata("recipient.email@example.com", MMetadata("user_id" -> 123456))),
           attachments = List(MAttachmetOrImage("text/plain", "myfile.txt", "ZXhhbXBsZSBmaWxl")),
           images = List(MAttachmetOrImage("image/png", "IMAGECID", "ZXhhbXBsZSBmaWxl")),
           google_analytics_campaign = "message.from_email@example.com".?,
