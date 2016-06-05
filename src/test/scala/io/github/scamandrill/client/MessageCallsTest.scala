@@ -5,6 +5,8 @@ import io.github.scamandrill.client.implicits._
 import io.github.scamandrill.models._
 import play.api.libs.json.JsString
 
+import scala.util.Success
+
 class MessageCallsTest extends MandrillSpec {
 
   "Send" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send" in {
@@ -42,13 +44,13 @@ class MessageCallsTest extends MandrillSpec {
           merge_language = "handlebars".?
         )
       )), defaultTimeout) {
-        case MandrillSuccess(res) =>
+        case Success(res) =>
           res.size shouldBe 1
           res.head.status shouldBe "sent"
           res.head.email shouldBe "recipient.email@example.com"
           res.head.reject_reason shouldBe "hard-bounce".?
           res.head._id shouldBe "abc123abc123abc123abc123abc123"
-        case x@_ => fail(s"Unsuccessful call: Should be MandrillSuccess, got $x")
+        case x@_ => fail(s"Unsuccessful call: Should be Success, got $x")
       }
     }
   }
@@ -88,13 +90,13 @@ class MessageCallsTest extends MandrillSpec {
           merge_language = "handlebars".?
         )
       )), defaultTimeout) {
-        case MandrillSuccess(res) =>
+        case Success(res) =>
           res.size shouldBe 1
           res.head.status shouldBe "sent"
           res.head.email shouldBe "recipient.email@example.com"
           res.head.reject_reason shouldBe "hard-bounce".?
           res.head._id shouldBe "abc123abc123abc123abc123abc123"
-        case x@_ => fail(s"Unsuccessful call: Should be MandrillSuccess, got $x")
+        case x@_ => fail(s"Unsuccessful call: Should be Success, got $x")
       }
     }
   }
@@ -111,7 +113,7 @@ class MessageCallsTest extends MandrillSpec {
         api_keys = List("PmmzuovUZMPJsa73o3jjCw"),
         limit = 100
       )), defaultTimeout) { res =>
-        res shouldBe MandrillSuccess(List(MSearchResponse(
+        res shouldBe Success(List(MSearchResponse(
           ts = 1365190000,
           _id = "abc123abc123abc123abc123",
           sender = "sender@example.com",
@@ -156,7 +158,7 @@ class MessageCallsTest extends MandrillSpec {
         senders = List(
           "sender@example.com"
         )
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MTimeSeriesResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MTimeSeriesResponse(
         time = "2013-01-01 15:00:00",
         sent = 42,
         hard_bounces = 42,
@@ -177,7 +179,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesInfo(MMessageInfo(
         id = "abc123abc123abc123abc123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MMessageInfoResponse(
+      )), defaultTimeout)(_ shouldBe Success(MMessageInfoResponse(
         ts = 1365190000,
         _id = "abc123abc123abc123abc123",
         sender = "sender@example.com",
@@ -223,7 +225,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesParse(MParse(
         raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content."
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MParseResponse(
+      )), defaultTimeout)(_ shouldBe Success(MParseResponse(
         subject = "Some Subject".?,
         from_email = "sender@example.com".?,
         from_name = "Sender Name".?,
@@ -265,7 +267,7 @@ class MessageCallsTest extends MandrillSpec {
         ip_pool = "Main Pool".?,
         send_at = "example send_at".?,
         return_path_domain = "mail.com".?
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSendResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MSendResponse(
         email = "recipient.email@example.com",
         status = "sent",
         reject_reason = "hard-bounce".?,
@@ -279,7 +281,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesListSchedule(MListSchedule(
         to = "test.recipient@example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MScheduleResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
         created_at = "2013-01-20 12:13:01",
         send_at = "2021-01-05 12:42:01",
@@ -295,7 +297,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesCancelSchedule(MCancelSchedule(
         id = "I_dtFt2ZNPW5QD9-FaDU1A"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MScheduleResponse(
+      )), defaultTimeout)(_ shouldBe Success(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
         created_at = "2013-01-20 12:13:01",
         send_at = "2021-01-05 12:42:01",
@@ -312,7 +314,7 @@ class MessageCallsTest extends MandrillSpec {
       whenReady(instance.messagesReschedule(MReSchedule(
         id = "I_dtFt2ZNPW5QD9-FaDU1A",
         send_at = "20120-06-01 08:15:01"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MScheduleResponse(
+      )), defaultTimeout)(_ shouldBe Success(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
         created_at = "2013-01-20 12:13:01",
         send_at = "2021-01-05 12:42:01",
@@ -328,7 +330,7 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.messagesContent(MMessageInfo(
         id = "abc123abc123abc123abc123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MContentResponse(
+      )), defaultTimeout)(_ shouldBe Success(MContentResponse(
         ts = 1365190000,
         _id = "abc123abc123abc123abc123",
         from_email = "sender@example.com",

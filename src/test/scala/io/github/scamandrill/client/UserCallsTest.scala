@@ -4,13 +4,15 @@ import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
 import org.scalatest.concurrent.ScalaFutures
 
+import scala.util.{Failure, Success}
+
 class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Ping" should "work getting a valid MPingResponse" in {
     withClient("/users/ping.json") { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.usersPing, defaultTimeout) { res =>
-        res shouldBe MandrillSuccess(MPingResponse("PONG!"))
+        res shouldBe Success(MPingResponse("PONG!"))
       }
     }
   }
@@ -19,7 +21,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     withClient("/users/ping.json", returnError = true) { ws =>
       val instance = new MandrillClient(ws, new APIKey())
       whenReady(instance.usersPing, defaultTimeout){
-        case MandrillFailure(e:MandrillResponseException) =>
+        case Failure(e:MandrillResponseException) =>
           e.mandrillError shouldBe MandrillError(
             status = "error",
             code = -1,
@@ -34,7 +36,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
   it should "handle an unexpected exception whilst calling Mandrill" in {
     withClient("/users/ping.json", raiseException = true) { ws =>
       val instance = new MandrillClient(ws, new APIKey())
-      whenReady(instance.usersPing, defaultTimeout)(_ shouldBe a[MandrillFailure[_]])
+      whenReady(instance.usersPing, defaultTimeout)(_ shouldBe a[Failure[_]])
     }
   }
 
@@ -43,7 +45,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     val scamandrill = Scamandrill()
     try {
       SCAMANDRILL_API_KEY.foreach { apiKey =>
-        whenReady(scamandrill.getClient(apiKey).usersPing, defaultTimeout)(_ shouldBe MandrillSuccess(MPingResponse(PING = "PONG!")))
+        whenReady(scamandrill.getClient(apiKey).usersPing, defaultTimeout)(_ shouldBe Success(MPingResponse(PING = "PONG!")))
       }
     } finally {
       scamandrill.shutdown()
@@ -55,7 +57,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     val scamandrill = Scamandrill()
     try {
       SCAMANDRILL_API_KEY.foreach { apiKey =>
-        whenReady(scamandrill.getClient("").usersPing, defaultTimeout)(_ shouldBe a[MandrillFailure[_]])
+        whenReady(scamandrill.getClient("").usersPing, defaultTimeout)(_ shouldBe a[Failure[_]])
       }
     } finally {
       scamandrill.shutdown()
@@ -66,7 +68,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     withClient("/users/ping2.json") { wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersPing2, defaultTimeout) { res =>
-        res shouldBe MandrillSuccess(MPingResponse("PONG!"))
+        res shouldBe Success(MPingResponse("PONG!"))
       }
     }
   }
@@ -75,10 +77,10 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     withClient("/users/senders.json") { wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersSenders, defaultTimeout) {
-        case MandrillSuccess(senders) =>
+        case Success(senders) =>
           senders.head.getClass shouldBe classOf[MSenderDataResponse]
           senders.exists(_.address == "sender.example@mandrillapp.com") shouldBe true
-        case MandrillFailure(t) => fail(t)
+        case Failure(t) => fail(t)
       }
     }
   }
@@ -87,12 +89,12 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
     withClient("/users/info.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.usersInfo, defaultTimeout) {
-        case MandrillSuccess(info) =>
+        case Success(info) =>
           info.username shouldBe "myusername"
           info.created_at shouldBe "2013-01-01 15:30:27"
           info.hourly_quota shouldBe 42
           info.public_id shouldBe "aaabbbccc112233"
-        case MandrillFailure(t) => fail(t)
+        case Failure(t) => fail(t)
       }
     }
   }

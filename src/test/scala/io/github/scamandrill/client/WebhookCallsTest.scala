@@ -4,11 +4,13 @@ import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
 
+import scala.util.Success
+
 class WebhookCallsTest extends MandrillSpec {
   "WebhookList" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=list" in {
     withClient("/webhooks/list.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
-      whenReady(instance.webhookList(), defaultTimeout)(_ shouldBe MandrillSuccess(List(MWebhooksResponse(
+      whenReady(instance.webhookList(), defaultTimeout)(_ shouldBe Success(List(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
         description = "My Example Webhook",
@@ -38,7 +40,7 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         )
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWebhooksResponse(
+      )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
         description = "My Example Webhook",
@@ -62,7 +64,7 @@ class WebhookCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.webhookInfo(MWebhookInfo(
         id = 42
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWebhooksResponse(
+      )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
         description = "My Example Webhook",
@@ -93,7 +95,7 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         )
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWebhooksResponse(
+      )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
         description = "My Example Webhook",
@@ -117,7 +119,7 @@ class WebhookCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.webhookDelete(MWebhookInfo(
         id = 42
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MWebhooksResponse(
+      )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
         description = "My Example Webhook",

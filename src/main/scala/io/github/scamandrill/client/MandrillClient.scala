@@ -5,6 +5,7 @@ import play.api.libs.ws.WSClient
 import io.github.scamandrill.models._
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 class MandrillClient(
   val ws: WSClient,
@@ -30,7 +31,7 @@ class MandrillClient(
     *
     * @return - the string "PONG!" if successful
     */
-  def usersPing: Future[MandrillResponse[MPingResponse]] = {
+  def usersPing: Future[Try[MPingResponse]] = {
     executeQuery[MVoid, MPingResponse](ping, MVoid())
   }
 
@@ -39,7 +40,7 @@ class MandrillClient(
     *
     * @return - the string "PONG!" if successful
     */
-  def usersPing2: Future[MandrillResponse[MPingResponse]] = {
+  def usersPing2: Future[Try[MPingResponse]] = {
     executeQuery[MVoid, MPingResponse](ping2, MVoid())
   }
 
@@ -48,7 +49,7 @@ class MandrillClient(
     *
     * @return the senders that have tried to use this account, both verified and unverified
     */
-  def usersSenders: Future[MandrillResponse[List[MSenderDataResponse]]] = {
+  def usersSenders: Future[Try[List[MSenderDataResponse]]] = {
     executeQuery[MVoid, List[MSenderDataResponse]](senders, MVoid())
   }
 
@@ -57,7 +58,7 @@ class MandrillClient(
     *
     * @return the information about the API-connected user
     */
-  def usersInfo: Future[MandrillResponse[MInfoResponse]] = {
+  def usersInfo: Future[Try[MInfoResponse]] = {
     executeQuery[MVoid, MInfoResponse](info, MVoid())
   }
 
@@ -71,7 +72,7 @@ class MandrillClient(
     * @param msg - the message to send
     * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
     */
-  def messagesSend(msg: MSendMessage): Future[MandrillResponse[List[MSendResponse]]] = {
+  def messagesSend(msg: MSendMessage): Future[Try[List[MSendResponse]]] = {
     executeQuery[MSendMessage, List[MSendResponse]](send, msg)
   }
 
@@ -81,7 +82,7 @@ class MandrillClient(
     * @param msg - the message to send
     * @return - an of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
     */
-  def messagesSendTemplate(msg: MSendTemplateMessage): Future[MandrillResponse[List[MSendResponse]]] = {
+  def messagesSendTemplate(msg: MSendTemplateMessage): Future[Try[List[MSendResponse]]] = {
     executeQuery[MSendTemplateMessage,List[MSendResponse]](sendTemplate, msg)
   }
 
@@ -94,7 +95,7 @@ class MandrillClient(
     * @param q - the search values
     * @return an array of information for a single matching message
     */
-  def messagesSearch(q: MSearch): Future[MandrillResponse[List[MSearchResponse]]] = {
+  def messagesSearch(q: MSearch): Future[Try[List[MSearchResponse]]] = {
     executeQuery[MSearch, List[MSearchResponse]](search, q)
   }
 
@@ -105,7 +106,7 @@ class MandrillClient(
     * @param q - the search values
     * @return the history information
     */
-  def messagesSearchTimeSeries(q: MSearchTimeSeries): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+  def messagesSearchTimeSeries(q: MSearchTimeSeries): Future[Try[List[MTimeSeriesResponse]]] = {
     executeQuery[MSearchTimeSeries, List[MTimeSeriesResponse]](searchTimeS, q)
   }
 
@@ -115,7 +116,7 @@ class MandrillClient(
     * @param q - the message info (containing unique id)
     * @return the information for the message
     */
-  def messagesInfo(q: MMessageInfo): Future[MandrillResponse[MMessageInfoResponse]] = {
+  def messagesInfo(q: MMessageInfo): Future[Try[MMessageInfoResponse]] = {
     executeQuery[MMessageInfo, MMessageInfoResponse](msginfo, q)
   }
 
@@ -125,7 +126,7 @@ class MandrillClient(
     * @param q - the message info (containing unique id)
     * @return the content of the message
     */
-  def messagesContent(q: MMessageInfo): Future[MandrillResponse[MContentResponse]] = {
+  def messagesContent(q: MMessageInfo): Future[Try[MContentResponse]] = {
     executeQuery[MMessageInfo, MContentResponse](content, q)
   }
 
@@ -135,7 +136,7 @@ class MandrillClient(
     * @param raw - the full MIME document of an email message
     * @return the parsed message
     */
-  def messagesParse(raw: MParse): Future[MandrillResponse[MParseResponse]] = {
+  def messagesParse(raw: MParse): Future[Try[MParseResponse]] = {
     executeQuery[MParse,MParseResponse](parse, raw)
   }
 
@@ -145,7 +146,7 @@ class MandrillClient(
     * @param raw - the full MIME document of an email message
     * @return an array for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
     */
-  def messagesSendRaw(raw: MSendRaw): Future[MandrillResponse[List[MSendResponse]]] = {
+  def messagesSendRaw(raw: MSendRaw): Future[Try[List[MSendResponse]]] = {
     executeQuery[MSendRaw, List[MSendResponse]](sendraw, raw)
   }
 
@@ -155,7 +156,7 @@ class MandrillClient(
     * @param sc - the recipient address to restrict results to
     * @return a list of up to 1000 scheduled emails
     */
-  def messagesListSchedule(sc: MListSchedule): Future[MandrillResponse[List[MScheduleResponse]]] = {
+  def messagesListSchedule(sc: MListSchedule): Future[Try[List[MScheduleResponse]]] = {
     executeQuery[MListSchedule, List[MScheduleResponse]](listSchedule, sc)
   }
 
@@ -165,7 +166,7 @@ class MandrillClient(
     * @param sc - the scheduled mail
     * @return information about the scheduled email that was cancelled.
     */
-  def messagesCancelSchedule(sc: MCancelSchedule): Future[MandrillResponse[MScheduleResponse]] = {
+  def messagesCancelSchedule(sc: MCancelSchedule): Future[Try[MScheduleResponse]] = {
     executeQuery[MCancelSchedule, MScheduleResponse](cancelSchedule, sc)
   }
 
@@ -175,7 +176,7 @@ class MandrillClient(
     * @param sc - the mail to reschedule
     * @return information about the scheduled email that was rescheduled.
     */
-  def messagesReschedule(sc: MReSchedule): Future[MandrillResponse[MScheduleResponse]] = {
+  def messagesReschedule(sc: MReSchedule): Future[Try[MScheduleResponse]] = {
     executeQuery[MReSchedule, MScheduleResponse](reschedule, sc)
   }
 
@@ -188,7 +189,7 @@ class MandrillClient(
     *
     * @return all of the user-defined key information
     */
-  def tagList(): Future[MandrillResponse[List[MTagResponse]]] = {
+  def tagList(): Future[Try[List[MTagResponse]]] = {
     executeQuery[MVoid, List[MTagResponse]](taglist, MVoid())
   }
 
@@ -199,7 +200,7 @@ class MandrillClient(
     * @param tag - the existing tag info
     * @return the tag that was deleted
     */
-  def tagDelete(tag: MTagRequest): Future[MandrillResponse[MTagResponse]] = {
+  def tagDelete(tag: MTagRequest): Future[Try[MTagResponse]] = {
     executeQuery[MTagRequest, MTagResponse](tagdelete, tag)
   }
 
@@ -209,7 +210,7 @@ class MandrillClient(
     * @param tag - the existing tag info
     * @return the tag asked
     */
-  def tagInfo(tag: MTagRequest): Future[MandrillResponse[MTagInfoResponse]] = {
+  def tagInfo(tag: MTagRequest): Future[Try[MTagInfoResponse]] = {
     executeQuery[MTagRequest, MTagInfoResponse](taginfo, tag)
   }
 
@@ -219,7 +220,7 @@ class MandrillClient(
     * @param tag - the existing tag info
     * @return the recent history (hourly stats for the last 30 days) for a tag
     */
-  def tagTimeSeries(tag: MTagRequest): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+  def tagTimeSeries(tag: MTagRequest): Future[Try[List[MTimeSeriesResponse]]] = {
     executeQuery[MTagRequest, List[MTimeSeriesResponse]](tagtimeseries, tag)
   }
 
@@ -228,7 +229,7 @@ class MandrillClient(
     *
     * @return the recent history (hourly stats for the last 30 days) for all tags
     */
-  def tagAllTimeSeries(): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+  def tagAllTimeSeries(): Future[Try[List[MTimeSeriesResponse]]] = {
     executeQuery[MVoid, List[MTimeSeriesResponse]](tagalltime, MVoid())
   }
 
@@ -244,7 +245,7 @@ class MandrillClient(
     * @param reject - info about the mail to blacklist
     * @return an object containing the address and the result of the operation
     */
-  def rejectAdd(reject: MRejectAdd): Future[MandrillResponse[MRejectAddResponse]] = {
+  def rejectAdd(reject: MRejectAdd): Future[Try[MRejectAddResponse]] = {
     executeQuery[MRejectAdd, MRejectAddResponse](rejadd, reject)
   }
 
@@ -255,7 +256,7 @@ class MandrillClient(
     * @param delete - the mail to delete from the blacklist
     * @return - an object containing the address and whether the deletion succeeded.
     */
-  def rejectDelete(delete: MRejectDelete): Future[MandrillResponse[MRejectDeleteResponse]] = {
+  def rejectDelete(delete: MRejectDelete): Future[Try[MRejectDeleteResponse]] = {
     executeQuery[MRejectDelete, MRejectDeleteResponse](rejdelete, delete)
   }
 
@@ -267,7 +268,7 @@ class MandrillClient(
     * @param reject - information about the list of mails to retrieve
     * @return up to 1000 results
     */
-  def rejectList(reject: MRejectList): Future[MandrillResponse[List[MRejectListResponse]]] = {
+  def rejectList(reject: MRejectList): Future[Try[List[MRejectListResponse]]] = {
     executeQuery[MRejectList, List[MRejectListResponse]](rejlist, reject)
   }
 
@@ -282,7 +283,7 @@ class MandrillClient(
     * @param mail - the mail to be added to the whitelist
     * @return an object containing the address and the result of the operation
     */
-  def whitelistAdd(mail: MWhitelistAdd): Future[MandrillResponse[MWhitelistAddResponse]] = {
+  def whitelistAdd(mail: MWhitelistAdd): Future[Try[MWhitelistAddResponse]] = {
     executeQuery[MWhitelistAdd, MWhitelistAddResponse](wlistadd, mail)
   }
 
@@ -292,7 +293,7 @@ class MandrillClient(
     * @param mail - the mail to be removed from the whitelist
     * @return a status object containing the address and whether the deletion succeeded
     */
-  def whitelistDelete(mail: MWhitelist): Future[MandrillResponse[MWhitelistDeleteResponse]] = {
+  def whitelistDelete(mail: MWhitelist): Future[Try[MWhitelistDeleteResponse]] = {
     executeQuery[MWhitelist, MWhitelistDeleteResponse](wlistdelete, mail)
   }
 
@@ -302,7 +303,7 @@ class MandrillClient(
     * @param mail - the list of mails to be returned
     * @return up to 1000 results
     */
-  def whitelistList(mail: MWhitelist): Future[MandrillResponse[List[MWhitelistListResponse]]] = {
+  def whitelistList(mail: MWhitelist): Future[Try[List[MWhitelistListResponse]]] = {
     executeQuery[MWhitelist, List[MWhitelistListResponse]](wlistlist, mail)
   }
 
@@ -315,7 +316,7 @@ class MandrillClient(
     *
     * @return the senders that have tried to use this account.
     */
-  def sendersList: Future[MandrillResponse[List[MSendersListResp]]] = {
+  def sendersList: Future[Try[List[MSendersListResp]]] = {
     executeQuery[MVoid, List[MSendersListResp]](senderslist, MVoid())
   }
 
@@ -324,7 +325,7 @@ class MandrillClient(
     *
     * @return the sender domains that have been added to this account.
     */
-  def sendersDomains(): Future[MandrillResponse[List[MSendersDomainResponses]]] = {
+  def sendersDomains(): Future[Try[List[MSendersDomainResponses]]] = {
     executeQuery[MVoid, List[MSendersDomainResponses]](sendersdomains, MVoid())
   }
 
@@ -335,7 +336,7 @@ class MandrillClient(
     * @param snd - the domain to add
     * @return information about the domain
     */
-  def sendersAddDomain(snd: MSenderDomain): Future[MandrillResponse[MSendersDomainResponses]] = {
+  def sendersAddDomain(snd: MSenderDomain): Future[Try[MSendersDomainResponses]] = {
     executeQuery[MSenderDomain, MSendersDomainResponses](sendersadddom, snd)
   }
 
@@ -347,7 +348,7 @@ class MandrillClient(
     * @param snd - the domain to add
     * @return information about the domain
     */
-  def sendersCheckDomain(snd: MSenderDomain): Future[MandrillResponse[MSendersDomainResponses]] = {
+  def sendersCheckDomain(snd: MSenderDomain): Future[Try[MSendersDomainResponses]] = {
     executeQuery[MSenderDomain,MSendersDomainResponses](senderschkdom, snd)
   }
 
@@ -360,7 +361,7 @@ class MandrillClient(
     * @param snd - the verification email to send
     * @return information about the verification that was sent
     */
-  def sendersVerifyDomain(snd: MSenderVerifyDomain): Future[MandrillResponse[MSendersVerifyDomResp]] = {
+  def sendersVerifyDomain(snd: MSenderVerifyDomain): Future[Try[MSendersVerifyDomResp]] = {
     executeQuery[MSenderVerifyDomain,MSendersVerifyDomResp](sendersverdom, snd)
   }
 
@@ -370,7 +371,7 @@ class MandrillClient(
     * @param snd - the email address of the sender
     * @return the detailed information on the sender
     */
-  def sendersInfo(snd: MSenderAddress): Future[MandrillResponse[MSendersInfoResp]] = {
+  def sendersInfo(snd: MSenderAddress): Future[Try[MSendersInfoResp]] = {
     executeQuery[MSenderAddress,MSendersInfoResp](sendersinfo, snd)
   }
 
@@ -380,7 +381,7 @@ class MandrillClient(
     * @param snd - the email address of the sender
     * @return the array of history information
     */
-  def sendersTimeSeries(snd: MSenderAddress): Future[MandrillResponse[List[MSenderTSResponse]]] = {
+  def sendersTimeSeries(snd: MSenderAddress): Future[Try[List[MSenderTSResponse]]] = {
     executeQuery[MSenderAddress,List[MSenderTSResponse]](sendersts, snd)
   }
 
@@ -393,7 +394,7 @@ class MandrillClient(
     *
     * @return the 100 most clicked URLs
     */
-  def urlsList(): Future[MandrillResponse[List[MUrlResponse]]] = {
+  def urlsList(): Future[Try[List[MUrlResponse]]] = {
     executeQuery[MVoid, List[MUrlResponse]](urllist, MVoid())
   }
 
@@ -403,7 +404,7 @@ class MandrillClient(
     * @param url - a search query
     * @return the 100 most clicked URLs that match the search query given
     */
-  def urlsSearch(url: MUrlSearch): Future[MandrillResponse[List[MUrlResponse]]] = {
+  def urlsSearch(url: MUrlSearch): Future[Try[List[MUrlResponse]]] = {
     executeQuery[MUrlSearch,List[MUrlResponse]](urlsearch, url)
   }
 
@@ -413,7 +414,7 @@ class MandrillClient(
     * @param url - a search query
     * @return the recent history (hourly stats for the last 30 days) for a url
     */
-  def urlsTimeSeries(url: MUrlTimeSeries): Future[MandrillResponse[List[MUrlTimeResponse]]] = {
+  def urlsTimeSeries(url: MUrlTimeSeries): Future[Try[List[MUrlTimeResponse]]] = {
     executeQuery[MUrlTimeSeries,List[MUrlTimeResponse]](urlts, url)
   }
 
@@ -422,7 +423,7 @@ class MandrillClient(
     *
     * @return the list of tracking domains set up for this account
     */
-  def urlsTrackingDomain(): Future[MandrillResponse[List[MUrlDomainResponse]]] = {
+  def urlsTrackingDomain(): Future[Try[List[MUrlDomainResponse]]] = {
     executeQuery[MVoid,List[MUrlDomainResponse]](urltrackdom, MVoid())
   }
 
@@ -432,7 +433,7 @@ class MandrillClient(
     * @param url - an existing tracking domain name
     * @return information about the tracking domain
     */
-  def urlsCheckTrackingDomain(url: MUrlDomain): Future[MandrillResponse[MUrlDomainResponse]] = {
+  def urlsCheckTrackingDomain(url: MUrlDomain): Future[Try[MUrlDomainResponse]] = {
     executeQuery[MUrlDomain,MUrlDomainResponse](urlchktrackdom, url)
   }
 
@@ -442,7 +443,7 @@ class MandrillClient(
     * @param url - a domain
     * @return information about the domain
     */
-  def urlsAddTrackingDomain(url: MUrlDomain): Future[MandrillResponse[MUrlDomainResponse]] = {
+  def urlsAddTrackingDomain(url: MUrlDomain): Future[Try[MUrlDomainResponse]] = {
     executeQuery[MUrlDomain,MUrlDomainResponse](urladdtrackdom, url)
   }
 
@@ -456,7 +457,7 @@ class MandrillClient(
     * @param template - the template
     * @return the information saved about the new template
     */
-  def templateAdd(template: MTemplate): Future[MandrillResponse[MTemplateAddResponses]] = {
+  def templateAdd(template: MTemplate): Future[Try[MTemplateAddResponses]] = {
     executeQuery[MTemplate,MTemplateAddResponses](tmpadd, template)
   }
 
@@ -466,7 +467,7 @@ class MandrillClient(
     * @param template - the template
     * @return the requested template information
     */
-  def templateInfo(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+  def templateInfo(template: MTemplateInfo): Future[Try[MTemplateAddResponses]] = {
     executeQuery[MTemplateInfo,MTemplateAddResponses](tmpinfo, template)
   }
 
@@ -476,7 +477,7 @@ class MandrillClient(
     * @param template - the template
     * @return the template that was updated
     */
-  def templateUpdate(template: MTemplate): Future[MandrillResponse[MTemplateAddResponses]] = {
+  def templateUpdate(template: MTemplate): Future[Try[MTemplateAddResponses]] = {
     executeQuery[MTemplate,MTemplateAddResponses](tmpupdate, template)
   }
 
@@ -486,7 +487,7 @@ class MandrillClient(
     * @param template - the template
     * @return the template that was published
     */
-  def templatePublish(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+  def templatePublish(template: MTemplateInfo): Future[Try[MTemplateAddResponses]] = {
     executeQuery[MTemplateInfo,MTemplateAddResponses](tmppublish, template)
   }
 
@@ -496,7 +497,7 @@ class MandrillClient(
     * @param template - the template
     * @return the template that was deleted
     */
-  def templateDelete(template: MTemplateInfo): Future[MandrillResponse[MTemplateAddResponses]] = {
+  def templateDelete(template: MTemplateInfo): Future[Try[MTemplateAddResponses]] = {
     executeQuery[MTemplateInfo,MTemplateAddResponses](tmpdelete, template)
   }
 
@@ -506,7 +507,7 @@ class MandrillClient(
     * @param template - the template
     * @return an array of objects with information about each template
     */
-  def templateList(template: MTemplateList): Future[MandrillResponse[List[MTemplateAddResponses]]] = {
+  def templateList(template: MTemplateList): Future[Try[List[MTemplateAddResponses]]] = {
     executeQuery[MTemplateList,List[MTemplateAddResponses]](tmplist, template)
   }
 
@@ -516,7 +517,7 @@ class MandrillClient(
     * @param template - the template
     * @return an array of history information
     */
-  def templateTimeSeries(template: MTemplateInfo): Future[MandrillResponse[List[MTimeSeriesResponse]]] = {
+  def templateTimeSeries(template: MTemplateInfo): Future[Try[List[MTimeSeriesResponse]]] = {
     executeQuery[MTemplateInfo,List[MTimeSeriesResponse]](tmpts, template)
   }
 
@@ -526,7 +527,7 @@ class MandrillClient(
     * @param template - the template
     * @return the result of rendering the given template with the content and merge field values injected
     */
-  def templateRender(template: MTemplateRender): Future[MandrillResponse[MTemplateRenderResponse]] = {
+  def templateRender(template: MTemplateRender): Future[Try[MTemplateRenderResponse]] = {
     executeQuery[MTemplateRender,MTemplateRenderResponse](tmprender, template)
   }
 
@@ -539,7 +540,7 @@ class MandrillClient(
     *
     * @return the webhooks associated with the account
     */
-  def webhookList(): Future[MandrillResponse[List[MWebhooksResponse]]] = {
+  def webhookList(): Future[Try[List[MWebhooksResponse]]] = {
     executeQuery[MVoid,List[MWebhooksResponse]](webhlist, MVoid())
   }
 
@@ -549,7 +550,7 @@ class MandrillClient(
     * @param webhook
     * @return the information saved about the new webhook
     */
-  def webhookAdd(webhook: MWebhook): Future[MandrillResponse[MWebhooksResponse]] = {
+  def webhookAdd(webhook: MWebhook): Future[Try[MWebhooksResponse]] = {
     executeQuery[MWebhook,MWebhooksResponse](webhadd, webhook)
   }
 
@@ -559,7 +560,7 @@ class MandrillClient(
     * @param webhook - the existing webhook
     * @return the information saved about the new webhook
     */
-  def webhookInfo(webhook: MWebhookInfo): Future[MandrillResponse[MWebhooksResponse]] = {
+  def webhookInfo(webhook: MWebhookInfo): Future[Try[MWebhooksResponse]] = {
     executeQuery[MWebhookInfo,MWebhooksResponse](webhinfo, webhook)
   }
 
@@ -569,7 +570,7 @@ class MandrillClient(
     * @param webhook - the existing webhook to update
     * @return the information saved about the new webhook
     */
-  def webhookUpdate(webhook: MWebhookUpdate): Future[MandrillResponse[MWebhooksResponse]] = {
+  def webhookUpdate(webhook: MWebhookUpdate): Future[Try[MWebhooksResponse]] = {
     executeQuery[MWebhookUpdate,MWebhooksResponse](webhupdate, webhook)
   }
 
@@ -579,7 +580,7 @@ class MandrillClient(
     * @param webhook - the webhook to delete
     * @return the information saved about the new webhook
     */
-  def webhookDelete(webhook: MWebhookInfo): Future[MandrillResponse[MWebhooksResponse]] = {
+  def webhookDelete(webhook: MWebhookInfo): Future[Try[MWebhooksResponse]] = {
     executeQuery[MWebhookInfo,MWebhooksResponse](webhdelete, webhook)
   }
 
@@ -593,7 +594,7 @@ class MandrillClient(
     * @param subacc - the prefix
     * @return the subaccounts for the account, up to a maximum of 1,000
     */
-  def subaccountList(subacc: MSubaccountList): Future[MandrillResponse[List[MSubaccountsResponse]]] = {
+  def subaccountList(subacc: MSubaccountList): Future[Try[List[MSubaccountsResponse]]] = {
     executeQuery[MSubaccountList,List[MSubaccountsResponse]](sublist, subacc)
   }
 
@@ -603,7 +604,7 @@ class MandrillClient(
     * @param subacc - the subaccount to add
     * @return the information saved about the new subaccount
     */
-  def subaccountAdd(subacc: MSubaccount): Future[MandrillResponse[MSubaccountsResponse]] = {
+  def subaccountAdd(subacc: MSubaccount): Future[Try[MSubaccountsResponse]] = {
     executeQuery[MSubaccount,MSubaccountsResponse](subadd, subacc)
   }
 
@@ -613,7 +614,7 @@ class MandrillClient(
     * @param subacc - the existing subaccount
     * @return the information about the subaccount
     */
-  def subaccountInfo(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsInfoResponse]] = {
+  def subaccountInfo(subacc: MSubaccountInfo): Future[Try[MSubaccountsInfoResponse]] = {
     executeQuery[MSubaccountInfo,MSubaccountsInfoResponse](subinfo, subacc)
   }
 
@@ -623,7 +624,7 @@ class MandrillClient(
     * @param subacc - the existing subaccount to update
     * @return the information for the updated subaccount
     */
-  def subaccountUpdate(subacc: MSubaccount): Future[MandrillResponse[MSubaccountsResponse]] = {
+  def subaccountUpdate(subacc: MSubaccount): Future[Try[MSubaccountsResponse]] = {
     executeQuery[MSubaccount,MSubaccountsResponse](subupdate, subacc)
   }
 
@@ -633,7 +634,7 @@ class MandrillClient(
     * @param subacc - the subaccount to delete
     * @return the information for the deleted subaccount
     */
-  def subaccountDelete(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+  def subaccountDelete(subacc: MSubaccountInfo): Future[Try[MSubaccountsResponse]] = {
     executeQuery[MSubaccountInfo,MSubaccountsResponse](subdelete, subacc)
   }
 
@@ -643,7 +644,7 @@ class MandrillClient(
     * @param subacc - the subaccount to pause
     * @return the information for the paused subaccount
     */
-  def subaccountPause(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+  def subaccountPause(subacc: MSubaccountInfo): Future[Try[MSubaccountsResponse]] = {
     executeQuery[MSubaccountInfo,MSubaccountsResponse](subpause, subacc)
   }
 
@@ -653,7 +654,7 @@ class MandrillClient(
     * @param subacc - the subaccount to resume
     * @return the information for the resumed subaccount
     */
-  def subaccountResume(subacc: MSubaccountInfo): Future[MandrillResponse[MSubaccountsResponse]] = {
+  def subaccountResume(subacc: MSubaccountInfo): Future[Try[MSubaccountsResponse]] = {
     executeQuery[MSubaccountInfo,MSubaccountsResponse](subresume, subacc)
   }
 
@@ -666,7 +667,7 @@ class MandrillClient(
     *
     * @return the inbound domains associated with the account
     */
-  def inboundDomains(): Future[MandrillResponse[List[MInboundDomainResponse]]] = {
+  def inboundDomains(): Future[Try[List[MInboundDomainResponse]]] = {
     executeQuery[MVoid,List[MInboundDomainResponse]](inbdom, MVoid())
   }
 
@@ -676,7 +677,7 @@ class MandrillClient(
     * @param inbound - the domain to add
     * @return information about the domain
     */
-  def inboundAddDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+  def inboundAddDomain(inbound: MInboundDomain): Future[Try[MInboundDomainResponse]] = {
     executeQuery[MInboundDomain,MInboundDomainResponse](inbadddom, inbound)
   }
 
@@ -686,7 +687,7 @@ class MandrillClient(
     * @param inbound - the domain to check
     * @return information about the inbound domain
     */
-  def inboundCheckDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+  def inboundCheckDomain(inbound: MInboundDomain): Future[Try[MInboundDomainResponse]] = {
     executeQuery[MInboundDomain,MInboundDomainResponse](inbchkdom, inbound)
   }
 
@@ -696,7 +697,7 @@ class MandrillClient(
     * @param inbound - the domain to delete
     * @return information about the inbound domain
     */
-  def inboundDeleteDomain(inbound: MInboundDomain): Future[MandrillResponse[MInboundDomainResponse]] = {
+  def inboundDeleteDomain(inbound: MInboundDomain): Future[Try[MInboundDomainResponse]] = {
     executeQuery[MInboundDomain,MInboundDomainResponse](inbdeldom, inbound)
   }
 
@@ -706,7 +707,7 @@ class MandrillClient(
     * @param inbound - the domain
     * @return the routes associated with the domain
     */
-  def inboundRoutes(inbound: MInboundDomain): Future[MandrillResponse[List[MInboundRouteResponse]]] = {
+  def inboundRoutes(inbound: MInboundDomain): Future[Try[List[MInboundRouteResponse]]] = {
     executeQuery[MInboundDomain,List[MInboundRouteResponse]](inbroutes, inbound)
   }
 
@@ -716,7 +717,7 @@ class MandrillClient(
     * @param inbound - the domain
     * @return the added mailbox route information
     */
-  def inboundAddRoute(inbound: MInboundRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+  def inboundAddRoute(inbound: MInboundRoute): Future[Try[MInboundRouteResponse]] = {
     executeQuery[MInboundRoute,MInboundRouteResponse](inbaddroute, inbound)
   }
 
@@ -726,7 +727,7 @@ class MandrillClient(
     * @param inbound - the route to update
     * @return the updated mailbox route information
     */
-  def inboundUpdateRoute(inbound: MInboundUpdateRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+  def inboundUpdateRoute(inbound: MInboundUpdateRoute): Future[Try[MInboundRouteResponse]] = {
     executeQuery[MInboundUpdateRoute,MInboundRouteResponse](inbuproute, inbound)
   }
 
@@ -736,7 +737,7 @@ class MandrillClient(
     * @param inbound - the route to delete
     * @return the deleted mailbox route information
     */
-  def inboundDeleteRoute(inbound: MInboundDelRoute): Future[MandrillResponse[MInboundRouteResponse]] = {
+  def inboundDeleteRoute(inbound: MInboundDelRoute): Future[Try[MInboundRouteResponse]] = {
     executeQuery[MInboundDelRoute,MInboundRouteResponse](inbdelroute, inbound)
   }
 
@@ -746,7 +747,7 @@ class MandrillClient(
     * @param inbound - raw MIME document
     * @return an array of the information for each recipient in the message (usually one) that matched an inbound route
     */
-  def inboundSendRaw(inbound: MInboundRaw): Future[MandrillResponse[List[MInboundRawResponse]]] = {
+  def inboundSendRaw(inbound: MInboundRaw): Future[Try[List[MInboundRawResponse]]] = {
     executeQuery[MInboundRaw,List[MInboundRawResponse]](inbraw, inbound)
   }
 
@@ -763,7 +764,7 @@ class MandrillClient(
     * @param export - the export type
     * @return the information about the export
     */
-  def exportInfo(export: MExportInfo): Future[MandrillResponse[MExportResponse]] = {
+  def exportInfo(export: MExportInfo): Future[Try[MExportResponse]] = {
     executeQuery[MExportInfo,MExportResponse](expinfo, export)
   }
 
@@ -772,7 +773,7 @@ class MandrillClient(
     *
     * @return the account's exports
     */
-  def exportList(): Future[MandrillResponse[List[MExportResponse]]] = {
+  def exportList(): Future[Try[List[MExportResponse]]] = {
     executeQuery[MVoid,List[MExportResponse]](explist, MVoid())
   }
 
@@ -783,7 +784,7 @@ class MandrillClient(
     * @param export - the export job
     * @return information about the rejects export job that was started
     */
-  def exportReject(export: MExportNotify): Future[MandrillResponse[MExportResponse]] = {
+  def exportReject(export: MExportNotify): Future[Try[MExportResponse]] = {
     executeQuery[MExportNotify,MExportResponse](exprec, export)
   }
 
@@ -794,7 +795,7 @@ class MandrillClient(
     * @param export - the export job
     * @return information about the whitelist export job that was started
     */
-  def exportWhitelist(export: MExportNotify): Future[MandrillResponse[MExportResponse]] = {
+  def exportWhitelist(export: MExportNotify): Future[Try[MExportResponse]] = {
     executeQuery[MExportNotify,MExportResponse](expwhite, export)
   }
 
@@ -807,7 +808,7 @@ class MandrillClient(
     * @param export - the export activity
     * @return information about the activity export job that was started
     */
-  def exportActivity(export: MExportActivity): Future[MandrillResponse[MExportResponse]] = {
+  def exportActivity(export: MExportActivity): Future[Try[MExportResponse]] = {
     executeQuery[MExportActivity,MExportResponse](expactivity, export)
   }
 
@@ -820,7 +821,7 @@ class MandrillClient(
     *
     * @return an array of structs for each dedicated IP
     */
-  def ipsList(): Future[MandrillResponse[List[MIpsResponse]]] = {
+  def ipsList(): Future[Try[List[MIpsResponse]]] = {
     executeQuery[MVoid,List[MIpsResponse]](ipslist, MVoid())
   }
 
@@ -830,7 +831,7 @@ class MandrillClient(
     * @param ip - the ip
     * @return Information about the dedicated ip
     */
-  def ipsInfo(ip: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+  def ipsInfo(ip: MIpsIp): Future[Try[MIpsResponse]] = {
     executeQuery[MIpsIp,MIpsResponse](ipsinfo, ip)
   }
 
@@ -841,7 +842,7 @@ class MandrillClient(
     * @param ip - the isp
     * @return a description of the provisioning request that was created
     */
-  def ipsProvision(ip: MIpsPool): Future[MandrillResponse[MIpsProvisionResp]] = {
+  def ipsProvision(ip: MIpsPool): Future[Try[MIpsProvisionResp]] = {
     executeQuery[MIpsPool,MIpsProvisionResp](ipsprov, ip)
   }
 
@@ -853,7 +854,7 @@ class MandrillClient(
     * @param isp - the isp
     * @return Information about the dedicated IP
     */
-  def ipsStartWarmup(isp: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+  def ipsStartWarmup(isp: MIpsIp): Future[Try[MIpsResponse]] = {
     executeQuery[MIpsIp,MIpsResponse](ipsstwarm, isp)
   }
 
@@ -863,7 +864,7 @@ class MandrillClient(
     * @param ip - the isp
     * @return Information about the dedicated IP
     */
-  def ipsCancelWarmup(ip: MIpsIp): Future[MandrillResponse[MIpsResponse]] = {
+  def ipsCancelWarmup(ip: MIpsIp): Future[Try[MIpsResponse]] = {
     executeQuery[MIpsIp,MIpsResponse](ipscancwarm, ip)
   }
 
@@ -873,7 +874,7 @@ class MandrillClient(
     * @param pool - the ip pool
     * @return Information about the updated state of the dedicated IP
     */
-  def ipsSetPool(pool: MIpsSetPool): Future[MandrillResponse[MIpsResponse]] = {
+  def ipsSetPool(pool: MIpsSetPool): Future[Try[MIpsResponse]] = {
     executeQuery[MIpsSetPool,MIpsResponse](ipssetpool, pool)
   }
 
@@ -883,7 +884,7 @@ class MandrillClient(
     * @param ip - the ip
     * @return a description of the ip that was removed from your account.
     */
-  def ipsDelete(ip: MIpsIp): Future[MandrillResponse[MIpsDelete]] = {
+  def ipsDelete(ip: MIpsIp): Future[Try[MIpsDelete]] = {
     executeQuery[MIpsIp,MIpsDelete](ipsdel, ip)
   }
 
@@ -892,7 +893,7 @@ class MandrillClient(
     *
     * @return the dedicated IP pools for your account, up to a maximum of 1,000
     */
-  def ipsListPool(): Future[MandrillResponse[List[MIpsInfoPoolResponse]]] = {
+  def ipsListPool(): Future[Try[List[MIpsInfoPoolResponse]]] = {
     executeQuery[MVoid,List[MIpsInfoPoolResponse]](ipslistpool, MVoid())
   }
 
@@ -902,7 +903,7 @@ class MandrillClient(
     * @param pool - the ip pool
     * @return Information about the dedicated ip pool
     */
-  def ipsPoolInfo(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsInfoPoolResponse]] = {
+  def ipsPoolInfo(pool: MIpsPoolInfo): Future[Try[MIpsInfoPoolResponse]] = {
     executeQuery[MIpsPoolInfo,MIpsInfoPoolResponse](ipspoolinfo, pool)
   }
 
@@ -912,7 +913,7 @@ class MandrillClient(
     * @param pool - the pool
     * @return Information about the dedicated ip pool
     */
-  def ipsCreatePool(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsInfoPoolResponse]] = {
+  def ipsCreatePool(pool: MIpsPoolInfo): Future[Try[MIpsInfoPoolResponse]] = {
     executeQuery[MIpsPoolInfo,MIpsInfoPoolResponse](ipscreatep, pool)
   }
 
@@ -922,7 +923,7 @@ class MandrillClient(
     * @param pool - the pool
     * @return information about the status of the pool that was deleted
     */
-  def ipsDeletePool(pool: MIpsPoolInfo): Future[MandrillResponse[MIpsDeletePoolResponse]] = {
+  def ipsDeletePool(pool: MIpsPoolInfo): Future[Try[MIpsDeletePoolResponse]] = {
     executeQuery[MIpsPoolInfo,MIpsDeletePoolResponse](ipsdeletep, pool)
   }
 
@@ -932,7 +933,7 @@ class MandrillClient(
     * @param dns - custom dns
     * @return information about the dedicated IP's new configuration
     */
-  def ipsSetCustomDns(dns: MIpsDns): Future[MandrillResponse[MIpsResponse]] = {
+  def ipsSetCustomDns(dns: MIpsDns): Future[Try[MIpsResponse]] = {
     executeQuery[MIpsDns,MIpsResponse](ipsetdns, dns)
   }
 
@@ -942,7 +943,7 @@ class MandrillClient(
     * @param dns - custom dns
     * @return information about the dedicated IP's new configuration
     */
-  def ipsCheckCustomDns(dns: MIpsDns): Future[MandrillResponse[MIpsDnsResponse]] = {
+  def ipsCheckCustomDns(dns: MIpsDns): Future[Try[MIpsDnsResponse]] = {
     executeQuery[MIpsDns,MIpsDnsResponse](ipchkdns, dns)
   }
 
@@ -955,7 +956,7 @@ class MandrillClient(
     *
     * @return the custom metadata fields for the account
     */
-  def metadataList(): Future[MandrillResponse[List[MIMetadataResponse]]] = {
+  def metadataList(): Future[Try[List[MIMetadataResponse]]] = {
     executeQuery[MVoid,List[MIMetadataResponse]](metalist, MVoid())
   }
 
@@ -965,7 +966,7 @@ class MandrillClient(
     * @param meta - the metadata to add
     * @return the information saved about the new metadata field
     */
-  def metadataAdd(meta: MMeteadatapAdd): Future[MandrillResponse[MIMetadataResponse]] = {
+  def metadataAdd(meta: MMeteadatapAdd): Future[Try[MIMetadataResponse]] = {
     executeQuery[MMeteadatapAdd,MIMetadataResponse](metaadd, meta)
   }
 
@@ -975,7 +976,7 @@ class MandrillClient(
     * @param meta - the metadata to update
     * @return the information for the updated metadata field
     */
-  def metadataUpdate(meta: MMeteadatapAdd): Future[MandrillResponse[MIMetadataResponse]] = {
+  def metadataUpdate(meta: MMeteadatapAdd): Future[Try[MIMetadataResponse]] = {
     executeQuery[MMeteadatapAdd,MIMetadataResponse](metaupdate, meta)
   }
 
@@ -986,7 +987,7 @@ class MandrillClient(
     * @param meta - the metadata to delete
     * @return the information for the deleted metadata field
     */
-  def metadataDelete(meta: MMeteadatapDelete): Future[MandrillResponse[MIMetadataResponse]] = {
+  def metadataDelete(meta: MMeteadatapDelete): Future[Try[MIMetadataResponse]] = {
     executeQuery[MMeteadatapDelete,MIMetadataResponse](metadel, meta)
   }
 

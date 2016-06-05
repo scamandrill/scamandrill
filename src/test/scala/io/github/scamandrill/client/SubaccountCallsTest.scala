@@ -4,6 +4,8 @@ import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
 
+import scala.util.Success
+
 
 class SubaccountCallsTest extends MandrillSpec {
 
@@ -15,7 +17,7 @@ class SubaccountCallsTest extends MandrillSpec {
         name = "ABC Widgets, Inc.",
         notes = "Free plan user, signed up on 2013-01-01 12:00:00",
         custom_quota = 42
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,
@@ -35,7 +37,7 @@ class SubaccountCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.subaccountPause(MSubaccountInfo(
         id = "cust-123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,
@@ -55,7 +57,7 @@ class SubaccountCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.subaccountResume(MSubaccountInfo(
         id = "cust-123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,
@@ -78,7 +80,7 @@ class SubaccountCallsTest extends MandrillSpec {
         name = "ABC Widgets, Inc.",
         notes = "Free plan user, signed up on 2013-01-01 12:00:00",
         custom_quota = 42
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,
@@ -98,7 +100,7 @@ class SubaccountCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.subaccountInfo(MSubaccountInfo(
         id = "cust-123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsInfoResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsInfoResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         notes = "Free plan user, signed up on 2013-01-01 12:00:00",
@@ -133,7 +135,7 @@ class SubaccountCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.subaccountList(MSubaccountList(
         q = "cust-1"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,
@@ -153,7 +155,7 @@ class SubaccountCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.subaccountDelete(MSubaccountInfo(
         id = "cust-123"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSubaccountsResponse(
+      )), defaultTimeout)(_ shouldBe Success(MSubaccountsResponse(
         id = "cust-123",
         name = "ABC Widgets, Inc.",
         custom_quota = 42,

@@ -4,12 +4,14 @@ import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
 
+import scala.util.Success
+
 class SendersCallsTest extends MandrillSpec {
 
   "SendersList" should "handle the example at https://mandrillapp.com/api/docs/senders.JSON.html#method=list" in {
     withClient("/senders/list.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
-      whenReady(instance.sendersList, defaultTimeout)(_ shouldBe MandrillSuccess(List(MSendersListResp(
+      whenReady(instance.sendersList, defaultTimeout)(_ shouldBe Success(List(MSendersListResp(
         address = "sender.example@mandrillapp.com",
         created_at = "2013-01-01 15:30:27",
         sent = 42,
@@ -29,7 +31,7 @@ class SendersCallsTest extends MandrillSpec {
   "SendersDomains" should "handle the example at https://www.mandrillapp.com/api/docs/senders.JSON.html#method=domains" in {
     withClient("/senders/domains.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
-      whenReady(instance.sendersDomains(), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSendersDomainResponses(
+      whenReady(instance.sendersDomains(), defaultTimeout)(_ shouldBe Success(List(MSendersDomainResponses(
         domain = "example.com",
         created_at = "2013-01-01 15:30:27".?,
         last_tested_at = "2013-01-01 15:40:42",
@@ -54,7 +56,7 @@ class SendersCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.sendersAddDomain(MSenderDomain(
         domain = "example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSendersDomainResponses(
+      )), defaultTimeout)(_ shouldBe Success(MSendersDomainResponses(
         domain = "example.com",
         created_at = "2013-01-01 15:30:27".?,
         last_tested_at = "2013-01-01 15:40:42",
@@ -79,7 +81,7 @@ class SendersCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.sendersCheckDomain(MSenderDomain(
         domain = "example.org"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSendersDomainResponses(
+      )), defaultTimeout)(_ shouldBe Success(MSendersDomainResponses(
         domain = "example.com",
         created_at = "2013-01-01 15:30:27".?,
         last_tested_at = "2013-01-01 15:40:42",
@@ -105,7 +107,7 @@ class SendersCallsTest extends MandrillSpec {
       whenReady(instance.sendersVerifyDomain(MSenderVerifyDomain(
         domain = "example.com",
         mailbox = "your.name"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSendersVerifyDomResp(
+      )), defaultTimeout)(_ shouldBe Success(MSendersVerifyDomResp(
         status = "example status",
         domain = "example domain",
         email = "example email"
@@ -118,7 +120,7 @@ class SendersCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.sendersInfo(MSenderAddress(
         address = "sender.example@mandrillapp.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MSendersInfoResp(
+      )), defaultTimeout)(_ shouldBe Success(MSendersInfoResp(
         address = "sender.example@mandrillapp.com",
         created_at = "2013-01-01 15:30:27",
         sent = 42,
@@ -200,7 +202,7 @@ class SendersCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.sendersTimeSeries(MSenderAddress(
         address = "sender.example@mandrillapp.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MSenderTSResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MSenderTSResponse(
         unique_clicks = 42,
         time = "2013-01-01 15:30:27",
         sent = 42,

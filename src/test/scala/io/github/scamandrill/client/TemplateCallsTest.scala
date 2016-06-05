@@ -4,6 +4,8 @@ import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
 
+import scala.util.Success
+
 class TemplateCallsTest extends MandrillSpec {
 
   "TemplateAdd" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=add" in {
@@ -20,7 +22,7 @@ class TemplateCallsTest extends MandrillSpec {
         labels = List(
           "example-label"
         )
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(
@@ -49,7 +51,7 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.templatePublish(MTemplateInfo(
         name = "Example Template"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(
@@ -78,7 +80,7 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.templateInfo(MTemplateInfo(
         name = "Example Template"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(
@@ -107,7 +109,7 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.templateList(MTemplateList(
         label = "example-label"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(List(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(
@@ -145,7 +147,7 @@ class TemplateCallsTest extends MandrillSpec {
         labels = List(
           "example-label"
         )
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(
@@ -174,7 +176,7 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.templateTimeSeries(MTemplateInfo(
         name = "Example Template"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(
+      )), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
           time = "2013-01-01 15:00:00",
           sent = 42,
@@ -204,7 +206,7 @@ class TemplateCallsTest extends MandrillSpec {
           name = "merge1",
           content = "merge1 content"
         ))
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateRenderResponse(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateRenderResponse(
         html = "<p><div>content to inject merge1 content</div></p>".?
       )))
     }
@@ -215,7 +217,7 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.templateDelete(MTemplateInfo(
         name = "Example Template"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MTemplateAddResponses(
+      )), defaultTimeout)(_ shouldBe Success(MTemplateAddResponses(
         slug = "example-template",
         name = "Example Template",
         labels = List(

@@ -3,12 +3,14 @@ package io.github.scamandrill.client
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models._
 
+import scala.util.Success
+
 class InboundCallsTest extends MandrillSpec {
 
   "InboundDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=domain" in {
     withClient("/inbound/domains.json"){ wc =>
       val instance = new MandrillClient(wc, new APIKey())
-      whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe MandrillSuccess(List(
+      whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe Success(List(
         MInboundDomainResponse(
           domain = "inbound.example.com",
           created_at = "2013-01-01 15:30:27",
@@ -23,7 +25,7 @@ class InboundCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.inboundAddDomain(MInboundDomain(
         domain = "inbound.example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
           created_at = "2013-01-01 15:30:27",
@@ -38,7 +40,7 @@ class InboundCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.inboundCheckDomain(MInboundDomain(
         domain = "inbound.example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
           created_at = "2013-01-01 15:30:27",
@@ -53,7 +55,7 @@ class InboundCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.inboundDeleteDomain(MInboundDomain(
         domain = "inbound.example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
           created_at = "2013-01-01 15:30:27",
@@ -68,7 +70,7 @@ class InboundCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.inboundRoutes(MInboundDomain(
         domain = "inbound.example.com"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(
+      )), defaultTimeout)(_ shouldBe Success(List(
         MInboundRouteResponse(
           id = "7.23",
           pattern = "mailbox-*",
@@ -85,7 +87,7 @@ class InboundCallsTest extends MandrillSpec {
         domain = "inbound.example.com",
         pattern = "mailbox-*",
         url = "http://example.com/webhook-url"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundRouteResponse(
           id = "7.23",
           pattern = "mailbox-*",
@@ -102,7 +104,7 @@ class InboundCallsTest extends MandrillSpec {
         id = "7.23",
         pattern = "mailbox-*",
         url = "http://example.com/webhook-url"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundRouteResponse(
           id = "7.23",
           pattern = "mailbox-*",
@@ -117,7 +119,7 @@ class InboundCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc, new APIKey())
       whenReady(instance.inboundDeleteRoute(MInboundDelRoute(
         id = "7.23"
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(
+      )), defaultTimeout)(_ shouldBe Success(
         MInboundRouteResponse(
           id = "7.23",
           pattern = "mailbox-*",

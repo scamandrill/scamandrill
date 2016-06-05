@@ -7,6 +7,7 @@ import play.api.libs.json._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
+import scala.util.{Failure, Success, Try}
 
 /**
   * This trait abstract on top of spray the handling of all request / response to the mandrill API. Its
@@ -37,22 +38,22 @@ trait ScamandrillSendReceive extends SimpleLogger {
     * @note as from the api documentation, all requests are POST, and You can consider any non-200 HTTP
     *       response code an error - the returned data will contain more detailed information
     */
-  def executeQuery[Req, Res](endpoint: Endpoint, model: Req)(implicit writes: Writes[Req], reads: Reads[Res]): Future[MandrillResponse[Res]] = {
-    def handleError(res: WSResponse): MandrillResponse[Res] = {
+  def executeQuery[Req, Res](endpoint: Endpoint, model: Req)(implicit writes: Writes[Req], reads: Reads[Res]): Future[Try[Res]] = {
+    def handleError(res: WSResponse): Try[Res] = {
       res.json.validate[MandrillError].fold(
-        invalid = _ => MandrillFailure(new UnsuccessfulResponseException(res)),
-        valid = me => MandrillFailure[Res](new MandrillResponseException(res, me))
+        invalid = _ => Failure(new UnsuccessfulResponseException(res)),
+        valid = me => Failure(new MandrillResponseException(res, me))
       )
     }
     ws.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes))) map {
       case res if res.status == 200 =>
         res.json.validate[Res](reads).fold(
           invalid = _ => handleError(res),
-          valid = MandrillSuccess.apply
+          valid = Success.apply
         )
       case res => handleError(res)
     } recover {
-      case e => MandrillFailure[Res](e)
+      case e => Failure(e)
     }
 
   }

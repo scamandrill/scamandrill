@@ -4,6 +4,8 @@ import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models.{MRejectAdd, MRejectAddResponse, _}
 import io.github.scamandrill.client.implicits._
 
+import scala.util.Success
+
 class RejectCallsTest extends MandrillSpec {
 
   "RejectAdd" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=add" in {
@@ -13,7 +15,7 @@ class RejectCallsTest extends MandrillSpec {
         email = "example email",
         comment = "example comment".?,
         subaccount = "cust-123".?
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MRejectAddResponse(
+      )), defaultTimeout)(_ shouldBe Success(MRejectAddResponse(
         added = true,
         email = "example email"
       )))
@@ -27,7 +29,7 @@ class RejectCallsTest extends MandrillSpec {
         email = "example email",
         include_expired = true,
         subaccount = "cust-123".?
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(List(MRejectListResponse(
+      )), defaultTimeout)(_ shouldBe Success(List(MRejectListResponse(
         email = "example email",
         reason = "hard-bounce",
         detail = "550 mailbox does not exist".?,
@@ -60,7 +62,7 @@ class RejectCallsTest extends MandrillSpec {
       whenReady(instance.rejectDelete(MRejectDelete(
         email = "example email",
         subaccount = "cust-123".?
-      )), defaultTimeout)(_ shouldBe MandrillSuccess(MRejectDeleteResponse(
+      )), defaultTimeout)(_ shouldBe Success(MRejectDeleteResponse(
         email = "email@example.com",
         deleted = true,
         subaccount = "cust-123".?
