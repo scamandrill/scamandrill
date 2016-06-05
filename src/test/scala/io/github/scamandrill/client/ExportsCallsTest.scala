@@ -10,7 +10,7 @@ class ExportsCallsTest extends MandrillSpec {
 
   "Info" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=info" in {
     withClient("/exports/info.json") { wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.exportInfo(MExportInfo(
         id = "example id"
       )), defaultTimeout)(_ shouldBe Success(
@@ -28,7 +28,7 @@ class ExportsCallsTest extends MandrillSpec {
 
   "List" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=list" in {
     withClient("/exports/list.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.exportList(), defaultTimeout)(_ shouldBe Success(List(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
@@ -44,7 +44,7 @@ class ExportsCallsTest extends MandrillSpec {
 
   "Rejects" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=rejects" in {
     withClient("/exports/rejects.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.exportReject(MExportNotify(
         notify_email = "notify_email@example.com"
       )), defaultTimeout)(_ shouldBe Success(
@@ -62,7 +62,7 @@ class ExportsCallsTest extends MandrillSpec {
 
   "Whitelist" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=whitelist" in {
     withClient("/exports/whitelist.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.exportWhitelist(MExportNotify(
         notify_email = "notify_email@example.com"
       )), defaultTimeout)(_ shouldBe Success(
@@ -80,7 +80,7 @@ class ExportsCallsTest extends MandrillSpec {
 
   "Activity" should "handle the example at https://www.mandrillapp.com/api/docs/exports.JSON.html#method=activity" in {
     withClient("/exports/activity.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.exportActivity(MExportActivity(
         notify_email = "notify_email@example.com",
         date_from = "2013-01-01 12:53:01",

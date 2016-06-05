@@ -10,7 +10,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Ping" should "work getting a valid MPingResponse" in {
     withClient("/users/ping.json") { ws =>
-      val instance = new MandrillClient(ws, new APIKey())
+      val instance = new MandrillClient(ws)
       whenReady(instance.usersPing, defaultTimeout) { res =>
         res shouldBe Success(MPingResponse("PONG!"))
       }
@@ -19,7 +19,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Ping" should "handle an error response from Mandrill" in {
     withClient("/users/ping.json", returnError = true) { ws =>
-      val instance = new MandrillClient(ws, new APIKey())
+      val instance = new MandrillClient(ws)
       whenReady(instance.usersPing, defaultTimeout){
         case Failure(e:MandrillResponseException) =>
           e.mandrillError shouldBe MandrillError(
@@ -35,7 +35,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   it should "handle an unexpected exception whilst calling Mandrill" in {
     withClient("/users/ping.json", raiseException = true) { ws =>
-      val instance = new MandrillClient(ws, new APIKey())
+      val instance = new MandrillClient(ws)
       whenReady(instance.usersPing, defaultTimeout)(_ shouldBe a[Failure[_]])
     }
   }
@@ -66,7 +66,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Ping (version 2)" should "work getting a valid MPingResponse" in {
     withClient("/users/ping2.json") { wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.usersPing2, defaultTimeout) { res =>
         res shouldBe Success(MPingResponse("PONG!"))
       }
@@ -75,7 +75,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Sender" should "work getting a valid List[MSenderDataResponse]" in {
     withClient("/users/senders.json") { wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.usersSenders, defaultTimeout) {
         case Success(senders) =>
           senders.head.getClass shouldBe classOf[MSenderDataResponse]
@@ -87,7 +87,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
 
   "Info" should "work getting a valid MInfoResponse" in {
     withClient("/users/info.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.usersInfo, defaultTimeout) {
         case Success(info) =>
           info.username shouldBe "myusername"

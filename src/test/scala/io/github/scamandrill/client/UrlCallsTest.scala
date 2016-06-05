@@ -10,7 +10,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsList" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=list" in {
     withClient("/urls/list.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsList(), defaultTimeout)(_ shouldBe Success(List(MUrlResponse(
         url = "http://example.com/example-page",
         sent = 42,
@@ -22,7 +22,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsSearch" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=search" in {
     withClient("/urls/search.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsSearch(MUrlSearch(
         q = "http://example.com/example"
       )), defaultTimeout)(_ shouldBe Success(List(MUrlResponse(
@@ -36,7 +36,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsTimeSeries" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=time-series" in {
     withClient("/urls/time-series.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsTimeSeries(MUrlTimeSeries(
         url = "http://example.com/example-page"
       )), defaultTimeout)(_ shouldBe Success(List(MUrlTimeResponse(
@@ -50,7 +50,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsAddTrackingDomain" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=tracking-domains" in {
     withClient("/urls/add-tracking-domain.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsAddTrackingDomain(MUrlDomain(
         domain = "track.example.com"
       )), defaultTimeout)(_ shouldBe Success(MUrlDomainResponse(
@@ -69,7 +69,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsTrackingDomain" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=add-tracking-domain" in {
     withClient("/urls/tracking-domains.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsTrackingDomain(), defaultTimeout)(_ shouldBe Success(List(MUrlDomainResponse(
         domain = "example.com",
         created_at = "2013-01-01 15:30:27",
@@ -86,7 +86,7 @@ class UrlCallsTest extends MandrillSpec {
 
   "UrlsCheckTrackingDomain" should "handle the example at https://www.mandrillapp.com/api/docs/urls.JSON.html#method=check-tracking-domain" in {
     withClient("/urls/check-tracking-domain.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.urlsCheckTrackingDomain(MUrlDomain(
         domain = "track.example.com"
       )), defaultTimeout)(_ shouldBe Success(MUrlDomainResponse(

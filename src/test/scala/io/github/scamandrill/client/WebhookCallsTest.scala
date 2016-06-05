@@ -9,7 +9,7 @@ import scala.util.Success
 class WebhookCallsTest extends MandrillSpec {
   "WebhookList" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=list" in {
     withClient("/webhooks/list.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.webhookList(), defaultTimeout)(_ shouldBe Success(List(MWebhooksResponse(
         id = 42,
         url = "http://example/webhook-url",
@@ -31,7 +31,7 @@ class WebhookCallsTest extends MandrillSpec {
 
   "WebhookAdd" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=add" in {
     withClient("/webhooks/add.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.webhookAdd(MWebhook(
         url = "http://example/webhook-url",
         description = "My Example Webhook",
@@ -61,7 +61,7 @@ class WebhookCallsTest extends MandrillSpec {
 
   "WebhookInfo" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=info" in {
     withClient("/webhooks/info.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.webhookInfo(MWebhookInfo(
         id = 42
       )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(
@@ -85,7 +85,7 @@ class WebhookCallsTest extends MandrillSpec {
 
   "WebhookUpdate" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=update" in {
     withClient("/webhooks/update.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.webhookUpdate(MWebhookUpdate(
         id = 42,
         url = "http://example/webhook-url",
@@ -116,7 +116,7 @@ class WebhookCallsTest extends MandrillSpec {
 
   "WebhookDelete" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=delete" in {
     withClient("/webhooks/delete.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.webhookDelete(MWebhookInfo(
         id = 42
       )), defaultTimeout)(_ shouldBe Success(MWebhooksResponse(

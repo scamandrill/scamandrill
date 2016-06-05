@@ -10,7 +10,7 @@ class RejectCallsTest extends MandrillSpec {
 
   "RejectAdd" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=add" in {
     withClient("/rejects/add.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.rejectAdd(MRejectAdd(
         email = "example email",
         comment = "example comment".?,
@@ -24,7 +24,7 @@ class RejectCallsTest extends MandrillSpec {
 
   "RejectList" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=list" in {
     withClient("/rejects/list.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.rejectList(MRejectList(
         email = "example email",
         include_expired = true,
@@ -58,7 +58,7 @@ class RejectCallsTest extends MandrillSpec {
 
   "RejectDelete" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=delete" in {
     withClient("/rejects/delete.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.rejectDelete(MRejectDelete(
         email = "example email",
         subaccount = "cust-123".?

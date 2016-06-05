@@ -26,8 +26,7 @@ case class MVars(name: String, content: JsValue)
 case object MVars extends ((String, JsValue) => MVars) {
   implicit val writes = Json.writes[MVars]
 
-  @deprecated("should be MVars(name: String, content: JsValue)", "3.0.0")
-  def apply(name: String, content: String): MVars = new MVars(name, JsString(content))
+  def apply[T](name: String, content: T)(implicit cw: Writes[T]): MVars = new MVars(name, Json.toJson(content))
 }
 
 /**

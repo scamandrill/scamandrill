@@ -9,7 +9,7 @@ class TagsCallsTest extends MandrillSpec {
 
   "TagList" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=list" in {
     withClient("/tags/list.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.tagList(), defaultTimeout)(_ shouldBe Success(List(MTagResponse(
         tag = "example-tag",
         reputation = 42,
@@ -29,7 +29,7 @@ class TagsCallsTest extends MandrillSpec {
 
     "TagDelete" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=delete" in {
       withClient("/tags/delete.json"){ wc =>
-        val instance = new MandrillClient(wc, new APIKey())
+        val instance = new MandrillClient(wc)
         whenReady(instance.tagDelete(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(
           MTagResponse(
             tag = "example-tag",
@@ -51,7 +51,7 @@ class TagsCallsTest extends MandrillSpec {
 
   "TagInfo" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=info" in {
     withClient("/tags/info.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.tagInfo(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(
         MTagInfoResponse(
           tag = "example-tag",
@@ -132,7 +132,7 @@ class TagsCallsTest extends MandrillSpec {
 
   "TagTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=time-series" in {
     withClient("/tags/time-series.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.tagTimeSeries(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
           time = "2013-01-01 15:00:00",
@@ -153,7 +153,7 @@ class TagsCallsTest extends MandrillSpec {
 
   "TagAllTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=all-time-series" in {
     withClient("/tags/all-time-series.json"){ wc =>
-      val instance = new MandrillClient(wc, new APIKey())
+      val instance = new MandrillClient(wc)
       whenReady(instance.tagAllTimeSeries(), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
           time = "2013-01-01 15:00:00",
