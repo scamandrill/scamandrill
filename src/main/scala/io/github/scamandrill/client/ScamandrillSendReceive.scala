@@ -45,7 +45,7 @@ trait ScamandrillSendReceive extends SimpleLogger {
         valid = me => Failure(new MandrillResponseException(res, me))
       )
     }
-    ws.url(s"$serviceRoot$endpoint").post(Json.toJson(model)(authenticatedWriter(writes))) map {
+    ws.url(s"$serviceRoot$endpoint").withFollowRedirects(true).post(Json.toJson(model)(authenticatedWriter(writes))) map {
       case res if res.status == 200 =>
         res.json.validate[Res](reads).fold(
           invalid = _ => handleError(res),
