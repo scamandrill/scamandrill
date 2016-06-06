@@ -1113,10 +1113,10 @@ object MandrillClient {
 
 object implicits {
   import scala.language.implicitConversions
-  implicit def stringEntryToJsScalarEntry(e: (String, String)) = MMetadataEntry(e._1, JsScalarString(e._2))
-  implicit def booleanEntryToJsScalarEntry(e: (String, Boolean)) = MMetadataEntry(e._1, JsScalarBoolean(e._2))
-  implicit def intEntryToJsScalarEntry(e: (String, Int)) = MMetadataEntry(e._1, JsScalarNumber(e._2))
-  implicit def bigDecimalEntryToJsScalarEntry(e: (String, BigDecimal)) = MMetadataEntry(e._1, JsScalarNumber(e._2))
+  implicit def stringEntryToJsScalarEntry(e: (String, String)):MMetadataEntry = MMetadataEntry(e._1, JsScalarString(e._2))
+  implicit def booleanEntryToJsScalarEntry(e: (String, Boolean)):MMetadataEntry = MMetadataEntry(e._1, JsScalarBoolean(e._2))
+  implicit def intEntryToJsScalarEntry(e: (String, Int)):MMetadataEntry = MMetadataEntry(e._1, JsScalarNumber(e._2))
+  implicit def bigDecimalEntryToJsScalarEntry(e: (String, BigDecimal)):MMetadataEntry = MMetadataEntry(e._1, JsScalarNumber(e._2))
 
   implicit class MakeOptional[T <: Optional[T]](o: T) { def ? : Option[T] = Some(o) }
   implicit class OptionalString(s: String) { def ? : Option[String] = Some(s) }
