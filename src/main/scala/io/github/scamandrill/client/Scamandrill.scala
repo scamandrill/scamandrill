@@ -28,7 +28,7 @@ object Scamandrill extends ((WSClient, ExecutionContext, () => Future[Unit]) => 
     implicit val mat = ActorMaterializer()
     val env: Environment = Environment.simple(mode = Mode.Prod)
 
-    val _configuration = Configuration.reference ++ Configuration(ConfigFactory.load("io.github.scamandrill.conf")) ++ configuration
+    val _configuration = Configuration.reference ++ configuration
 
     val wsParser = new WSConfigParser(_configuration, env)
     val ahcParse = new AhcWSClientConfigParser(wsParser.parse(), _configuration, env)
