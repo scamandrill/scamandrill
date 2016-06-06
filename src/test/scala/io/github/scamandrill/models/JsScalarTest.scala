@@ -2,7 +2,7 @@ package io.github.scamandrill.models
 
 import io.github.scamandrill.MandrillSpec
 import io.github.scamandrill.models.JsScalar._
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class JsScalarTest extends MandrillSpec{
   "JsScalar" should "read a string value from a json string" in {
@@ -23,6 +23,24 @@ class JsScalarTest extends MandrillSpec{
 
   it should "read false from a json string" in {
     Json.parse("false").validate[JsScalar] shouldBe JsSuccess(JsScalarBoolean(false))
+  }
+
+  it should "fail reading a json object" in {
+    Json.parse(
+      """
+        |{
+        | "hello": "world"
+        |}
+      """.stripMargin).validate[JsScalar].isError shouldBe true
+  }
+
+  it should "fail reading a json array" in {
+    Json.parse(
+      """
+        |[
+        | 12345
+        |]
+      """.stripMargin).validate[JsScalar].isError shouldBe true
   }
 
 }
