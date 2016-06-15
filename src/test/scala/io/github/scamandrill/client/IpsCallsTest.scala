@@ -1,9 +1,9 @@
 package io.github.scamandrill.client
 
-import io.github.scamandrill.MandrillSpec
+import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class IpsCallsTest extends MandrillSpec {
 
@@ -306,6 +306,53 @@ class IpsCallsTest extends MandrillSpec {
           )
         )
       ))
+    }
+  }
+
+  "Actual IPs Calls" should "get an empty list before adding any IPs" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.ipsList(), defaultTimeout)(_ shouldBe Success(Nil))
+    }
+  }
+
+  it should "get a valid pool on create" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.ipsCreatePool(MIpsPoolInfo(pool = "test")), defaultTimeout) {
+        case Success(res) => res.name shouldBe "test"
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "get a list containing the test pool" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.ipsListPool(), defaultTimeout) {
+        case Success(res) => res.headOption match {
+          case Some(pool) => pool.name shouldBe "test"
+          case None => fail("Expected a non-empty list of IP pools")
+        }
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "retrieve the pool info" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.ipsPoolInfo(MIpsPoolInfo(pool = "test")), defaultTimeout) {
+        case Success(res) => res.name shouldBe "test"
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "successfully delete the pool" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.ipsDeletePool(MIpsPoolInfo(pool = "test")), defaultTimeout)(_ shouldBe Success(MIpsDeletePoolResponse(pool = "test", deleted = true)))
     }
   }
 
