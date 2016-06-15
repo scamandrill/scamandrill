@@ -1,6 +1,7 @@
 package io.github.scamandrill
 
 import com.typesafe.config.ConfigFactory
+import io.github.scamandrill.client.{MandrillClient, Scamandrill}
 import io.github.scamandrill.utils.SimpleLogger
 import mockws.MockWS
 import org.scalatest._
@@ -14,8 +15,10 @@ import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext
 
+trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFutures with BeforeAndAfterAll {
+  this: Suite =>
+  private val scamandrill = Scamandrill()
 
-trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFutures {
   def defaultTimeout = {
     Configuration(ConfigFactory.load("application.conf")).getInt("mandrill.timoutInSeconds") match {
       case Some(t) => timeout(Span(t, Seconds))
@@ -25,6 +28,7 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
   }
 
   def SCAMANDRILL_API_KEY = sys.env.get("SCAMANDRILL_API_KEY")
+  val client: Option[MandrillClient] = SCAMANDRILL_API_KEY.map(scamandrill.getClient)
 
   def withMockClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
     f(MockWS {
@@ -48,4 +52,9 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
 
   import scala.concurrent.ExecutionContext.global
   implicit val ec: ExecutionContext = global
+
+  override def afterAll(): Unit = {
+    scamandrill.shutdown()
+  }
+
 }
