@@ -21,8 +21,6 @@ scalacOptions := Seq(
   "-feature", "-unchecked", "-deprecation", "-encoding", "utf8"
 )
 
-resolvers ++= Seq("spray repo" at "http://repo.spray.io/")
-
 parallelExecution in Test := true
 
 libraryDependencies ++= {
