@@ -22,18 +22,6 @@ class InboundCallsTest extends MandrillSpec {
     }
   }
 
-  it should "work getting a valid MInboundDomainResponse" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-      whenReady(client.inboundAddDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
-        case Success(res) =>
-          res.domain shouldBe "testingdomain"
-          res.valid_mx shouldBe false
-        case Failure(t) => fail(t)
-      }
-    }
-  }
-
   "InboundCheckDomain" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=check-domain" in {
     withMockClient("/inbound/check-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
@@ -46,18 +34,6 @@ class InboundCallsTest extends MandrillSpec {
           valid_mx = true
         )
       ))
-    }
-  }
-
-  it should "work getting a valid MInboundDomainResponse" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-      whenReady(client.inboundCheckDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
-        case Success(res) =>
-          res.domain shouldBe "testingdomain"
-          res.valid_mx shouldBe false
-        case Failure(t) => fail(t)
-      }
     }
   }
 
@@ -74,19 +50,6 @@ class InboundCallsTest extends MandrillSpec {
     }
   }
 
-  it should "work getting a valid List[MInboundDomainResponse]" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-      whenReady(client.inboundDomains(), defaultTimeout) {
-        case Success(res) => res.headOption match {
-          case Some(dr) => dr shouldBe a[MInboundDomainResponse]
-          case None => fail("Expected to get a non-empty list of domain responses")
-        }
-        case Failure(t) => fail(t)
-      }
-    }
-  }
-
   "InboundDeleteDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=delete-domain" in {
     withMockClient("/inbound/delete-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
@@ -99,18 +62,6 @@ class InboundCallsTest extends MandrillSpec {
           valid_mx = true
         )
       ))
-    }
-  }
-
-  it should "work getting a valid MInboundDomainResponse" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-      whenReady(client.inboundDeleteDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
-        case Success(res) =>
-          res.domain shouldBe "testingdomain"
-          res.valid_mx shouldBe false
-        case Failure(t) => fail(t)
-      }
     }
   }
 
@@ -175,6 +126,55 @@ class InboundCallsTest extends MandrillSpec {
           url = "http://example.com/webhook-url"
         )
       ))
+    }
+  }
+
+  "Actual API Calls" should "successfully add an inbound domain" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.inboundAddDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
+        case Success(res) =>
+          res.domain shouldBe "testingdomain"
+          res.valid_mx shouldBe false
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "successfully check an inbound domain" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.inboundCheckDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
+        case Success(res) =>
+          res.domain shouldBe "testingdomain"
+          res.valid_mx shouldBe false
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "find that inbound domain on a list response" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.inboundDomains(), defaultTimeout) {
+        case Success(res) => res.find(_.domain === "testingdomain") match {
+          case Some(dr) => dr.valid_mx shouldBe false
+          case None => fail("Expected to get a non-empty list of domain responses")
+        }
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "delete that domain" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.inboundDeleteDomain(MInboundDomain(domain = "testingdomain")), defaultTimeout) {
+        case Success(res) =>
+          res.domain shouldBe "testingdomain"
+          res.valid_mx shouldBe false
+        case Failure(t) => fail(t)
+      }
     }
   }
 
