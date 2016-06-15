@@ -1,12 +1,22 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json._
+
 /**
-  * Response for ping and ping2
+  * Response for ping
   *
   * @param PING - the string "PONG!" if the operation is successful
   */
-case class MPingResponse(PING: String) extends MandrillResponse
-
+case class MPingResponse(PING: String)
+case object MPingResponse {
+  val readsObj = Json.reads[MPingResponse]
+  implicit val reads: Reads[MPingResponse] = new Reads[MPingResponse] {
+    override def reads(json: JsValue): JsResult[MPingResponse] = {
+      json.validate[String].map(MPingResponse.apply)
+      .orElse(json.validate[MPingResponse](readsObj))
+    }
+  }
+}
 /**
   * The information on each sending address in the account
   *
@@ -34,43 +44,10 @@ case class MSenderDataResponse(address: String,
                                opens: Int,
                                clicks: Int,
                                unique_opens: Int,
-                               unique_clicks: Int) extends MandrillResponse
-
-/**
-  * The user information including username, key, reputation, quota, and historical sending stats
-  *
-  * @param username     - the username of the user (used for SMTP authentication)
-  * @param created_at   - the date and time that the user's Mandrill account was created as a UTC string in YYYY-MM-DD HH:MM:SS format
-  * @param public_id    - a unique, permanent identifier for this user
-  * @param reputation   - the reputation of the user on a scale from 0 to 100, with 75 generally being a "good" reputation
-  * @param hourly_quota - the maximum number of emails Mandrill will deliver for this user each hour. Any emails beyond that will be accepted and queued for later delivery. Users with higher reputations will have higher hourly quotas
-  * @param backlog      - the number of emails that are queued for delivery due to exceeding your monthly or hourly quotas
-  * @param stats        - an aggregate summary of the account's sending stats
-  */
-case class MInfoResponse(username: String,
-                         created_at: String,
-                         public_id: String,
-                         reputation: Int,
-                         hourly_quota: Int,
-                         backlog: Int,
-                         stats: MStats) extends MandrillResponse
-
-/**
-  * An aggregate summary of the account's sending stats
-  *
-  * @param today        - stats for this user so far today
-  * @param last_7_days  - stats for this user in the last 7 days
-  * @param last_30_days - stats for this user in the last 7 days
-  * @param last_60_days - stats for this user in the last 7 days
-  * @param last_90_days - stats for this user in the last 7 days
-  * @param all_time     - stats for the lifetime of the user's account
-  */
-case class MStats(today: MStat,
-                  last_7_days: MStat,
-                  last_30_days: MStat,
-                  last_60_days: MStat,
-                  last_90_days: MStat,
-                  all_time: Option[MStat])
+                               unique_clicks: Int)
+case object MSenderDataResponse {
+  implicit val reads = Json.reads[MSenderDataResponse]
+}
 
 /**
   * Sending stats
@@ -96,6 +73,49 @@ case class MStat(sent: Int,
                  unique_opens: Int,
                  clicks: Int,
                  unique_clicks: Int)
+case object MStat {
+  implicit val reads = Json.reads[MStat]
+}
 
+/**
+  * An aggregate summary of the account's sending stats
+  *
+  * @param today        - stats for this user so far today
+  * @param last_7_days  - stats for this user in the last 7 days
+  * @param last_30_days - stats for this user in the last 7 days
+  * @param last_60_days - stats for this user in the last 7 days
+  * @param last_90_days - stats for this user in the last 7 days
+  * @param all_time     - stats for the lifetime of the user's account
+  */
+case class MStats(today: MStat,
+                  last_7_days: MStat,
+                  last_30_days: MStat,
+                  last_60_days: MStat,
+                  last_90_days: MStat,
+                  all_time: Option[MStat] = None)
+case object MStats {
+  implicit val reads = Json.reads[MStats]
+}
 
+/**
+  * The user information including username, key, reputation, quota, and historical sending stats
+  *
+  * @param username     - the username of the user (used for SMTP authentication)
+  * @param created_at   - the date and time that the user's Mandrill account was created as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param public_id    - a unique, permanent identifier for this user
+  * @param reputation   - the reputation of the user on a scale from 0 to 100, with 75 generally being a "good" reputation
+  * @param hourly_quota - the maximum number of emails Mandrill will deliver for this user each hour. Any emails beyond that will be accepted and queued for later delivery. Users with higher reputations will have higher hourly quotas
+  * @param backlog      - the number of emails that are queued for delivery due to exceeding your monthly or hourly quotas
+  * @param stats        - an aggregate summary of the account's sending stats
+  */
+case class MInfoResponse(username: String,
+                         created_at: String,
+                         public_id: String,
+                         reputation: Int,
+                         hourly_quota: Int,
+                         backlog: Int,
+                         stats: MStats)
+case object MInfoResponse {
+  implicit val reads = Json.reads[MInfoResponse]
+}
 

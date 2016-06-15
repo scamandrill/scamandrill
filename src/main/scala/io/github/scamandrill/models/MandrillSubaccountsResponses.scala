@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 //TODO: check if the first_sent_at is actually returned
 /**
   * Information about a subaccount
@@ -20,10 +22,13 @@ case class MSubaccountsResponse(id: String,
                                 status: String,
                                 reputation: Int,
                                 created_at: String,
-                                //first_sent_at: String,
+                                first_sent_at: Option[String],
                                 sent_weekly: Int,
                                 sent_monthly: Int,
-                                sent_total: Int) extends MandrillResponse
+                                sent_total: Int)
+case object MSubaccountsResponse {
+  implicit val reads = Json.reads[MSubaccountsResponse]
+}
 
 /**
   * Information about a subaccount
@@ -55,6 +60,9 @@ case class MSubaccountsInfoResponse(id: String,
                                     sent_total: Int,
                                     sent_hourly: Int,
                                     hourly_quota: Int,
-                                    last_30_days: MStat) extends MandrillResponse
+                                    last_30_days: MStat)
+case object MSubaccountsInfoResponse {
+  implicit val reads = Json.reads[MSubaccountsInfoResponse]
+}
 
 

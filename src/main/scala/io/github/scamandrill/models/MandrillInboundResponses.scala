@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * Information about the inbound domain
   *
@@ -9,7 +11,10 @@ package io.github.scamandrill.models
   */
 case class MInboundDomainResponse(domain: String,
                                   created_at: String,
-                                  valid_mx: Boolean) extends MandrillResponse
+                                  valid_mx: Boolean)
+case object MInboundDomainResponse {
+  implicit val reads = Json.reads[MInboundDomainResponse]
+}
 
 /**
   * Information about the inbound route
@@ -20,7 +25,10 @@ case class MInboundDomainResponse(domain: String,
   */
 case class MInboundRouteResponse(id: String,
                                  pattern: String,
-                                 url: Boolean) extends MandrillResponse
+                                 url: String)
+case object MInboundRouteResponse {
+  implicit val reads = Json.reads[MInboundRouteResponse]
+}
 
 /**
   * The inbound route response
@@ -31,4 +39,7 @@ case class MInboundRouteResponse(id: String,
   */
 case class MInboundRawResponse(email: String,
                                pattern: String,
-                               url: Boolean) extends MandrillResponse
+                               url: Boolean)
+case object MInboundRawResponse {
+  implicit val reads = Json.reads[MInboundRawResponse]
+}
