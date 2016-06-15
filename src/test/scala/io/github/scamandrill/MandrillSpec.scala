@@ -28,7 +28,7 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
   }
 
   def SCAMANDRILL_API_KEY = sys.env.get("SCAMANDRILL_API_KEY")
-  val client: Option[MandrillClient] = SCAMANDRILL_API_KEY.map(scamandrill.getClient)
+  val actualClient: Option[MandrillClient] = SCAMANDRILL_API_KEY.map(scamandrill.getClient)
 
   def withMockClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
     f(MockWS {
