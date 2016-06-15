@@ -48,10 +48,8 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
   }
 
   it should "handle calling the actual mandrillapp.com with an invalid key" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-        whenReady(client.usersPing, defaultTimeout)(_ shouldBe a[Failure[_]])
-    }
+    whenReady(scamandrill.getClient("INVALID_KEY").usersPing, defaultTimeout)(_ shouldBe a[Failure[_]])
+  }
 
   "Ping (version 2)" should "work getting a valid MPingResponse" in {
     withMockClient("/users/ping2.json") { wc =>

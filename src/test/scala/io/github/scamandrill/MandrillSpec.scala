@@ -17,7 +17,7 @@ import scala.concurrent.ExecutionContext
 
 trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFutures with BeforeAndAfterAll {
   this: Suite =>
-  private val scamandrill = Scamandrill()
+  val scamandrill = Scamandrill()
 
   def defaultTimeout = {
     Configuration(ConfigFactory.load("application.conf")).getInt("mandrill.timoutInSeconds") match {

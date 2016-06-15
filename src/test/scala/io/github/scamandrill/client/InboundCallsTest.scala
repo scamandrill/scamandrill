@@ -7,32 +7,6 @@ import scala.util.{Failure, Success}
 
 class InboundCallsTest extends MandrillSpec {
 
-  "InboundDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=domain" in {
-    withMockClient("/inbound/domains.json"){ wc =>
-      val instance = new MandrillClient(wc)
-      whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe Success(List(
-        MInboundDomainResponse(
-          domain = "inbound.example.com",
-          created_at = "2013-01-01 15:30:27",
-          valid_mx = true
-        )
-      )))
-    }
-  }
-
-  it should "work getting a valid List[MInboundDomainResponse]" taggedAs ActualAPICall in {
-    assume(actualClient.isDefined)
-    actualClient.foreach { client =>
-      whenReady(client.inboundDomains(), defaultTimeout) {
-        case Success(res) => res.headOption match {
-          case Some(dr) => dr shouldBe a[MInboundDomainResponse]
-          case None => fail("Expected to get a non-empty list of domain responses")
-        }
-        case Failure(t) => fail(t)
-      }
-    }
-  }
-
   "InboundAddDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=add-domain" in {
     withMockClient("/inbound/add-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
@@ -82,6 +56,32 @@ class InboundCallsTest extends MandrillSpec {
         case Success(res) =>
           res.domain shouldBe "testingdomain"
           res.valid_mx shouldBe false
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  "InboundDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=domain" in {
+    withMockClient("/inbound/domains.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe Success(List(
+        MInboundDomainResponse(
+          domain = "inbound.example.com",
+          created_at = "2013-01-01 15:30:27",
+          valid_mx = true
+        )
+      )))
+    }
+  }
+
+  it should "work getting a valid List[MInboundDomainResponse]" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.inboundDomains(), defaultTimeout) {
+        case Success(res) => res.headOption match {
+          case Some(dr) => dr shouldBe a[MInboundDomainResponse]
+          case None => fail("Expected to get a non-empty list of domain responses")
+        }
         case Failure(t) => fail(t)
       }
     }
