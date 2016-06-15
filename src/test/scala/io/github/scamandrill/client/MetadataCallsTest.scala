@@ -8,7 +8,7 @@ import scala.util.Success
 class MetadataCallsTest extends MandrillSpec {
 
   "List" should "handle the example at https://www.mandrillapp.com/api/docs/metadata.JSON.html#method=list" in {
-    withClient("/metadata/list.json") { wc =>
+    withMockClient("/metadata/list.json") { wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.metadataList(), defaultTimeout)(_ shouldBe Success(List(
         MIMetadataResponse(
@@ -21,7 +21,7 @@ class MetadataCallsTest extends MandrillSpec {
   }
 
   "Add" should "handle the example at https://www.mandrillapp.com/api/docs/metadata.JSON.html#method=add" in {
-    withClient("/metadata/add.json") { wc =>
+    withMockClient("/metadata/add.json") { wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.metadataAdd(MMeteadatapAdd(
         name = "group_id",
@@ -37,7 +37,7 @@ class MetadataCallsTest extends MandrillSpec {
   }
 
   "Update" should "handle the example at https://www.mandrillapp.com/api/docs/metadata.JSON.html#method=update" in {
-    withClient("/metadata/update.json") { wc =>
+    withMockClient("/metadata/update.json") { wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.metadataUpdate(MMeteadatapAdd(
         name = "group_id",
@@ -53,7 +53,7 @@ class MetadataCallsTest extends MandrillSpec {
   }
 
   "Delete" should "handle the example at https://www.mandrillapp.com/api/docs/metadata.JSON.html#method=delete" in {
-    withClient("/metadata/delete.json") { wc =>
+    withMockClient("/metadata/delete.json") { wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.metadataDelete(MMeteadatapDelete(
         name = "group_id"

@@ -5,7 +5,7 @@ import io.github.scamandrill.MandrillSpec
 class MandrillMessagesRequestsTest extends MandrillSpec {
   "MSendMsg" should "copy to an equal msendmessage" in {
     val msg = new MSendMsg(
-      html = "<h1>HTML CONTENT</h1",
+      html = <h1>HTML CONTENT</h1>.mkString,
       text = "TEXT CONTENT",
       subject = "I'm a Subject",
       from_email = "bmcboatface@nerc.ac.uk",
@@ -16,6 +16,6 @@ class MandrillMessagesRequestsTest extends MandrillSpec {
       ))
     )
 
-    msg shouldBe msg.copy()
+    msg.copy() shouldBe msg
   }
 }

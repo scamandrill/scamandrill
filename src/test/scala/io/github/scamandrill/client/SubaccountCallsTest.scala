@@ -10,7 +10,7 @@ import scala.util.Success
 class SubaccountCallsTest extends MandrillSpec {
 
   "SubaccountAdd" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=add" in {
-    withClient("/subaccounts/add.json"){ wc =>
+    withMockClient("/subaccounts/add.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountAdd(MSubaccount(
         id = "cust-123",
@@ -33,7 +33,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountPause" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=pause" in {
-    withClient("/subaccounts/pause.json"){ wc =>
+    withMockClient("/subaccounts/pause.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountPause(MSubaccountInfo(
         id = "cust-123"
@@ -53,7 +53,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountResume" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=resume" in {
-    withClient("/subaccounts/resume.json"){ wc =>
+    withMockClient("/subaccounts/resume.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountResume(MSubaccountInfo(
         id = "cust-123"
@@ -73,7 +73,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountUpdate" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=update" in {
-    withClient("/subaccounts/update.json"){ wc =>
+    withMockClient("/subaccounts/update.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountUpdate(MSubaccount(
         id = "cust-123",
@@ -96,7 +96,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountInfo" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=info" in {
-    withClient("/subaccounts/info.json"){ wc =>
+    withMockClient("/subaccounts/info.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountInfo(MSubaccountInfo(
         id = "cust-123"
@@ -131,7 +131,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountList" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=list" in {
-    withClient("/subaccounts/list.json"){ wc =>
+    withMockClient("/subaccounts/list.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountList(MSubaccountList(
         q = "cust-1"
@@ -151,7 +151,7 @@ class SubaccountCallsTest extends MandrillSpec {
   }
 
   "SubaccountDelete" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=delete" in {
-    withClient("/subaccounts/delete.json"){ wc =>
+    withMockClient("/subaccounts/delete.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.subaccountDelete(MSubaccountInfo(
         id = "cust-123"

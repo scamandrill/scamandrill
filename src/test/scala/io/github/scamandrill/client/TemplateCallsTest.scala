@@ -9,7 +9,7 @@ import scala.util.Success
 class TemplateCallsTest extends MandrillSpec {
 
   "TemplateAdd" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=add" in {
-    withClient("/templates/add.json"){ wc =>
+    withMockClient("/templates/add.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateAdd(MTemplate(
         name = "Example Template",
@@ -47,7 +47,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplatePublish" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=publish" in {
-    withClient("/templates/publish.json"){ wc =>
+    withMockClient("/templates/publish.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templatePublish(MTemplateInfo(
         name = "Example Template"
@@ -76,7 +76,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateInfo" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=info" in {
-    withClient("/templates/info.json"){ wc =>
+    withMockClient("/templates/info.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateInfo(MTemplateInfo(
         name = "Example Template"
@@ -105,7 +105,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateList" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=list" in {
-    withClient("/templates/list.json"){ wc =>
+    withMockClient("/templates/list.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateList(MTemplateList(
         label = "example-label"
@@ -134,7 +134,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateUpdate" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=update" in {
-    withClient("/templates/update.json"){ wc =>
+    withMockClient("/templates/update.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateUpdate(MTemplate(
         name = "Example Template",
@@ -172,7 +172,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateTimeSeries" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=time-series" in {
-    withClient("/templates/time-series.json"){ wc =>
+    withMockClient("/templates/time-series.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateTimeSeries(MTemplateInfo(
         name = "Example Template"
@@ -194,7 +194,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateRender" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=render" in {
-    withClient("/templates/render.json"){ wc =>
+    withMockClient("/templates/render.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateRender(MTemplateRender(
         template_name = "Example Template",
@@ -213,7 +213,7 @@ class TemplateCallsTest extends MandrillSpec {
   }
 
   "TemplateDelete" should "handle the example at https://www.mandrillapp.com/api/docs/templates.JSON.html#method=delete" in {
-    withClient("/templates/delete.json"){ wc =>
+    withMockClient("/templates/delete.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.templateDelete(MTemplateInfo(
         name = "Example Template"

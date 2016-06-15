@@ -26,7 +26,7 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
 
   def SCAMANDRILL_API_KEY = sys.env.get("SCAMANDRILL_API_KEY")
 
-  def withClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
+  def withMockClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
     f(MockWS {
       case (POST, p) if p == s"https://mandrillapp.com/api/1.0$path" => Action(request => {
         (request.body.asJson, Option(this.getClass.getClassLoader.getResourceAsStream(s"requests$path")).map(Json.parse)) match {

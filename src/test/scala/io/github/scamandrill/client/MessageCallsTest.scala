@@ -10,7 +10,7 @@ import scala.util.Success
 class MessageCallsTest extends MandrillSpec {
 
   "Send" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send" in {
-    withClient("/messages/send.json") { ws =>
+    withMockClient("/messages/send.json") { ws =>
       val instance = new MandrillClient(ws)
       whenReady(instance.messagesSend(MSendMessage(
         async = false,
@@ -56,7 +56,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "SendTemplate" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template" in {
-    withClient("/messages/send-template.json") { ws =>
+    withMockClient("/messages/send-template.json") { ws =>
       val instance = new MandrillClient(ws)
       whenReady(instance.messagesSendTemplate(MSendTemplateMessage(
         template_name = "example template_name",
@@ -102,7 +102,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "Search" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=search" in {
-    withClient("/messages/search.json") { ws =>
+    withMockClient("/messages/search.json") { ws =>
       val instance = new MandrillClient(ws)
       whenReady(instance.messagesSearch(MSearch(
         query = "email:gmail.com",
@@ -145,7 +145,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "searchTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=search-time-series" in {
-    withClient("/messages/search-time-series.json"){ wc =>
+    withMockClient("/messages/search-time-series.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesSearchTimeSeries(MSearchTimeSeries(
         query = "email:gmail.com",
@@ -175,7 +175,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "MessageInfo" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=info" in {
-    withClient("/messages/info.json"){ wc =>
+    withMockClient("/messages/info.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesInfo(MMessageInfo(
         id = "abc123abc123abc123abc123"
@@ -221,7 +221,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "Parse" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=parse" in {
-    withClient("/messages/parse.json"){ wc =>
+    withMockClient("/messages/parse.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesParse(MParse(
         raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content."
@@ -256,7 +256,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "SendRaw" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=send-raw" in {
-    withClient("/messages/send-raw.json"){ wc =>
+    withMockClient("/messages/send-raw.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesSendRaw(MSendRaw(
         raw_message = "From: sender@example.com\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content.",
@@ -277,7 +277,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "ListSchedule" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=list-scheduled" in {
-    withClient("/messages/list-scheduled.json"){ wc =>
+    withMockClient("/messages/list-scheduled.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesListSchedule(MListSchedule(
         to = "test.recipient@example.com"
@@ -293,7 +293,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "CancelScheduled" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=cancel-scheduled" in {
-    withClient("/messages/cancel-scheduled.json"){ wc =>
+    withMockClient("/messages/cancel-scheduled.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesCancelSchedule(MCancelSchedule(
         id = "I_dtFt2ZNPW5QD9-FaDU1A"
@@ -309,7 +309,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "Reschedule" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=reschedule" in {
-    withClient("/messages/reschedule.json"){ wc =>
+    withMockClient("/messages/reschedule.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesReschedule(MReSchedule(
         id = "I_dtFt2ZNPW5QD9-FaDU1A",
@@ -326,7 +326,7 @@ class MessageCallsTest extends MandrillSpec {
   }
 
   "Content" should "handle the example at https://mandrillapp.com/api/docs/messages.JSON.html#method=content" in {
-    withClient("/messages/content.json"){ wc =>
+    withMockClient("/messages/content.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesContent(MMessageInfo(
         id = "abc123abc123abc123abc123"

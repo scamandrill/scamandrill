@@ -8,7 +8,7 @@ import scala.util.Success
 class InboundCallsTest extends MandrillSpec {
 
   "InboundDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=domain" in {
-    withClient("/inbound/domains.json"){ wc =>
+    withMockClient("/inbound/domains.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe Success(List(
         MInboundDomainResponse(
@@ -21,7 +21,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundAddDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=add-domain" in {
-    withClient("/inbound/add-domain.json"){ wc =>
+    withMockClient("/inbound/add-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundAddDomain(MInboundDomain(
         domain = "inbound.example.com"
@@ -35,8 +35,12 @@ class InboundCallsTest extends MandrillSpec {
     }
   }
 
+  it should "work getting a valid MInboundDomainResponse" in {
+
+  }
+
   "InboundCheckDomain" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=check-domain" in {
-    withClient("/inbound/check-domain.json"){ wc =>
+    withMockClient("/inbound/check-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundCheckDomain(MInboundDomain(
         domain = "inbound.example.com"
@@ -51,7 +55,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundDeleteDomains" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=delete-domain" in {
-    withClient("/inbound/delete-domain.json"){ wc =>
+    withMockClient("/inbound/delete-domain.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundDeleteDomain(MInboundDomain(
         domain = "inbound.example.com"
@@ -66,7 +70,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundRoutes" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=routes" in {
-    withClient("/inbound/routes.json"){ wc =>
+    withMockClient("/inbound/routes.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundRoutes(MInboundDomain(
         domain = "inbound.example.com"
@@ -81,7 +85,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundAddRoute" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=add-route" in {
-    withClient("/inbound/add-route.json"){ wc =>
+    withMockClient("/inbound/add-route.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundAddRoute(MInboundRoute(
         domain = "inbound.example.com",
@@ -98,7 +102,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundUpdateRoute" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=update-route" in {
-    withClient("/inbound/update-route.json"){ wc =>
+    withMockClient("/inbound/update-route.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundUpdateRoute(MInboundUpdateRoute(
         id = "7.23",
@@ -115,7 +119,7 @@ class InboundCallsTest extends MandrillSpec {
   }
 
   "InboundDeleteRoute" should "handle the example at https://www.mandrillapp.com/api/docs/inbound.JSON.html#method=delete-route" in {
-    withClient("/inbound/delete-route.json"){ wc =>
+    withMockClient("/inbound/delete-route.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.inboundDeleteRoute(MInboundDelRoute(
         id = "7.23"

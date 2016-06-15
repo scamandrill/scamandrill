@@ -9,7 +9,7 @@ import scala.util.Success
 class RejectCallsTest extends MandrillSpec {
 
   "RejectAdd" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=add" in {
-    withClient("/rejects/add.json"){ wc =>
+    withMockClient("/rejects/add.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.rejectAdd(MRejectAdd(
         email = "example email",
@@ -23,7 +23,7 @@ class RejectCallsTest extends MandrillSpec {
   }
 
   "RejectList" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=list" in {
-    withClient("/rejects/list.json"){ wc =>
+    withMockClient("/rejects/list.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.rejectList(MRejectList(
         email = "example email",
@@ -57,7 +57,7 @@ class RejectCallsTest extends MandrillSpec {
   }
 
   "RejectDelete" should "handle the example at https://mandrillapp.com/api/docs/rejects.JSON.html#method=delete" in {
-    withClient("/rejects/delete.json"){ wc =>
+    withMockClient("/rejects/delete.json"){ wc =>
       val instance = new MandrillClient(wc)
       whenReady(instance.rejectDelete(MRejectDelete(
         email = "example email",
