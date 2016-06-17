@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   *
   * @param tag           - the actual tag as a string
@@ -26,7 +28,10 @@ case class MTagResponse(tag: String,
                         opens: Int,
                         clicks: Int,
                         unique_opens: Int,
-                        unique_clicks: Int) extends MandrillResponse
+                        unique_clicks: Int)
+case object MTagResponse {
+  implicit val reads = Json.reads[MTagResponse]
+}
 
 /**
   *
@@ -50,4 +55,7 @@ case class MTagInfoResponse(tag: String,
                             unsubs: Int,
                             opens: Int,
                             clicks: Int,
-                            stats: MStats) extends MandrillResponse
+                            stats: MStats)
+case object MTagInfoResponse {
+  implicit val reads = Json.reads[MTagInfoResponse]
+}

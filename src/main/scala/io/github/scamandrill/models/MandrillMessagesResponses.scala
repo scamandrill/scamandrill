@@ -1,5 +1,34 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
+/**
+  * Individual opens for the message
+  *
+  * @param ts       - the unix timestamp from when the message was opened
+  * @param ip       - the IP address that generated the open
+  * @param location - the approximate region and country that the opening IP is located
+  * @param ua       - the email client or browser data of the open
+  */
+case class MOpenDetail(ts: Int, ip: String, location: String, ua: String)
+case object MOpenDetail {
+  implicit val reads = Json.reads[MOpenDetail]
+}
+
+/**
+  * Individual clicks for the message
+  *
+  * @param ts       - the unix timestamp from when the message was opened
+  * @param ip       - the IP address that generated the open
+  * @param location - the approximate region and country that the opening IP is located
+  * @param ua       - the email client or browser data of the open
+  * @param url      - the email client or browser data of the click
+  */
+case class MClickDetails(ts: Int, ip: String, location: String, ua: String, url: String)
+case object MClickDetails {
+  implicit val reads = Json.reads[MClickDetails]
+}
+
 //TODO: metadata
 /**
   * The information for a single matching message
@@ -29,7 +58,23 @@ case class MSearchResponse(ts: Int,
                            clicks: Int,
                            clicks_detail: List[MClickDetails],
                            state: String)
+case object MSearchResponse {
+  implicit val reads = Json.reads[MSearchResponse]
+}
 
+/**
+  * Information about a specific smtp event
+  *
+  * @param ts     - the Unix timestamp when the event occured
+  * @param `type` - the message's state as a result of this event
+  * @param diag   - the SMTP response from the recipient's server
+  */
+case class MSmtpEvent(ts: Int, `type`: String, diag: String)
+case object MSmtpEvent {
+  implicit val reads = Json.reads[MSmtpEvent]
+}
+
+// TODO: Missing metadata
 /**
   * The information for the message
   *
@@ -60,15 +105,10 @@ case class MMessageInfoResponse(ts: Int,
                                 clicks_detail: List[MClickDetails],
                                 state: String,
                                 smtp_events: List[MSmtpEvent])
+case object MMessageInfoResponse {
+  implicit val reads = Json.reads[MMessageInfoResponse]
+}
 
-/**
-  * Information about a specific smtp event
-  *
-  * @param ts     - the Unix timestamp when the event occured
-  * @param `type` - the message's state as a result of this event
-  * @param diag   - the SMTP response from the recipient's server
-  */
-case class MSmtpEvent(ts: Int, `type`: String, diag: String)
 
 /**
   * The stats for a single hour
@@ -91,32 +131,14 @@ case class MTimeSeriesResponse(time: String,
                                soft_bounces: Int,
                                rejects: Int,
                                complaints: Int,
-                               unsubs: Int,
+                               unsubs: Option[Int] = None,
                                opens: Int,
                                unique_opens: Int,
                                clicks: Int,
                                unique_clicks: Int)
-
-/**
-  * Individual opens for the message
-  *
-  * @param ts       - the unix timestamp from when the message was opened
-  * @param ip       - the IP address that generated the open
-  * @param location - the approximate region and country that the opening IP is located
-  * @param ua       - the email client or browser data of the open
-  */
-case class MOpenDetail(ts: Int, ip: String, location: String, ua: String)
-
-/**
-  * Individual clicks for the message
-  *
-  * @param ts       - the unix timestamp from when the message was opened
-  * @param ip       - the IP address that generated the open
-  * @param location - the approximate region and country that the opening IP is located
-  * @param ua       - the email client or browser data of the open
-  * @param url      - the email client or browser data of the click
-  */
-case class MClickDetails(ts: Int, ip: String, location: String, ua: String, url: String)
+case object MTimeSeriesResponse {
+  implicit val reads = Json.reads[MTimeSeriesResponse]
+}
 
 /**
   * The sending results for a single recipient
@@ -129,7 +151,22 @@ case class MClickDetails(ts: Int, ip: String, location: String, ua: String, url:
 case class MSendResponse(_id: String,
                          email: String,
                          status: String,
-                         reject_reason: Option[String]) extends MandrillResponse
+                         reject_reason: Option[String])
+case object MSendResponse {
+  implicit val reads = Json.reads[MSendResponse]
+}
+
+
+/**
+  * The message recipient's information
+  *
+  * @param email - the email address of the recipient
+  * @param name  - the alias of the recipient (if any)
+  */
+case class MToResponse(email: String, name: Option[String])
+case object MToResponse {
+  implicit val reads = Json.reads[MToResponse]
+}
 
 //TODO: headers
 /**
@@ -147,7 +184,7 @@ case class MSendResponse(_id: String,
   * @param attachemnt - an array of any attachments that can be found in the message
   */
 case class MContentResponse(ts: Int,
-                            _id: Int,
+                            _id: String,
                             from_email: String,
                             from_name: String,
                             subject: String,
@@ -155,17 +192,12 @@ case class MContentResponse(ts: Int,
                             tags: List[String],
                             text: String,
                             html: Option[String],
-                            attachemnt: List[MAttachmetOrImage])
+                            attachments: List[MAttachmetOrImage])
+case object MContentResponse {
+  implicit val reads = Json.reads[MContentResponse]
+}
 
-/**
-  * The message recipient's information
-  *
-  * @param email - the email address of the recipient
-  * @param name  - the alias of the recipient (if any)
-  */
-case class MToResponse(email: String, name: String)
-
-//TODO: headers
+//TODO: missing headers
 /**
   * The parsed message
   *
@@ -186,6 +218,9 @@ case class MParseResponse(subject: Option[String],
                           html: Option[String],
                           attachments: Option[List[MAttachmetOrImage]],
                           images: Option[List[MAttachmetOrImage]])
+case object MParseResponse {
+  implicit val reads = Json.reads[MParseResponse]
+}
 
 /**
   * A scheduled email
@@ -203,6 +238,9 @@ case class MScheduleResponse(_id: String,
                              from_email: String,
                              to: String,
                              subject: String)
+case object MScheduleResponse {
+  implicit val reads = Json.reads[MScheduleResponse]
+}
 
 
 

@@ -1,83 +1,60 @@
 package io.github.scamandrill
 
-import akka.http.scaladsl.Http
-import io.github.scamandrill.client._
+import com.typesafe.config.ConfigFactory
+import io.github.scamandrill.client.{MandrillClient, Scamandrill}
 import io.github.scamandrill.utils.SimpleLogger
+import mockws.MockWS
 import org.scalatest._
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.time.{Seconds, Span}
+import play.api.Configuration
+import play.api.libs.ws.WSClient
+import play.api.mvc.{Action, Results}
+import play.api.test.Helpers._
+import play.api.libs.json.Json
 
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-import scala.language.postfixOps
-import scala.util.{Failure, Success, Try}
+import scala.concurrent.ExecutionContext
 
-trait MandrillBinder extends BeforeAndAfterEach {
+trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFutures with BeforeAndAfterAll {
   this: Suite =>
-  var client = new MandrillClient()
-  implicit var mat = client.materializer
-  implicit var ec = client.system.dispatcher
+  val scamandrill = Scamandrill()
 
-  override def beforeEach(): Unit = {
-    client = new MandrillClient()
-    mat = client.materializer
-    ec = client.system.dispatcher
-    super.beforeEach()
+  def defaultTimeout = {
+    Configuration(ConfigFactory.load("application.conf")).getInt("mandrill.timoutInSeconds") match {
+      case Some(t) => timeout(Span(t, Seconds))
+      case None =>
+        fail("Unable to load mandrill.timeoutInSeconds from application.conf")
+    }
   }
 
-  override def afterEach(): Unit = {
-    try super.beforeEach()
-    finally shutdown()
+  def SCAMANDRILL_API_KEY = sys.env.get("SCAMANDRILL_API_KEY")
+  val actualClient: Option[MandrillClient] = SCAMANDRILL_API_KEY.map(scamandrill.getClient)
+
+  def withMockClient(path: String, returnError: Boolean = false, raiseException: Boolean = false)(f: (WSClient) => Unit) = {
+    f(MockWS {
+      case (POST, p) if p == s"https://mandrillapp.com/api/1.0$path" => Action(request => {
+        (request.body.asJson, Option(this.getClass.getClassLoader.getResourceAsStream(s"requests$path")).map(Json.parse)) match {
+          case (Some(actual), Some(expected)) =>
+            actual shouldBe expected
+          case _ => fail(s"Unable to get actual and expected requests for $path")
+        }
+        if(returnError) {
+          Results.InternalServerError.sendResource(s"errors$path")
+        } else if(raiseException) {
+          throw new RuntimeException("This is a simulated unhandled exception")
+        } else {
+          Results.Ok.sendResource(s"responses$path")
+        }
+      })
+      case _ => Action(request => fail(s"expected: https://mandrillapp.com/api/1.0$path, actual: ${request.uri}"))
+    })
   }
 
-  def shutdown(): Unit = {
-    implicit val system = client.system
-    Await.ready(Http().shutdownAllConnectionPools(), Duration.Inf)
-    Await.ready(client.system.terminate(), Duration.Inf)
-  }
-}
+  import scala.concurrent.ExecutionContext.global
+  implicit val ec: ExecutionContext = global
 
-trait MandrillSpec extends FlatSpec with MandrillBinder with Matchers with SimpleLogger with Retries {
-  /**
-    * Utility method to check the failure because of an invalid key
-    *
-    * @param response - the response from mandrill api
-    */
-  def checkFailedBecauseOfInvalidKey(response: Try[Any]): Unit = response match {
-    case Success(res) =>
-      fail("This operation should be unsuccessful")
-    case Failure(ex: UnsuccessfulResponseException) =>
-      val inernalError = MandrillError("error", -1, "Invalid_Key", "Invalid API key")
-      val expected = new MandrillResponseException(500, "Internal Server Error", inernalError)
-      checkError(expected, MandrillResponseException(ex))
-    case Failure(ex) =>
-      println(s"Failure is ${ex}")
-      println(s"of class ${ex.getClass}")
-      fail("should return an UnsuccessfulResponseException that can be parsed as MandrillResponseException")
+  override def afterAll(): Unit = {
+    scamandrill.shutdown()
   }
 
-  /**
-    * A simple fuction to check equality of the errors from mandrill, but it also
-    * display the reason of failure on screen, thing that I would loose using equality
-    * on the errors themselves.
-    *
-    * @param expected - the expected error
-    * @param response - the error return from Mandrill
-    */
-  def checkError(expected: MandrillResponseException, responseF: Future[MandrillResponseException]): Unit = {
-    val response = Await.result(responseF, 10 seconds)
-    expected.httpCode shouldBe response.httpCode
-    expected.httpReason shouldBe response.httpReason
-    expected.mandrillError.code shouldBe response.mandrillError.code
-    expected.mandrillError.message shouldBe response.mandrillError.message
-    expected.mandrillError.name shouldBe response.mandrillError.name
-    expected.mandrillError.status shouldBe response.mandrillError.status
-  }
-
-  override def withFixture(test: NoArgTest) = {
-    if (isRetryable(test))
-      withRetry {
-        super.withFixture(test)
-      }
-    else
-      super.withFixture(test)
-  }
 }
