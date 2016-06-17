@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The export response
   *
@@ -15,5 +17,8 @@ case class MExportResponse(id: String,
                            `type`: String,
                            finished_at: Option[String],
                            state: String,
-                           result_url: Option[String]) extends MandrillResponse
+                           result_url: Option[String])
+case object MExportResponse {
+  implicit val reads = Json.reads[MExportResponse]
+}
 

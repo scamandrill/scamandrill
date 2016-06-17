@@ -1,25 +1,33 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The search information
   *
-  * @param key - a valid API key
   * @param q   - a search query
   */
-case class MUrlSearch(key: String = DefaultConfig.defaultKeyFromConfig, q: String) extends MandrillRequest
+case class MUrlSearch(q: String)
+case object MUrlSearch {
+  implicit val writes = Json.writes[MUrlSearch]
+}
 
 /**
   * An url for the time series
   *
-  * @param key - a valid API key
   * @param url - an existing URL
   */
-case class MUrlTimeSeries(key: String = DefaultConfig.defaultKeyFromConfig, url: String) extends MandrillRequest
+case class MUrlTimeSeries(url: String)
+case object MUrlTimeSeries {
+  implicit val writes = Json.writes[MUrlTimeSeries]
+}
 
 /**
   * A valid domain
   *
-  * @param key    - a valid API key
   * @param domain - a domain name
   */
-case class MUrlDomain(key: String = DefaultConfig.defaultKeyFromConfig, domain: String) extends MandrillRequest
+case class MUrlDomain(domain: String)
+case object MUrlDomain {
+  implicit val writes = Json.writes[MUrlDomain]
+}

@@ -1,9 +1,15 @@
 package io.github.scamandrill
+import io.github.scamandrill.models._
 
-import io.github.scamandrill.models.{MSearch, MSearchTimeSeries, MTo, _}
-import org.scalatest.Matchers
+object MandrillTestUtils {
 
-object MandrillTestUtils extends Matchers {
+  val testTag = "exampletag1"
+
+  val testTrackingDomain = "test.com"
+
+  val whitelistAddress = "whitelist@example.com"
+
+  val senderAddress = sys.env.getOrElse("SCAMANDRILL_DEFAULT_SENDER", "scamandrill@test.com")
 
   val validRoute = MInboundRoute(
     domain = "example.com",
@@ -41,9 +47,9 @@ object MandrillTestUtils extends Matchers {
 
   val idOfMailForInfoTest = "3edaed120eb144debb843893f4d92179"
 
-  val validRawMessage = MSendRaw(raw_message = """From: sender@example.com""")
+  val validRawMessage = MSendRaw(raw_message = s"""From: $senderAddress\nTo: recipient.email@example.com\nSubject: Some Subject\n\nSome content.""")
 
-  val validNonPublidhedTemplate = MTemplate(
+  val validNonPublishedTemplate = MTemplate(
     name = "templatetest",
     from_email = "from_email@example.com",
     from_name = "Example Name",
@@ -64,22 +70,24 @@ object MandrillTestUtils extends Matchers {
     html = "<h1>test</h1>",
     text = "test",
     subject = "subject test",
-    from_email = "scamandrill@test.com",
+    from_email = senderAddress,
+    view_content_link = true,
     from_name = "Scamandrill",
     to = List(MTo("test@recipient.com")),
     bcc_address = Some("somebcc@address.com"),
     tracking_domain = Some("fromname"),
     signing_domain = Some("fromname"),
-    return_path_domain = Some("fromname")
+    return_path_domain = Some("fromname"),
+    tags = List(testTag)
   )
 
   val validSearch = MSearch(
-    query = "email:gmail.com",
-    date_from = "2016-01-01",
-    date_to = "2016-01-02")
+    query = Some("email:gmail.com"),
+    date_from = Some("2016-01-01"),
+    date_to = Some("2016-01-02"))
 
   val validSearchTimeSeries = MSearchTimeSeries(
     query = "email:gmail.com",
-    date_from = "2016-01-01",
-    date_to = "2016-01-02")
+    date_from = "2013-01-01",
+    date_to = "2013-01-02")
 }

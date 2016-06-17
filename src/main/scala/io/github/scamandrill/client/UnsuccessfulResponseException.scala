@@ -1,10 +1,6 @@
 package io.github.scamandrill.client
 
-import akka.http.scaladsl.model.HttpResponse
+import play.api.libs.json.JsValue
+import play.api.libs.ws.WSResponse
 
-/**
-  * Created by mar on 26.08.2015.
-  */
-class UnsuccessfulResponseException(val response: HttpResponse) extends RuntimeException {
-
-}
+class UnsuccessfulResponseException(val response: WSResponse, val error: Option[JsValue] = None) extends RuntimeException {}

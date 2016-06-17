@@ -1,8 +1,14 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.{JsObject, JsValue, Writes}
+
 /**
   * A valid API key
   *
-  * @param key - a valid API key string
   */
-case class MKey(key: String = DefaultConfig.defaultKeyFromConfig) extends MandrillRequest
+case class MVoid()
+case object MVoid {
+  implicit val writes = new Writes[MVoid] {
+    override def writes(o: MVoid): JsValue = JsObject(Map[String, JsValue]())
+  }
+}

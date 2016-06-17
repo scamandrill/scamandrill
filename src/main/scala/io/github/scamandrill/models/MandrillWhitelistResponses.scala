@@ -1,12 +1,17 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 //TODO: not whether as in documentation
 /**
   *
   * @param email - the email address you provided
   * @param added - true if the operation succeeded
   */
-case class MWhitelistAddResponse(email: String, added: Boolean) extends MandrillResponse
+case class MWhitelistAddResponse(email: String, added: Boolean)
+case object MWhitelistAddResponse {
+  implicit val reads = Json.reads[MWhitelistAddResponse]
+}
 
 /**
   * The information for each whitelist entry
@@ -17,7 +22,10 @@ case class MWhitelistAddResponse(email: String, added: Boolean) extends Mandrill
   */
 case class MWhitelistListResponse(email: String,
                                   detail: String,
-                                  created_at: String) extends MandrillResponse
+                                  created_at: String)
+case object MWhitelistListResponse {
+  implicit val reads = Json.reads[MWhitelistListResponse]
+}
 
 /**
   * Object containing the address and whether the deletion succeeded
@@ -25,4 +33,7 @@ case class MWhitelistListResponse(email: String,
   * @param email   - the email address that was removed from the blacklist
   * @param deleted - whether the address was deleted successfully
   */
-case class MWhitelistDeleteResponse(email: String, deleted: Boolean) extends MandrillResponse
+case class MWhitelistDeleteResponse(email: String, deleted: Boolean)
+case object MWhitelistDeleteResponse {
+  implicit val reads = Json.reads[MWhitelistDeleteResponse]
+}
