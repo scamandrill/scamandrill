@@ -1,11 +1,16 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * The rendered template
   *
   * @param html - the rendered HTML as a string
   */
-case class MTemplateRenderResponse(html: Option[String]) extends MandrillResponse
+case class MTemplateRenderResponse(html: Option[String])
+case object MTemplateRenderResponse {
+  implicit val reads = Json.reads[MTemplateRenderResponse]
+}
 
 /**
   * Information about the template
@@ -44,7 +49,10 @@ case class MTemplateAddResponses(slug: String,
                                  publish_text: Option[String],
                                  published_at: Option[String],
                                  created_at: String,
-                                 updated_at: String) extends MandrillResponse
+                                 updated_at: String)
+case object MTemplateAddResponses {
+  implicit val reads = Json.reads[MTemplateAddResponses]
+}
 
 
 

@@ -1,5 +1,7 @@
 package io.github.scamandrill.models
 
+import play.api.libs.json.Json
+
 /**
   * Information about the webhook
   *
@@ -21,5 +23,9 @@ case class MWebhooksResponse(id: Int,
                              last_sent_at: String,
                              batches_sent: Int,
                              events_sent: Int,
-                             last_error: Option[String]) extends MandrillResponse
+                             last_error: Option[String],
+                             events: Option[List[String]] = None)
+case object MWebhooksResponse {
+  implicit val reads = Json.reads[MWebhooksResponse]
+}
 

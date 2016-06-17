@@ -7,6 +7,7 @@
         </encoder>
     </appender>
 
+    <logger name="io.scamandrill" level="DEBUG" />
     <!--loggers-->
     <root level="info">
         <appender-ref ref="CONSOLE"/>

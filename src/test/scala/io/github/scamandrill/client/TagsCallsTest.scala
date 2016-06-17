@@ -1,44 +1,212 @@
 package io.github.scamandrill.client
 
-import io.github.scamandrill.MandrillSpec
-import io.github.scamandrill.models.{MTagResponse, _}
+import io.github.scamandrill.{ActualAPICall, MandrillSpec}
+import io.github.scamandrill.models._
 
-import scala.concurrent.Await
+import scala.util.{Failure, Success}
 
 class TagsCallsTest extends MandrillSpec {
 
-  "TagList" should "work getting a valid List[MTagResponse]" in {
-    val res: List[MTagResponse] = Await.result(client.tagList(MKey()), DefaultConfig.defaultTimeout)
-    val head: MTagResponse = res.head
-    head.tag shouldBe "exampletag1"
+  "TagList" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=list" in {
+    withMockClient("/tags/list.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.tagList(), defaultTimeout)(_ shouldBe Success(List(MTagResponse(
+        tag = "example-tag",
+        reputation = 42,
+        sent = 42,
+        hard_bounces = 42,
+        soft_bounces = 42,
+        rejects = 42,
+        complaints = 42,
+        unsubs = 42,
+        opens = 42,
+        clicks = 42,
+        unique_opens = 42,
+        unique_clicks = 42
+      ))))
+    }
   }
 
-  //  "TagDelete" should "work getting a valid MTagResponse" in {
-  //    val res = Await.result(client.tagDelete(MTagRequest(key = "twotag")), DefaultConfig.defaultTimeout)
-  //    res.getClass shouldBe classOf[MTagResponse]
-  //    res.key shouldBe "twotag"
-  //  }
-  //  it should "work getting a valid MTagResponse (blocking client)" in {
-  //    mandrillBlockingClient.tagDelete(MTagRequest(key = "twotag")) match {
-  //      case Success(res) =>
-  //        res.key shouldBe "twotag"
-  //      case Failure(ex) => fail(ex)
-  //    }
-  //  }
+    "TagDelete" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=delete" in {
+      withMockClient("/tags/delete.json"){ wc =>
+        val instance = new MandrillClient(wc)
+        whenReady(instance.tagDelete(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(
+          MTagResponse(
+            tag = "example-tag",
+            reputation = 42,
+            sent = 42,
+            hard_bounces = 42,
+            soft_bounces = 42,
+            rejects = 42,
+            complaints = 42,
+            unsubs = 42,
+            opens = 42,
+            clicks = 42,
+            unique_opens = 42,
+            unique_clicks = 42
+          )
+        ))
+      }
+    }
 
-  "TagInfo" should "work getting a valid MTagInfoResponse" in {
-    val res = Await.result(client.tagInfo(MTagRequest(tag = "exampletag1")), DefaultConfig.defaultTimeout)
-    res.getClass shouldBe classOf[MTagInfoResponse]
-    res.tag shouldBe "exampletag1"
+  "TagInfo" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=info" in {
+    withMockClient("/tags/info.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.tagInfo(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(
+        MTagInfoResponse(
+          tag = "example-tag",
+          sent = 42,
+          hard_bounces = 42,
+          soft_bounces = 42,
+          rejects = 42,
+          complaints = 42,
+          unsubs = 42,
+          opens = 42,
+          clicks = 42,
+          stats = MStats(
+            today = MStat(
+              sent = 42,
+              hard_bounces = 42,
+              soft_bounces = 42,
+              rejects = 42,
+              complaints = 42,
+              unsubs = 42,
+              opens = 42,
+              unique_opens = 42,
+              clicks = 42,
+              unique_clicks = 42
+            ),
+            last_7_days = MStat(
+              sent = 42,
+              hard_bounces = 42,
+              soft_bounces = 42,
+              rejects = 42,
+              complaints = 42,
+              unsubs = 42,
+              opens = 42,
+              unique_opens = 42,
+              clicks = 42,
+              unique_clicks = 42
+            ),
+            last_30_days = MStat(
+              sent = 42,
+              hard_bounces = 42,
+              soft_bounces = 42,
+              rejects = 42,
+              complaints = 42,
+              unsubs = 42,
+              opens = 42,
+              unique_opens = 42,
+              clicks = 42,
+              unique_clicks = 42
+            ),
+            last_60_days = MStat(
+              sent = 42,
+              hard_bounces = 42,
+              soft_bounces = 42,
+              rejects = 42,
+              complaints = 42,
+              unsubs = 42,
+              opens = 42,
+              unique_opens = 42,
+              clicks = 42,
+              unique_clicks = 42
+            ),
+            last_90_days = MStat(
+              sent = 42,
+              hard_bounces = 42,
+              soft_bounces = 42,
+              rejects = 42,
+              complaints = 42,
+              unsubs = 42,
+              opens = 42,
+              unique_opens = 42,
+              clicks = 42,
+              unique_clicks = 42
+            )
+          )
+        )
+      ))
+    }
   }
 
-  "TagTimeSeries" should "work getting a valid List[MTimeSeriesResponse]" in {
-    val res = Await.result(client.tagTimeSeries(MTagRequest(tag = "exampletag1")), DefaultConfig.defaultTimeout)
-    //res shouldBe Nil
+  "TagTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=time-series" in {
+    withMockClient("/tags/time-series.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.tagTimeSeries(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(List(
+        MTimeSeriesResponse(
+          time = "2013-01-01 15:00:00",
+          sent = 42,
+          hard_bounces = 42,
+          soft_bounces = 42,
+          rejects = 42,
+          complaints = 42,
+          unsubs = Some(42),
+          opens = 42,
+          unique_opens = 42,
+          clicks = 42,
+          unique_clicks = 42
+        )
+      )))
+    }
   }
 
-  "TagAllTimeSeries" should "work getting a valid List[MTimeSeriesResponse]" in {
-    val res = Await.result(client.tagAllTimeSeries(MKey()), DefaultConfig.defaultTimeout)
-    //res shouldBe Nil
+  "TagAllTimeSeries" should "handle the example at https://mandrillapp.com/api/docs/tags.JSON.html#method=all-time-series" in {
+    withMockClient("/tags/all-time-series.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.tagAllTimeSeries(), defaultTimeout)(_ shouldBe Success(List(
+        MTimeSeriesResponse(
+          time = "2013-01-01 15:00:00",
+          sent = 42,
+          hard_bounces = 42,
+          soft_bounces = 42,
+          rejects = 42,
+          complaints = 42,
+          unsubs = Some(42),
+          opens = 42,
+          unique_opens = 42,
+          clicks = 42,
+          unique_clicks = 42
+        )
+      )))
+    }
+  }
+
+  import io.github.scamandrill.MandrillTestUtils.testTag
+
+  "Actual tag calls" should "find the test tag in the list" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.tagList(), defaultTimeout) {
+        case Success(res) =>
+          res.exists(_.tag == testTag) shouldBe true
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "get info for the test tag" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.tagInfo(MTagRequest(tag = testTag)), defaultTimeout) {
+        case Success(res) =>
+          res.tag shouldBe testTag
+        case Failure(t) => fail(t)
+      }
+    }
+  }
+
+  it should "get time-series data for the test tag" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.tagTimeSeries(MTagRequest(tag = testTag)), defaultTimeout)(_ shouldBe Success(Nil))
+    }
+  }
+
+  it should "get time-series for all tags" taggedAs ActualAPICall in {
+    assume(actualClient.isDefined)
+    actualClient.foreach { client =>
+      whenReady(client.tagAllTimeSeries(), defaultTimeout)(_ shouldBe Success(Nil))
+    }
   }
 }
