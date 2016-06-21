@@ -1,35 +1,13 @@
 package io.github.scamandrill.client
 
-import akka.http.scaladsl.unmarshalling._
-import akka.stream.Materializer
-import spray.json._
-
-import scala.concurrent.{ExecutionContext, Future}
-
+import play.api.libs.json.{JsObject, Json}
+import play.api.libs.ws.WSResponse
 
 case class MandrillError(status: String, code: Int, name: String, message: String)
-
-case class MandrillResponseException(httpCode: Int,
-                                     httpReason: String,
-                                     mandrillError: MandrillError) extends RuntimeException {}
-
-object MandrillResponseExceptionJsonProtocol extends DefaultJsonProtocol {
-  implicit val MandrillErrorj = jsonFormat4(MandrillError)
+case object MandrillError {
+  implicit val reads = Json.reads[MandrillError]
+  implicit val writes = Json.writes[MandrillError]
 }
 
-object MandrillResponseException {
-
-  def apply(ex: UnsuccessfulResponseException)(implicit mat: Materializer, ec: ExecutionContext): Future[MandrillResponseException] = {
-
-    import MandrillResponseExceptionJsonProtocol._
-    import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-
-    Unmarshal(ex.response.entity).to[MandrillError].map { me =>
-      new MandrillResponseException(
-        ex.response.status.intValue,
-        ex.response.status.reason,
-        me
-      )
-    }
-  }
-}
+case class MandrillResponseException(override val response: WSResponse,
+                                     mandrillError: MandrillError) extends UnsuccessfulResponseException(response) {}

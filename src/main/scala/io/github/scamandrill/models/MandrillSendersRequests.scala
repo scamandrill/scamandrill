@@ -1,30 +1,35 @@
 package io.github.scamandrill.models
 
-/**
-  * The sender domain
-  *
-  * @param key    - a valid API key
-  * @param domain - a domain name at which you can receive email
-  */
-case class MSenderDomain(key: String = DefaultConfig.defaultKeyFromConfig,
-                         domain: String) extends MandrillRequest
+import play.api.libs.json.Json
 
 /**
   * The sender domain
   *
-  * @param key     - a valid API key
+  * @param domain - a domain name at which you can receive email
+  */
+case class MSenderDomain(domain: String)
+case object MSenderDomain {
+  implicit val writes = Json.writes[MSenderDomain]
+}
+
+/**
+  * The sender domain
+  *
   * @param domain  - a domain name at which you can receive email
   * @param mailbox - a mailbox at the domain where the verification email should be sent
   */
-case class MSenderVerifyDomain(key: String = DefaultConfig.defaultKeyFromConfig,
-                               domain: String,
-                               mailbox: String) extends MandrillRequest
+case class MSenderVerifyDomain(domain: String,
+                               mailbox: String)
+case object MSenderVerifyDomain {
+  implicit val writes = Json.writes[MSenderVerifyDomain]
+}
 
 /**
   * The sender address
   *
-  * @param key     - a valid API key
   * @param address - the email address of the sender
   */
-case class MSenderAddress(key: String = DefaultConfig.defaultKeyFromConfig,
-                          address: String) extends MandrillRequest
+case class MSenderAddress(address: String)
+case object MSenderAddress {
+  implicit val writes = Json.writes[MSenderAddress]
+}
