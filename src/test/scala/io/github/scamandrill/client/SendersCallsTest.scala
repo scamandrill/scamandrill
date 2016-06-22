@@ -11,9 +11,9 @@ class SendersCallsTest extends MandrillSpec {
   "SendersList" should "handle the example at https://mandrillapp.com/api/docs/senders.JSON.html#method=list" in {
     withMockClient("/senders/list.json"){ wc =>
       val instance = new MandrillClient(wc)
-      whenReady(instance.sendersList, defaultTimeout)(_ shouldBe Success(List(MSendersListResp(
+      whenReady(instance.sendersList(), defaultTimeout)(_ shouldBe Success(List(MSendersListResp(
         address = "sender.example@mandrillapp.com",
-        created_at = "2013-01-01 15:30:27",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
         sent = 42,
         hard_bounces = 42,
         soft_bounces = 42,
@@ -33,19 +33,19 @@ class SendersCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.sendersDomains(), defaultTimeout)(_ shouldBe Success(List(MSendersDomainResponses(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27".?,
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27").?,
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         spf = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         dkim = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
-        verified_at = "2013-01-01 15:50:21".?,
+        verified_at = utcDateTimeParser("2013-01-01 15:50:21").?,
         valid_signing = true
       ))))
     }
@@ -58,19 +58,19 @@ class SendersCallsTest extends MandrillSpec {
         domain = "example.com"
       )), defaultTimeout)(_ shouldBe Success(MSendersDomainResponses(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27".?,
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27").?,
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         spf = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         dkim = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
-        verified_at = "2013-01-01 15:50:21".?,
+        verified_at = utcDateTimeParser("2013-01-01 15:50:21").?,
         valid_signing = true
       )))
     }
@@ -83,19 +83,19 @@ class SendersCallsTest extends MandrillSpec {
         domain = "example.org"
       )), defaultTimeout)(_ shouldBe Success(MSendersDomainResponses(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27".?,
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27").?,
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         spf = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         dkim = MSendersDom(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
-        verified_at = "2013-01-01 15:50:21".?,
+        verified_at = utcDateTimeParser("2013-01-01 15:50:21").?,
         valid_signing = true
       )))
     }
@@ -122,7 +122,7 @@ class SendersCallsTest extends MandrillSpec {
         address = "sender.example@mandrillapp.com"
       )), defaultTimeout)(_ shouldBe Success(MSendersInfoResp(
         address = "sender.example@mandrillapp.com",
-        created_at = "2013-01-01 15:30:27",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
         sent = 42,
         hard_bounces = 42,
         soft_bounces = 42,
@@ -204,7 +204,7 @@ class SendersCallsTest extends MandrillSpec {
         address = "sender.example@mandrillapp.com"
       )), defaultTimeout)(_ shouldBe Success(List(MSenderTSResponse(
         unique_clicks = 42,
-        time = "2013-01-01 15:30:27",
+        time = utcDateTimeParser("2013-01-01 15:30:27"),
         sent = 42,
         hard_bounces = 42,
         soft_bounces = 42,

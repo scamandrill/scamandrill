@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 /**
@@ -26,21 +27,22 @@ case object MExportNotify {
   * The export activity
   *
   * @param notify_email - an optional email address to notify when the export job has finished
-  * @param date_from    - start date as a UTC string in YYYY-MM-DD HH:MM:SS format
-  * @param date_to      - end date as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param date_from    - start date
+  * @param date_to      - end date
   * @param tags         - an array of tag names to narrow the export to; will match messages that contain ANY of the tags
   * @param senders      - an array of senders to narrow the export to
   * @param states       - an array of states to narrow the export to; messages with ANY of the states will be included
   * @param api_keys     - an array of api keys to narrow the export to; messsagse sent with ANY of the keys will be included
   */
 case class MExportActivity(notify_email: String,
-                           date_from: String,
-                           date_to: String,
+                           date_from: DateTime,
+                           date_to: DateTime,
                            tags: List[String],
                            senders: List[String],
                            states: List[String],
                            api_keys: List[String])
 case object MExportActivity {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val writes = Json.writes[MExportActivity]
 }
 

@@ -4,7 +4,7 @@ import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
 
-import scala.util.{Failure, Success}
+import scala.util.Success
 
 class WebhookCallsTest extends MandrillSpec {
   "WebhookList" should "handle the example at https://www.mandrillapp.com/api/docs/webhooks.JSON.html#method=list" in {
@@ -20,8 +20,8 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         ).?,
-        created_at = "2013-01-01 15:30:27",
-        last_sent_at = "2013-01-01 15:30:49",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_sent_at = utcDateTimeParser("2013-01-01 15:30:49"),
         batches_sent = 42,
         events_sent = 42,
         last_error = "example last_error".?
@@ -50,8 +50,8 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         ).?,
-        created_at = "2013-01-01 15:30:27",
-        last_sent_at = "2013-01-01 15:30:49",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_sent_at = utcDateTimeParser("2013-01-01 15:30:49"),
         batches_sent = 42,
         events_sent = 42,
         last_error = "example last_error".?
@@ -74,8 +74,8 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         ).?,
-        created_at = "2013-01-01 15:30:27",
-        last_sent_at = "2013-01-01 15:30:49",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_sent_at = utcDateTimeParser("2013-01-01 15:30:49"),
         batches_sent = 42,
         events_sent = 42,
         last_error = "example last_error".?
@@ -105,8 +105,8 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         ).?,
-        created_at = "2013-01-01 15:30:27",
-        last_sent_at = "2013-01-01 15:30:49",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_sent_at = utcDateTimeParser("2013-01-01 15:30:49"),
         batches_sent = 42,
         events_sent = 42,
         last_error = "example last_error".?
@@ -129,8 +129,8 @@ class WebhookCallsTest extends MandrillSpec {
           "open",
           "click"
         ).?,
-        created_at = "2013-01-01 15:30:27",
-        last_sent_at = "2013-01-01 15:30:49",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_sent_at = utcDateTimeParser("2013-01-01 15:30:49"),
         batches_sent = 42,
         events_sent = 42,
         last_error = "example last_error".?

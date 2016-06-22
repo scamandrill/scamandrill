@@ -6,7 +6,6 @@ import io.github.scamandrill.client.implicits._
 
 import scala.util.{Failure, Success}
 
-
 class SubaccountCallsTest extends MandrillSpec {
 
   "SubaccountAdd" should "handle the example at https://www.mandrillapp.com/api/docs/subaccounts.JSON.html#method=add" in {
@@ -23,8 +22,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42
@@ -43,8 +42,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42
@@ -63,8 +62,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42
@@ -86,8 +85,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42
@@ -107,8 +106,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42,
@@ -141,8 +140,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42
@@ -161,8 +160,8 @@ class SubaccountCallsTest extends MandrillSpec {
         custom_quota = 42,
         status = "active",
         reputation = 42,
-        created_at = "2013-01-01 15:30:27",
-        first_sent_at = "2013-01-01 15:30:29".?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        first_sent_at = utcDateTimeParser("2013-01-01 15:30:29").?,
         sent_weekly = 42,
         sent_monthly = 42,
         sent_total = 42

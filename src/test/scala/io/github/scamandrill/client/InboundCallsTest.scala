@@ -15,7 +15,7 @@ class InboundCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
-          created_at = "2013-01-01 15:30:27",
+          created_at = utcDateTimeParser("2013-01-01 15:30:27"),
           valid_mx = true
         )
       ))
@@ -30,7 +30,7 @@ class InboundCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
-          created_at = "2013-01-01 15:30:27",
+          created_at = utcDateTimeParser("2013-01-01 15:30:27"),
           valid_mx = true
         )
       ))
@@ -43,7 +43,7 @@ class InboundCallsTest extends MandrillSpec {
       whenReady(instance.inboundDomains(), defaultTimeout)(_ shouldBe Success(List(
         MInboundDomainResponse(
           domain = "inbound.example.com",
-          created_at = "2013-01-01 15:30:27",
+          created_at = utcDateTimeParser("2013-01-01 15:30:27"),
           valid_mx = true
         )
       )))
@@ -58,7 +58,7 @@ class InboundCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MInboundDomainResponse(
           domain = "inbound.example.com",
-          created_at = "2013-01-01 15:30:27",
+          created_at = utcDateTimeParser("2013-01-01 15:30:27"),
           valid_mx = true
         )
       ))

@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json._
 
 /**
@@ -21,7 +22,7 @@ case object MPingResponse {
   * The information on each sending address in the account
   *
   * @param address       - the sender's email address
-  * @param created_at    - the date and time that the sender was first seen by Mandrill as a UTC date string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at    - the date and time that the sender was first seen by Mandrill
   * @param sent          - the total number of messages sent by this sender
   * @param hard_bounces  - the total number of hard bounces by messages by this sender
   * @param soft_bounces  - the total number of soft bounces by messages by this sender
@@ -34,7 +35,7 @@ case object MPingResponse {
   * @param unique_clicks - the number of unique clicks for emails sent for this sender
   */
 case class MSenderDataResponse(address: String,
-                               created_at: String,
+                               created_at: DateTime,
                                sent: Int,
                                hard_bounces: Int,
                                soft_bounces: Int,
@@ -46,6 +47,7 @@ case class MSenderDataResponse(address: String,
                                unique_opens: Int,
                                unique_clicks: Int)
 case object MSenderDataResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSenderDataResponse]
 }
 
@@ -101,7 +103,7 @@ case object MStats {
   * The user information including username, key, reputation, quota, and historical sending stats
   *
   * @param username     - the username of the user (used for SMTP authentication)
-  * @param created_at   - the date and time that the user's Mandrill account was created as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at   - the date and time that the user's Mandrill account was created
   * @param public_id    - a unique, permanent identifier for this user
   * @param reputation   - the reputation of the user on a scale from 0 to 100, with 75 generally being a "good" reputation
   * @param hourly_quota - the maximum number of emails Mandrill will deliver for this user each hour. Any emails beyond that will be accepted and queued for later delivery. Users with higher reputations will have higher hourly quotas
@@ -109,13 +111,14 @@ case object MStats {
   * @param stats        - an aggregate summary of the account's sending stats
   */
 case class MInfoResponse(username: String,
-                         created_at: String,
+                         created_at: DateTime,
                          public_id: String,
                          reputation: Int,
                          hourly_quota: Int,
                          backlog: Int,
                          stats: MStats)
 case object MInfoResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MInfoResponse]
 }
 

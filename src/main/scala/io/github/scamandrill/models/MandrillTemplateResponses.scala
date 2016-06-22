@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 /**
@@ -29,9 +30,9 @@ case object MTemplateRenderResponse {
   * @param publish_from_email - the default sender address for the template, if provided
   * @param publish_from_name  - the default sender from name for the template, if provided
   * @param publish_text       - the default text part of messages sent with the template, if provided
-  * @param published_at       - the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
-  * @param created_at         - the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
-  * @param updated_at         - the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param published_at       - the date and time the template was last published, or None if it has not been published
+  * @param created_at         - the date and time the template was first created
+  * @param updated_at         - the date and time the template was last modified
   */
 case class MTemplateAddResponses(slug: String,
                                  name: String,
@@ -47,10 +48,11 @@ case class MTemplateAddResponses(slug: String,
                                  publish_from_email: Option[String],
                                  publish_from_name: Option[String],
                                  publish_text: Option[String],
-                                 published_at: Option[String],
-                                 created_at: String,
-                                 updated_at: String)
+                                 published_at: Option[DateTime],
+                                 created_at: DateTime,
+                                 updated_at: DateTime)
 case object MTemplateAddResponses {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MTemplateAddResponses]
 }
 

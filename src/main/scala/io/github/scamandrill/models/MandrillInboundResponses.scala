@@ -1,18 +1,20 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 /**
   * Information about the inbound domain
   *
   * @param domain     - the domain name that is accepting mail
-  * @param created_at - the date and time that the inbound domain was added as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at - the date and time that the inbound domain was added
   * @param valid_mx   - true if this inbound domain has successfully set up an MX record to deliver mail to the Mandrill servers
   */
 case class MInboundDomainResponse(domain: String,
-                                  created_at: String,
+                                  created_at: DateTime,
                                   valid_mx: Boolean)
 case object MInboundDomainResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MInboundDomainResponse]
 }
 

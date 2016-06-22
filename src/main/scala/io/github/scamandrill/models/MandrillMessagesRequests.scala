@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json._
 
 
@@ -137,14 +138,14 @@ class MSendMsg(val html: String,
                val to: List[MTo],
                val headers: Option[MHeaders] = None,
                val important: Boolean = false,
-               val track_opens: Boolean = false,
-               val track_clicks: Boolean = false,
-               val auto_text: Boolean = false,
-               val auto_html: Boolean = false,
-               val inline_css: Boolean = false,
-               val url_strip_qs: Boolean = false,
-               val preserve_recipients: Boolean = false,
-               val view_content_link: Boolean = false,
+               val track_opens: Option[Boolean] = None,
+               val track_clicks: Option[Boolean] = None,
+               val auto_text: Option[Boolean] = None,
+               val auto_html: Option[Boolean] = None,
+               val inline_css: Option[Boolean] = None,
+               val url_strip_qs: Option[Boolean] = None,
+               val preserve_recipients: Option[Boolean] = None,
+               val view_content_link: Option[Boolean] = None,
                val bcc_address: Option[String] = None,
                val tracking_domain: Option[String] = None,
                val signing_domain: Option[String] = None,
@@ -170,14 +171,14 @@ class MSendMsg(val html: String,
            to: List[MTo] = this.to,
            headers: Option[MHeaders] = this.headers,
            important: Boolean = this.important,
-           track_opens: Boolean = this.track_opens,
-           track_clicks: Boolean = this.track_clicks,
-           auto_text: Boolean = this.auto_text,
-           auto_html: Boolean = this.auto_html,
-           inline_css: Boolean = this.inline_css,
-           url_strip_qs: Boolean = this.url_strip_qs,
-           preserve_recipients: Boolean = this.preserve_recipients,
-           view_content_link: Boolean = this.view_content_link,
+           track_opens: Option[Boolean] = this.track_opens,
+           track_clicks: Option[Boolean] = this.track_clicks,
+           auto_text: Option[Boolean] = this.auto_text,
+           auto_html: Option[Boolean] = this.auto_html,
+           inline_css: Option[Boolean] = this.inline_css,
+           url_strip_qs: Option[Boolean] = this.url_strip_qs,
+           preserve_recipients: Option[Boolean] = this.preserve_recipients,
+           view_content_link: Option[Boolean] = this.view_content_link,
            bcc_address: Option[String] = this.bcc_address,
            tracking_domain: Option[String] = this.tracking_domain,
            signing_domain: Option[String] = this.signing_domain,
@@ -312,14 +313,15 @@ object MSendMsg {
   * @param message - the information on the message to send
   * @param async   - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
   * @param ip_pool - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-  * @param send_at - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
+  * @param send_at - when this message should be sent. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
   */
 case class MSendMessage(message: MSendMsg,
                         async: Boolean = false,
                         ip_pool: Option[String] = None,
-                        send_at: Option[String] = None)
+                        send_at: Option[DateTime] = None)
 
 case object MSendMessage {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val writes = Json.writes[MSendMessage]
 }
 
@@ -331,15 +333,16 @@ case object MSendMessage {
   * @param message          - the information on the message to send
   * @param async            - enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
   * @param ip_pool          - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-  * @param send_at          - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
+  * @param send_at          - when this message should be sent. If you specify a time in the past, the message will be sent immediately. An additional fee applies for scheduled email, and this feature is only available to accounts with a positive balance.
   */
 case class MSendTemplateMessage(template_name: String,
                                 template_content: List[MVars],
                                 message: MSendMsg,
                                 async: Boolean = false,
                                 ip_pool: Option[String] = None,
-                                send_at: Option[String] = None)
+                                send_at: Option[DateTime] = None)
 case object MSendTemplateMessage {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val writes = Json.writes[MSendTemplateMessage]
 }
 
@@ -355,13 +358,14 @@ case object MSendTemplateMessage {
   * @param limit     - the maximum number of results to return, defaults to 100, 1000 is the maximum
   */
 case class MSearch(query: Option[String] = None,
-                   date_from: Option[String] = None,
-                   date_to: Option[String] = None,
+                   date_from: Option[DateTime] = None,
+                   date_to: Option[DateTime] = None,
                    tags: List[String] = List.empty,
                    senders: List[String] = List.empty,
                    api_keys: List[String] = List.empty,
                    limit: Int = 100)
 case object MSearch {
+  implicit val d = MandrillDateFormats.DATE_FORMAT
   implicit val writes = Json.writes[MSearch]
 }
 
@@ -375,11 +379,12 @@ case object MSearch {
   * @param senders   - an array of sender addresses to narrow the search to, will return messages sent by ANY of the senders
   */
 case class MSearchTimeSeries(query: String,
-                             date_from: String,
-                             date_to: String,
+                             date_from: Option[DateTime] = None,
+                             date_to: Option[DateTime] = None,
                              tags: List[String] = List.empty,
                              senders: List[String] = List.empty)
 case object MSearchTimeSeries {
+  implicit val d = MandrillDateFormats.DATE_FORMAT
   implicit val writes = Json.writes[MSearchTimeSeries]
 }
 
@@ -412,7 +417,7 @@ case object MParse {
   * @param to                 - optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
   * @param async              - enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendRaw will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a key for the 'add' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
   * @param ip_pool            - the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-  * @param send_at            - when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately.
+  * @param send_at            - when this message should be sent. If you specify a time in the past, the message will be sent immediately.
   * @param return_path_domain - a custom domain to use for the messages's return-path
   */
 case class MSendRaw(raw_message: String,
@@ -421,9 +426,10 @@ case class MSendRaw(raw_message: String,
                     to: Option[List[String]] = None,
                     async: Boolean = false,
                     ip_pool: Option[String] = None,
-                    send_at: Option[String] = None,
+                    send_at: Option[DateTime] = None,
                     return_path_domain: Option[String] = None)
 case object MSendRaw {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val writes = Json.writes[MSendRaw]
 }
 
@@ -453,7 +459,8 @@ case object MCancelSchedule {
   * @param id      - a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
   * @param send_at - the new UTC timestamp when the message should sent. Mandrill can't time travel, so if you specify a time in past the message will be sent immediately
   */
-case class MReSchedule(id: String, send_at: String)
+case class MReSchedule(id: String, send_at: DateTime)
 case object MReSchedule {
+  implicit val d = MandrillDateFormats.DATETIME_FORMAT
   implicit val writes = Json.writes[MReSchedule]
 }

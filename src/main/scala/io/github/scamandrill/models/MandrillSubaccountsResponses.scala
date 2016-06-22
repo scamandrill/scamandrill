@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 //TODO: check if the first_sent_at is actually returned
@@ -11,7 +12,8 @@ import play.api.libs.json.Json
   * @param custom_quota - an optional manual hourly quota for the subaccount. If not specified, the hourly quota will be managed based on reputation
   * @param status       - the current sending status of the subaccount, one of "active" or "paused"
   * @param reputation   - the subaccount's current reputation on a scale from 0 to 100
-  * @param created_at   - the date and time that the subaccount was created as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at   - when the subaccount was created
+  * @param first_sent_at - when the subaccount first sent
   * @param sent_weekly  - the number of emails the subaccount has sent so far this week (weeks start on midnight Monday, UTC)
   * @param sent_monthly - the number of emails the subaccount has sent so far this month (months start on midnight of the 1st, UTC)
   * @param sent_total   - the number of emails the subaccount has sent since it was created
@@ -21,12 +23,13 @@ case class MSubaccountsResponse(id: String,
                                 custom_quota: Int,
                                 status: String,
                                 reputation: Int,
-                                created_at: String,
-                                first_sent_at: Option[String],
+                                created_at: DateTime,
+                                first_sent_at: Option[DateTime],
                                 sent_weekly: Int,
                                 sent_monthly: Int,
                                 sent_total: Int)
 case object MSubaccountsResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSubaccountsResponse]
 }
 
@@ -38,8 +41,8 @@ case object MSubaccountsResponse {
   * @param custom_quota  - an optional manual hourly quota for the subaccount. If not specified, the hourly quota will be managed based on reputation
   * @param status        - the current sending status of the subaccount, one of "active" or "paused"
   * @param reputation    - the subaccount's current reputation on a scale from 0 to 100
-  * @param created_at    - the date and time that the subaccount was created as a UTC string in YYYY-MM-DD HH:MM:SS format
-  * @param first_sent_at - the date and time that the subaccount first sent as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at    - when the subaccount was created
+  * @param first_sent_at - when the subaccount first sent
   * @param sent_weekly   - the number of emails the subaccount has sent so far this week (weeks start on midnight Monday, UTC)
   * @param sent_monthly  - the number of emails the subaccount has sent so far this month (months start on midnight of the 1st, UTC)
   * @param sent_total    - the number of emails the subaccount has sent since it was created
@@ -53,8 +56,8 @@ case class MSubaccountsInfoResponse(id: String,
                                     custom_quota: Int,
                                     status: String,
                                     reputation: Int,
-                                    created_at: String,
-                                    first_sent_at: Option[String],
+                                    created_at: DateTime,
+                                    first_sent_at: Option[DateTime],
                                     sent_weekly: Int,
                                     sent_monthly: Int,
                                     sent_total: Int,
@@ -62,6 +65,7 @@ case class MSubaccountsInfoResponse(id: String,
                                     hourly_quota: Int,
                                     last_30_days: MStat)
 case object MSubaccountsInfoResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSubaccountsInfoResponse]
 }
 

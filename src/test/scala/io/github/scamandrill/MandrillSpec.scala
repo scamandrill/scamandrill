@@ -19,6 +19,9 @@ trait MandrillSpec extends FlatSpec with Matchers with SimpleLogger with ScalaFu
   this: Suite =>
   val scamandrill = Scamandrill()
 
+  val utcDateTimeParser = MandrillTestUtils.utcDateTimeParser
+  val dateParser = MandrillTestUtils.dateParser
+
   def defaultTimeout = {
     Configuration(ConfigFactory.load("application.conf")).getInt("mandrill.timoutInSeconds") match {
       case Some(t) => timeout(Span(t, Seconds))

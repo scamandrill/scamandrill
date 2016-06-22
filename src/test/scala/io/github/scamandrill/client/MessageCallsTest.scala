@@ -1,14 +1,9 @@
 package io.github.scamandrill.client
 
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-
 import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.client.implicits._
 import io.github.scamandrill.models._
 import org.joda.time.DateTime
-import org.scalatest.Matchers
-import org.scalatest.Matchers._
 
 import scala.concurrent.duration._
 import play.api.libs.json.JsString
@@ -115,8 +110,8 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(ws)
       whenReady(instance.messagesSearch(MSearch(
         query = "email:gmail.com".?,
-        date_from = "2013-01-01".?,
-        date_to = "2013-01-02".?,
+        date_from = dateParser("2013-01-01").?,
+        date_to = dateParser("2013-01-02").?,
         tags = List("password-reset", "welcome"),
         senders = List("sender@example.com"),
         api_keys = List("PmmzuovUZMPJsa73o3jjCw"),
@@ -158,8 +153,8 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesSearchTimeSeries(MSearchTimeSeries(
         query = "email:gmail.com",
-        date_from = "2013-01-01",
-        date_to = "2013-01-02",
+        date_from = dateParser("2013-01-01").?,
+        date_to = dateParser("2013-01-02").?,
         tags = List(
           "password-reset",
           "welcome"
@@ -168,7 +163,7 @@ class MessageCallsTest extends MandrillSpec {
           "sender@example.com"
         )
       )), defaultTimeout)(_ shouldBe Success(List(MTimeSeriesResponse(
-        time = "2013-01-01 15:00:00",
+        time = utcDateTimeParser("2013-01-01 15:00:00"),
         sent = 42,
         hard_bounces = 42,
         soft_bounces = 42,
@@ -238,28 +233,28 @@ class MessageCallsTest extends MandrillSpec {
         subject = "Some Subject".?,
         from_email = "sender@example.com".?,
         from_name = "Sender Name".?,
-        to = Some(List(
+        to = List(
           MToResponse(
             email = "recipient.email@example.com",
             name = "Recipient Name".?
           )
-        )),
+        ).?,
         text = "Some text content".?,
         html = "<p>Some HTML content</p>".?,
-        attachments = Some(List(
+        attachments = List(
           MAttachmetOrImage(
             name = "example.txt",
             `type`= "text/plain",
             content = "example non-binary content"
           )
-        )),
-        images = Some(List(
+        ).?,
+        images = List(
           MAttachmetOrImage(
             name = "IMAGEID",
             `type` = "image/png",
             content = "ZXhhbXBsZSBmaWxl"
           )
-        ))
+        ).?
       )))
     }
   }
@@ -274,7 +269,7 @@ class MessageCallsTest extends MandrillSpec {
         to = List("recipient.email@example.com").?,
         async = false,
         ip_pool = "Main Pool".?,
-        send_at = "example send_at".?,
+        send_at = utcDateTimeParser("2013-01-20 12:13:01").?,
         return_path_domain = "mail.com".?
       )), defaultTimeout)(_ shouldBe Success(List(MSendResponse(
         email = "recipient.email@example.com",
@@ -292,8 +287,8 @@ class MessageCallsTest extends MandrillSpec {
         to = "test.recipient@example.com"
       )), defaultTimeout)(_ shouldBe Success(List(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
-        created_at = "2013-01-20 12:13:01",
-        send_at = "2021-01-05 12:42:01",
+        created_at = utcDateTimeParser("2013-01-20 12:13:01"),
+        send_at = utcDateTimeParser("2021-01-05 12:42:01"),
         from_email = "sender@example.com",
         to = "test.recipient@example.com",
         subject = "This is a scheduled email"
@@ -308,8 +303,8 @@ class MessageCallsTest extends MandrillSpec {
         id = "I_dtFt2ZNPW5QD9-FaDU1A"
       )), defaultTimeout)(_ shouldBe Success(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
-        created_at = "2013-01-20 12:13:01",
-        send_at = "2021-01-05 12:42:01",
+        created_at = utcDateTimeParser("2013-01-20 12:13:01"),
+        send_at = utcDateTimeParser("2021-01-05 12:42:01"),
         from_email = "sender@example.com",
         to = "test.recipient@example.com",
         subject = "This is a scheduled email"
@@ -322,11 +317,11 @@ class MessageCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.messagesReschedule(MReSchedule(
         id = "I_dtFt2ZNPW5QD9-FaDU1A",
-        send_at = "20120-06-01 08:15:01"
+        send_at = utcDateTimeParser("20120-06-01 08:15:01")
       )), defaultTimeout)(_ shouldBe Success(MScheduleResponse(
         _id = "I_dtFt2ZNPW5QD9-FaDU1A",
-        created_at = "2013-01-20 12:13:01",
-        send_at = "2021-01-05 12:42:01",
+        created_at = utcDateTimeParser("2013-01-20 12:13:01"),
+        send_at = utcDateTimeParser("2021-01-05 12:42:01"),
         from_email = "sender@example.com",
         to = "test.recipient@example.com",
         subject = "This is a scheduled email"
@@ -371,8 +366,8 @@ class MessageCallsTest extends MandrillSpec {
       case Some(client) =>
         client.messagesSearch(MSearch(
           query = s"""subject:"${validMessage.subject}" AND state:sent""".?,
-          date_to = DateTime.now.toString("yyyy-MM-dd").?,
-          date_from = DateTime.now.minusDays(30).toString("yyyy-MM-dd").? // Mandrill keeps info for the last 30 days
+          date_to = Some(DateTime.now),
+          date_from = Some(DateTime.now.minusDays(30)) // Mandrill keeps info for the last 30 days
         )).map { testResponse =>
           testResponse.toOption.flatMap(_.find(m => m.state == "sent")) match {
             case Some(testMessageResponse) =>
@@ -443,7 +438,7 @@ class MessageCallsTest extends MandrillSpec {
               it should "parse raw content" taggedAs ActualAPICall in {
                 whenReady(client.messagesParse(MParse(raw_message = validRawMessage.raw_message)), defaultTimeout) {
                   case Success(res) =>
-                    res.from_email shouldBe Some(senderAddress)
+                    res.from_email shouldBe senderAddress.?
                   case Failure(t) => fail(t)
                 }
               }

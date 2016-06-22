@@ -1,6 +1,5 @@
 package io.github.scamandrill.client
 
-import io.github.scamandrill.MandrillTestUtils._
 import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
 import io.github.scamandrill.client.implicits._
@@ -41,7 +40,7 @@ class UrlCallsTest extends MandrillSpec {
       whenReady(instance.urlsTimeSeries(MUrlTimeSeries(
         url = "http://example.com/example-page"
       )), defaultTimeout)(_ shouldBe Success(List(MUrlTimeResponse(
-        time = "2013-01-01 15:00:00",
+        time = utcDateTimeParser("2013-01-01 15:00:00"),
         sent = 42,
         clicks = 42,
         unique_clicks = 42
@@ -56,11 +55,11 @@ class UrlCallsTest extends MandrillSpec {
         domain = "track.example.com"
       )), defaultTimeout)(_ shouldBe Success(MUrlDomainResponse(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27",
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         cname = MUrlCname(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         valid_tracking = true
@@ -73,11 +72,11 @@ class UrlCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.urlsTrackingDomain(), defaultTimeout)(_ shouldBe Success(List(MUrlDomainResponse(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27",
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         cname = MUrlCname(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         valid_tracking = true
@@ -92,11 +91,11 @@ class UrlCallsTest extends MandrillSpec {
         domain = "track.example.com"
       )), defaultTimeout)(_ shouldBe Success(MUrlDomainResponse(
         domain = "example.com",
-        created_at = "2013-01-01 15:30:27",
-        last_tested_at = "2013-01-01 15:40:42",
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        last_tested_at = utcDateTimeParser("2013-01-01 15:40:42"),
         cname = MUrlCname(
           valid = true,
-          valid_after = "2013-01-01 15:45:23".?,
+          valid_after = utcDateTimeParser("2013-01-01 15:45:23").?,
           error = "example error".?
         ),
         valid_tracking = true

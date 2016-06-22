@@ -13,7 +13,7 @@ class IpsCallsTest extends MandrillSpec {
       whenReady(instance.ipsList(), defaultTimeout)(_ shouldBe Success(List(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -23,8 +23,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       )))
@@ -39,7 +39,7 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -49,8 +49,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       ))
@@ -65,7 +65,7 @@ class IpsCallsTest extends MandrillSpec {
         pool = "Main Pool"
       )), defaultTimeout)(_ shouldBe Success(
         MIpsProvisionResp(
-          requested_at = "2013-01-01 01:52:21"
+          requested_at = utcDateTimeParser("2013-01-01 01:52:21")
         )
       ))
     }
@@ -79,7 +79,7 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -89,8 +89,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       ))
@@ -105,7 +105,7 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -115,8 +115,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       ))
@@ -133,7 +133,7 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -143,8 +143,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       ))
@@ -171,10 +171,10 @@ class IpsCallsTest extends MandrillSpec {
       whenReady(instance.ipsListPool(), defaultTimeout)(_ shouldBe Success(List(
         MIpsInfoPoolResponse(
           name = "Main Pool",
-          created_at = "2013-01-01 12:15:12",
+          created_at = utcDateTimeParser("2013-01-01 12:15:12"),
           ips = List(MIpsResponse(
             ip = "127.0.0.1",
-            created_at = "2013-01-01 15:50:21",
+            created_at = utcDateTimeParser("2013-01-01 15:50:21"),
             pool = "Main Pool",
             domain = "mail1.example.mandrillapp.com",
             custom_dns = MIpsDnsResp(
@@ -184,8 +184,8 @@ class IpsCallsTest extends MandrillSpec {
             ),
             warmup = MIpsWarmupResp(
               warming_up = true,
-              start_at = "2013-03-01 12:00:01",
-              end_at = "2013-03-31 12:00:01"
+              start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+              end_at = utcDateTimeParser("2013-03-31 12:00:01")
             )
           ))
         )
@@ -201,10 +201,10 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsInfoPoolResponse(
           name = "Main Pool",
-          created_at = "2013-01-01 12:15:12",
+          created_at = utcDateTimeParser("2013-01-01 12:15:12"),
           ips = List(MIpsResponse(
             ip = "127.0.0.1",
-            created_at = "2013-01-01 15:50:21",
+            created_at = utcDateTimeParser("2013-01-01 15:50:21"),
             pool = "Main Pool",
             domain = "mail1.example.mandrillapp.com",
             custom_dns = MIpsDnsResp(
@@ -214,8 +214,8 @@ class IpsCallsTest extends MandrillSpec {
             ),
             warmup = MIpsWarmupResp(
               warming_up = true,
-              start_at = "2013-03-01 12:00:01",
-              end_at = "2013-03-31 12:00:01"
+              start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+              end_at = utcDateTimeParser("2013-03-31 12:00:01")
             )
           ))
         )
@@ -231,10 +231,10 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsInfoPoolResponse(
           name = "Main Pool",
-          created_at = "2013-01-01 12:15:12",
+          created_at = utcDateTimeParser("2013-01-01 12:15:12"),
           ips = List(MIpsResponse(
             ip = "127.0.0.1",
-            created_at = "2013-01-01 15:50:21",
+            created_at = utcDateTimeParser("2013-01-01 15:50:21"),
             pool = "Main Pool",
             domain = "mail1.example.mandrillapp.com",
             custom_dns = MIpsDnsResp(
@@ -244,8 +244,8 @@ class IpsCallsTest extends MandrillSpec {
             ),
             warmup = MIpsWarmupResp(
               warming_up = true,
-              start_at = "2013-03-01 12:00:01",
-              end_at = "2013-03-31 12:00:01"
+              start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+              end_at = utcDateTimeParser("2013-03-31 12:00:01")
             )
           ))
         )
@@ -291,7 +291,7 @@ class IpsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MIpsResponse(
           ip = "127.0.0.1",
-          created_at = "2013-01-01 15:50:21",
+          created_at = utcDateTimeParser("2013-01-01 15:50:21"),
           pool = "Main Pool",
           domain = "mail1.example.mandrillapp.com",
           custom_dns = MIpsDnsResp(
@@ -301,8 +301,8 @@ class IpsCallsTest extends MandrillSpec {
           ),
           warmup = MIpsWarmupResp(
             warming_up = true,
-            start_at = "2013-03-01 12:00:01",
-            end_at = "2013-03-31 12:00:01"
+            start_at = utcDateTimeParser("2013-03-01 12:00:01"),
+            end_at = utcDateTimeParser("2013-03-31 12:00:01")
           )
         )
       ))
