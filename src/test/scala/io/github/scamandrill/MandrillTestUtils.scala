@@ -1,7 +1,14 @@
 package io.github.scamandrill
+
 import io.github.scamandrill.models._
+import org.joda.time.{DateTime, DateTimeZone}
+import org.joda.time.format.DateTimeFormat
 
 object MandrillTestUtils {
+  val utcDateTimeParser: String => DateTime =
+    DateTime.parse(_, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC())
+    .toDateTime(DateTimeZone.getDefault)
+  val dateParser: String => DateTime = DateTime.parse(_, DateTimeFormat.forPattern("yyyy-MM-dd"))
 
   val testTag = "exampletag1"
 
@@ -71,7 +78,7 @@ object MandrillTestUtils {
     text = "test",
     subject = "subject test",
     from_email = senderAddress,
-    view_content_link = true,
+    view_content_link = Some(true),
     from_name = "Scamandrill",
     to = List(MTo("test@recipient.com")),
     bcc_address = Some("somebcc@address.com"),
@@ -83,11 +90,12 @@ object MandrillTestUtils {
 
   val validSearch = MSearch(
     query = Some("email:gmail.com"),
-    date_from = Some("2016-01-01"),
-    date_to = Some("2016-01-02"))
+    date_from = Some(dateParser("2016-01-01")),
+    date_to = Some(dateParser("2016-01-02")))
 
   val validSearchTimeSeries = MSearchTimeSeries(
     query = "email:gmail.com",
-    date_from = "2013-01-01",
-    date_to = "2013-01-02")
+    date_from = Some(dateParser("2013-01-01")),
+    date_to = Some(dateParser("2013-01-02"))
+  )
 }

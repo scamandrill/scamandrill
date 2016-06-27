@@ -41,7 +41,7 @@ class RejectCallsTest extends MandrillSpec {
         expired = false,
         sender = Some(MSenderDataResponse(
           address = "sender.example@mandrillapp.com",
-          created_at = "2013-01-01 15:30:27",
+          created_at = utcDateTimeParser("2013-01-01 15:30:27"),
           sent = 42,
           hard_bounces = 42,
           soft_bounces = 42,

@@ -1,12 +1,13 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 /**
   * An array of sender data, one for each sending addresses used by the account
   *
   * @param address       - the sender's email address
-  * @param created_at    - the date and time that the sender was first seen by Mandrill as a UTC date string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at    - the date and time that the sender was first seen by Mandrill
   * @param sent          - the total number of messages sent with this tag
   * @param hard_bounces  - the total number of hard bounces by messages with this tag
   * @param soft_bounces  - the total number of soft bounces by messages with this tag
@@ -19,7 +20,7 @@ import play.api.libs.json.Json
   * @param unique_clicks - the number of unique clicks for emails sent with this tag
   */
 case class MSendersListResp(address: String,
-                            created_at: String,
+                            created_at: DateTime,
                             sent: Int,
                             hard_bounces: Int,
                             soft_bounces: Int,
@@ -31,6 +32,7 @@ case class MSendersListResp(address: String,
                             unique_opens: Int,
                             unique_clicks: Int)
 case object MSendersListResp {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSendersListResp]
 }
 
@@ -38,13 +40,14 @@ case object MSendersListResp {
   * Details about the domain's SPF record
   *
   * @param valid       - whether the domain's SPF record is valid for use with Mandrill
-  * @param valid_after - when the domain's SPF record will be considered valid for use with Mandrill as a UTC string in YYYY-MM-DD HH:MM:SS format. If set, this indicates that the record is valid now, but was previously invalid, and Mandrill will wait until the record's TTL elapses to start using it.
+  * @param valid_after - when the domain's SPF record will be considered valid for use with Mandrill. If set, this indicates that the record is valid now, but was previously invalid, and Mandrill will wait until the record's TTL elapses to start using it.
   * @param error       - an error describing the spf record, or null if the record is correct
   */
 case class MSendersDom(valid: Boolean,
-                       valid_after: Option[String],
+                       valid_after: Option[DateTime],
                        error: Option[String])
 case object MSendersDom {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSendersDom]
 }
 
@@ -52,21 +55,22 @@ case object MSendersDom {
   * The information on each sending domain for the account
   *
   * @param domain         - the sender domain name
-  * @param created_at     - the date and time that the sending domain was first seen as a UTC string in YYYY-MM-DD HH:MM:SS format
-  * @param last_tested_at - when the domain's DNS settings were last tested as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at     - the date and time that the sending domain was first seen
+  * @param last_tested_at - when the domain's DNS settings were last tested
   * @param spf            - details about the domain's SPF record
   * @param dkim           - details about the domain's DKIM record
-  * @param verified_at    - if the domain has been verified, this indicates when that verification occurred as a UTC string in YYYY-MM-DD HH:MM:SS format
+  * @param verified_at    - if the domain has been verified, this indicates when that verification occurred
   * @param valid_signing  - whether this domain can be used to authenticate mail, either for itself or as a custom signing domain. If this is false but spf and dkim are both valid, you will need to verify the domain before using it to authenticate mail
   */
 case class MSendersDomainResponses(domain: String,
-                                   created_at: Option[String],
-                                   last_tested_at: String,
+                                   created_at: Option[DateTime],
+                                   last_tested_at: DateTime,
                                    spf: MSendersDom,
                                    dkim: MSendersDom,
-                                   verified_at: Option[String],
+                                   verified_at: Option[DateTime],
                                    valid_signing: Boolean)
 case object MSendersDomainResponses {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSendersDomainResponses]
 }
 
@@ -107,7 +111,7 @@ case object MSendersStats {
   * The detailed information on the sender
   *
   * @param address      - the sender's email address
-  * @param created_at   - the date and time that the sender was first seen by Mandrill as a UTC date string in YYYY-MM-DD HH:MM:SS format
+  * @param created_at   - the date and time that the sender was first seen by Mandrill
   * @param sent         - the total number of messages sent with this tag
   * @param hard_bounces - the total number of hard bounces by messages with this tag
   * @param soft_bounces - the total number of soft bounces by messages with this tag
@@ -119,7 +123,7 @@ case object MSendersStats {
   * @param stats        - an aggregate summary of the sender's sending stats
   */
 case class MSendersInfoResp(address: String,
-                            created_at: String,
+                            created_at: DateTime,
                             sent: Int,
                             hard_bounces: Int,
                             soft_bounces: Int,
@@ -130,13 +134,14 @@ case class MSendersInfoResp(address: String,
                             clicks: Int,
                             stats: MSendersStats)
 case object MSendersInfoResp {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSendersInfoResp]
 }
 
 /**
   * The stats for a single hour
   *
-  * @param time          - the hour as a UTC date string in YYYY-MM-DD HH:MM:SS format
+  * @param time          - the hour
   * @param sent          - the total number of messages sent with this tag
   * @param hard_bounces  - the total number of hard bounces by messages with this tag
   * @param soft_bounces  - the total number of soft bounces by messages with this tag
@@ -147,7 +152,7 @@ case object MSendersInfoResp {
   * @param unique_opens  - the number of unique opens for emails sent with this tag
   * @param unique_clicks - the number of unique clicks for emails sent with this tag
   */
-case class MSenderTSResponse(time: String,
+case class MSenderTSResponse(time: DateTime,
                              sent: Int,
                              hard_bounces: Int,
                              soft_bounces: Int,
@@ -158,5 +163,6 @@ case class MSenderTSResponse(time: String,
                              clicks: Int,
                              unique_clicks: Int)
 case object MSenderTSResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MSenderTSResponse]
 }

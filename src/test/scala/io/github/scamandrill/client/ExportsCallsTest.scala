@@ -16,9 +16,9 @@ class ExportsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
-          created_at = "2013-01-01 12:30:28",
+          created_at = utcDateTimeParser("2013-01-01 12:30:28"),
           `type` = "activity",
-          finished_at = "2013-01-01 12:35:52".?,
+          finished_at = utcDateTimeParser("2013-01-01 12:35:52").?,
           state = "working",
           result_url = "http://exports.mandrillapp.com/example/export.zip".?
         )
@@ -32,9 +32,9 @@ class ExportsCallsTest extends MandrillSpec {
       whenReady(instance.exportList(), defaultTimeout)(_ shouldBe Success(List(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
-          created_at = "2013-01-01 12:30:28",
+          created_at = utcDateTimeParser("2013-01-01 12:30:28"),
           `type` = "activity",
-          finished_at = "2013-01-01 12:35:52".?,
+          finished_at = Some(utcDateTimeParser("2013-01-01 12:35:52")),
           state = "working",
           result_url = "http://exports.mandrillapp.com/example/export.zip".?
         )
@@ -50,7 +50,7 @@ class ExportsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
-          created_at = "2013-01-01 12:30:28",
+          created_at = utcDateTimeParser("2013-01-01 12:30:28"),
           `type` = "reject",
           finished_at = None,
           state = "waiting",
@@ -68,7 +68,7 @@ class ExportsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
-          created_at = "2013-01-01 12:30:28",
+          created_at = utcDateTimeParser("2013-01-01 12:30:28"),
           `type` = "reject",
           finished_at = None,
           state = "waiting",
@@ -83,8 +83,8 @@ class ExportsCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.exportActivity(MExportActivity(
         notify_email = "notify_email@example.com",
-        date_from = "2013-01-01 12:53:01",
-        date_to = "2013-01-06 13:42:18",
+        date_from = utcDateTimeParser("2013-01-01 12:53:01"),
+        date_to = utcDateTimeParser("2013-01-06 13:42:18"),
         tags = List(
           "example-tag"
         ),
@@ -100,7 +100,7 @@ class ExportsCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(
         MExportResponse(
           id = "2013-01-01 12:20:28.13842",
-          created_at = "2013-01-01 12:30:28",
+          created_at = utcDateTimeParser("2013-01-01 12:30:28"),
           `type` = "reject",
           finished_at = None,
           state = "waiting",

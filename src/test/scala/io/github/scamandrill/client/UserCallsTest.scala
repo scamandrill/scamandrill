@@ -2,6 +2,7 @@ package io.github.scamandrill.client
 
 import io.github.scamandrill.{ActualAPICall, MandrillSpec}
 import io.github.scamandrill.models._
+import org.joda.time.DateTimeZone
 import org.scalatest.concurrent.ScalaFutures
 
 import scala.util.{Failure, Success}
@@ -78,7 +79,7 @@ class UserCallsTest extends MandrillSpec with ScalaFutures {
       whenReady(instance.usersInfo, defaultTimeout) {
         case Success(info) =>
           info.username shouldBe "myusername"
-          info.created_at shouldBe "2013-01-01 15:30:27"
+          info.created_at shouldBe utcDateTimeParser("2013-01-01 15:30:27")
           info.hourly_quota shouldBe 42
           info.public_id shouldBe "aaabbbccc112233"
         case Failure(t) => fail(t)

@@ -3,6 +3,7 @@ package io.github.scamandrill.client
 import io.github.scamandrill.models.JsScalar.{JsScalarBoolean, JsScalarNumber, JsScalarString}
 import play.api.libs.ws.WSClient
 import io.github.scamandrill.models._
+import org.joda.time.DateTime
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
@@ -1122,4 +1123,5 @@ object implicits {
   implicit class OptionalString(s: String) { def ? : Option[String] = Some(s) }
   implicit class OptionalBoolean(b: Boolean) { def ? : Option[Boolean] = Some(b) }
   implicit class OptionalList[T](l: List[T]) { def ? : Option[List[T]] = Some(l) }
+  implicit class OptionalDate(d: DateTime) { def ? : Option[DateTime] = Some(d) }
 }

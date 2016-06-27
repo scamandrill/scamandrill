@@ -40,9 +40,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       )))
     }
   }
@@ -69,9 +69,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       )))
     }
   }
@@ -98,9 +98,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       )))
     }
   }
@@ -127,9 +127,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       ))))
     }
   }
@@ -165,9 +165,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       )))
     }
   }
@@ -179,7 +179,7 @@ class TemplateCallsTest extends MandrillSpec {
         name = "Example Template"
       )), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
-          time = "2013-01-01 15:00:00",
+          time = utcDateTimeParser("2013-01-01 15:00:00"),
           sent = 42,
           hard_bounces = 42,
           soft_bounces = 42,
@@ -235,9 +235,9 @@ class TemplateCallsTest extends MandrillSpec {
         publish_from_email = "from.email.published@example.com".?,
         publish_from_name = "Example Published Name".?,
         publish_text = "Example published text".?,
-        published_at = "2013-01-01 15:30:40".?,
-        created_at = "2013-01-01 15:30:27",
-        updated_at = "2013-01-01 15:30:49"
+        published_at = utcDateTimeParser("2013-01-01 15:30:40").?,
+        created_at = utcDateTimeParser("2013-01-01 15:30:27"),
+        updated_at = utcDateTimeParser("2013-01-01 15:30:49")
       )))
     }
   }

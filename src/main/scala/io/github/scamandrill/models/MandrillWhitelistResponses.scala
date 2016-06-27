@@ -1,5 +1,6 @@
 package io.github.scamandrill.models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 //TODO: not whether as in documentation
@@ -22,8 +23,9 @@ case object MWhitelistAddResponse {
   */
 case class MWhitelistListResponse(email: String,
                                   detail: String,
-                                  created_at: String)
+                                  created_at: DateTime)
 case object MWhitelistListResponse {
+  implicit val dt = MandrillDateFormats.DATETIME_FORMAT
   implicit val reads = Json.reads[MWhitelistListResponse]
 }
 

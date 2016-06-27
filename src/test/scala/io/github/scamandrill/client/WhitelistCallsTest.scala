@@ -29,7 +29,7 @@ class WhitelistCallsTest extends MandrillSpec {
       )), defaultTimeout)(_ shouldBe Success(List(MWhitelistListResponse(
         email = "example email",
         detail = "Whitelisted internal address",
-        created_at = "2013-01-01 15:30:32"
+        created_at = utcDateTimeParser("2013-01-01 15:30:32")
       ))))
     }
   }

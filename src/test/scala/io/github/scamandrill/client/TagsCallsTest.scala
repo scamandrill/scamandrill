@@ -135,7 +135,7 @@ class TagsCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.tagTimeSeries(MTagRequest(tag="example-tag")), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
-          time = "2013-01-01 15:00:00",
+          time = utcDateTimeParser("2013-01-01 15:00:00"),
           sent = 42,
           hard_bounces = 42,
           soft_bounces = 42,
@@ -156,7 +156,7 @@ class TagsCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.tagAllTimeSeries(), defaultTimeout)(_ shouldBe Success(List(
         MTimeSeriesResponse(
-          time = "2013-01-01 15:00:00",
+          time = utcDateTimeParser("2013-01-01 15:00:00"),
           sent = 42,
           hard_bounces = 42,
           soft_bounces = 42,
