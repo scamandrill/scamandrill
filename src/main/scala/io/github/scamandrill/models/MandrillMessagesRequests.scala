@@ -25,7 +25,14 @@ case object MAttachmetOrImage {
   */
 case class MVars(name: String, content: JsValue)
 case object MVars extends ((String, JsValue) => MVars) {
-  implicit val writes = Json.writes[MVars]
+  implicit val writes = new Writes[MVars] {
+    override def writes(o: MVars): JsValue = {
+      JsObject(Map(
+        "name" -> JsString(o.name),
+        "content" -> o.content
+      ))
+    }
+  }
 
   def apply[T](name: String, content: T)(implicit cw: Writes[T]): MVars = new MVars(name, Json.toJson(content))
 }

@@ -1,11 +1,8 @@
 package io.github.scamandrill.client
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import com.typesafe.config.ConfigFactory
 import play.api.{Configuration, Environment, Mode}
 import play.api.libs.ws.{WSClient, WSConfigParser}
-import play.api.libs.ws.ahc.{AhcConfigBuilder, AhcWSClient, AhcWSClientConfigParser}
+import play.api.libs.ws.ning.{NingAsyncHttpClientConfigBuilder, NingWSClient, NingWSClientConfig, NingWSClientConfigParser}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -24,19 +21,23 @@ object Scamandrill extends ((WSClient, ExecutionContext, () => Future[Unit]) => 
     * @return
     */
   def apply(configuration: Configuration): Scamandrill = {
-    implicit val system = ActorSystem("scamandrill")
-    implicit val mat = ActorMaterializer()
     val env: Environment = Environment.simple(mode = Mode.Prod)
 
     val _configuration = Configuration.reference ++ configuration
 
-    val wsParser = new WSConfigParser(_configuration, env)
-    val ahcParse = new AhcWSClientConfigParser(wsParser.parse(), _configuration, env)
-    val builder = new AhcConfigBuilder(ahcParse.parse())
+    val parser = new NingWSClientConfigParser(
+      wsClientConfig = new WSConfigParser(_configuration, env).parse(),
+      configuration = _configuration,
+      environment = env
+    )
 
-    apply(new AhcWSClient(builder.configure().build()), scala.concurrent.ExecutionContext.global, () => {
-      system.terminate().map(_ => ())(scala.concurrent.ExecutionContext.global)
-    })
+    val builder = new NingAsyncHttpClientConfigBuilder(parser.parse())
+
+    new Scamandrill(
+      ws = new NingWSClient(builder.configure().build()),
+      ec = scala.concurrent.ExecutionContext.global,
+      onShutdown = () => Future.successful(())
+    )
   }
   def apply():Scamandrill = apply(Configuration.empty)
 }
