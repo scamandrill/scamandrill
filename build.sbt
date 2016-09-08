@@ -13,7 +13,7 @@ licenses += ("Apache-2.0", url("https://spdx.org/licenses/Apache-2.0"))
 description := "Scala client for Mandrill api"
 
 scalaVersion := "2.11.7"
-val playVersion = "2.5.3"
+val playVersion = "2.5.6"
 
 crossScalaVersions := Seq("2.10.5", "2.11.7")
 
