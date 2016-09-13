@@ -13,7 +13,7 @@ licenses += ("Apache-2.0", url("https://spdx.org/licenses/Apache-2.0"))
 description := "Scala client for Mandrill api"
 
 scalaVersion := "2.11.7"
-val playVersion = "2.5.6"
+val playVersion = "2.4.8"
 
 crossScalaVersions := Seq("2.10.5", "2.11.7")
 
@@ -28,10 +28,10 @@ libraryDependencies ++= {
     "com.typesafe.play" %% "play-ws"          % playVersion,
     "org.slf4j"         % "slf4j-api"         % "1.7.21"
   ) ++ Seq(
-    "org.scalatest"            %%  "scalatest"       % "2.2.6"     % "test->*",
+    "org.scalatest"            %%  "scalatest"       % "2.2.6"     % "test",
     "com.typesafe.play"        %%  "play-test"       % playVersion % "test",
     "org.slf4j"                %   "slf4j-simple"    % "1.7.21"    % "test",
-    "de.leanovate.play-mockws" %%  "play-mockws"     % "2.5.0"     % "test"
+    "de.leanovate.play-mockws" %%  "play-mockws"     % "2.4.2"     % "test"
   )
 }
 
