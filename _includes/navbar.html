@@ -21,6 +21,7 @@
                   <li><a href="{{ site.baseurl }}/manual/#example">Example</a></li>
                </ul>
             </li>
+            <li {% if include.active == 'migration' %} class="active" {% endif %}><a href="{{ site.baseurl }}/migration">Migration</a></li>
             <li {% if include.active == 'contribute' %} class="active" {% endif %}><a href="{{ site.baseurl }}/contribute">Contribute</a></li>
             <li {% if include.active == 'versions' %} class="active" {% endif %}><a href="{{ site.baseurl }}/versions">Versions</a></li>
          </ul>
