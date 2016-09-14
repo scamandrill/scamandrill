@@ -4,52 +4,137 @@ active: manual
 title: Sbt Neo Dependencies - manual
 ---
 
-<h2 id="installation">Installation</h2>
+## Installation
 
-**The artifacts of this project are uploaded in Maven Central.** 
+If you are using sbt as your build tool, [Maven Central](https://repo1.maven.org/maven2/) is included by default.
+As such, you don't need to add any resolvers to your build definition. You can simply add the scamandrill client
+in your build definition **libraryDependencies**.
 
-As from the [sbt documentation](http://www.scala-sbt.org/release/docs/Resolvers.html)
-the DefaultMavenRepository is the main Maven repository at https://repo1.maven.org/maven2/ and is included by default. 
-Therefore you don't need to add any resolvers to your build definition; you can simply add the scamandrill client 
-in your build definition **libraryDependencies** as follow: 
+##### For Play Framework 2.5.x
 
-``` "io.github.scamandrill"     %% "scamandrill"          % "{{ site.version }}"  ```
+~~~ scala
+"io.github.scamandrill" %% "scamandrill" % "{{ site.version25 }}"
+~~~
 
-All versions for this plugin can be found [here]({{ site.baseurl }}/versions). In case you are confused about the difference
- between build.sbt and Build.scala read [this](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html).
+##### For Play Framework 2.4.x
 
-<h4 id="configuration" style="margin-top: 20px;">Configuration</h4>
+~~~ scala
+"io.github.scamandrill" %% "scamandrill" % "{{ site.version24 }}"
+~~~
 
-All the requests that you can make to Mandrill API require that you provide your api key. In fact, consider the following
-snippet of code with the bare minimum instructions to make a request to madrill api:
 
-```
-import com.joypeg.scamandrill.client.MandrillAsyncClient
+##### For akka-http users
+
+It should be noted that play-ws 2.5.* is built on akka-http. If you can use the version of akka-http included as a
+transitive dependency of this library, you should use version {{ site.version25 }}. If not, use {{ site.version24 }}
+which uses play-ws 2.4.x which is based on netty.io rather than akka.http.
+
+
+
+All versions for this plugin can be found [here]({{ site.baseurl }}/versions).
+
+If you are unsure about where to configure your library dependencies, read [this](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html).
+
+## Configuration
+
+In order to make requests using the mandrill client, you must supply an API key.
+There are several ways to make an API key available to the client:
+
+
+##### Add the API key to application.conf
+
+~~~ scala
+mandrill.key = "your mandrill api key"
+~~~
+
+_then_
+
+~~~ scala
+import io.github.scamandrill.client.Scamandrill
 ...
-MandrillAsyncClient.usersPing(MKey(key = "THEKEY"))
-```
-
-So you need to replace 'THEKEY' with your own api key. But because you usually always use the same key in your application,
-you can simply write the previous intruction as : ```MandrillAsyncClient.usersPing(MKey())``` . Scamandrill in this case
-uses the default key in the configuration. The configuration uses the conventions of [typesafe config](https://github.com/typesafehub/config) and should 
-specify the key and the default timeout for the blocking client (discussed later). So an example of **application.conf** should look like:
-
-```
-Mandrill {
-    key="MANDRILLKEY",
-    timoutInSeconds=5
-}
-```
-
-If you look at the output of the [tests for users calls](https://github.com/scamandrill/scamandrill/blob/master/src/test/scala/com/joypeg/scamandrill/client/UserCallsTest.scala) for example 
-you will see that if you will get an error message from mandrill if the key is not passed to method, or if a configuration file is not defined. Btw I choose this 
-approach to alllow the user to override the default key for each call (specifying it when building your request object). Note that the same is valid for all calls: 
-
-<img src="{{ site.baseurl }}/assets/img/usertest.png" width="600">
+val scamandrill = Scamandrill()
+val client = scamandrill.get()
+~~~
 
 
-<h2 id="calls">Calls and usage</h2>
+##### Specify a key on a client-by-client basis**
 
-<h2 id="example">Example</h2>
+~~~ scala
+import io.github.scamandrill.client.Scamandrill
+...
+val scamandrill = Scamandrill()
+val client = scamandrill.getClient("your mandrill api key")
+~~~
 
-<h2 id="banchmarks">Benchmarks</h2>
+##### Specify a key in a Configuration class
+
+~~~ scala
+import io.github.scamandrill.client.Scamandrill
+import play.api.Configuration
+...
+val scamandrill = Scamandrill(Configuration(
+  "mandrill.key" -> "your mandrill api key"
+))
+val client = scamandrill.getClient()
+~~~
+
+
+## Usage
+
+The following is a very basic example of sending a message using scamandrill.
+All api calls are invoked in a similar manner to this example, by passing in a special 
+purpose object and recieving a `Future[Try[_]]` in response.
+
+~~~ scala
+package io.github.scamandrill.test
+
+import io.github.scamandrill.client.Scamandrill
+import play.api.Configuration
+import io.github.scamandrill.client.implicits._
+import io.github.scamandrill.models._
+
+
+val scamandrill = Scamandrill(Configuration(
+  "mandrill.key" -> "your mandrill api key"
+))
+
+/** This is an example of sending an email using scamandrill **/
+val result: Future[Try[List[MSendResponse]]] = scamandrill.messagesSend(MSendMessage(
+  message = new MSendMsg(
+    html = "<p>Example HTML content</p>",
+    text = "Example text content",
+    subject = "example subject",
+    from_email = "message.from_email@example.com",
+    from_name = "Example Name",
+    to = List(MTo(
+      email = "recipient.email@example.com",
+      name = "Recipient Name".?
+    )),
+    headers = MHeaders("Reply-To" -> "message.reply@example.com").?,
+    merge = true,
+    global_merge_vars = List(MVars("merge1", JsString("merge1 content"))),
+    merge_vars = List(
+      MMergeVars(
+        "recipient.email@example.com",
+        List(
+          MVars("merge2", "merge2 content")
+        )
+      )
+    ),
+    tags = List("password-resets"),
+    subaccount = "customer-123".?,
+    metadata = MMetadata("website" -> "www.example.com").?,
+    recipient_metadata = List(
+      MRecipientMetadata(
+        "recipient.email@example.com",
+        MMetadata("user_id" -> 123456)
+      )
+    )
+  )
+))
+
+~~~
+
+
+## Examples
+Examples for every supported API call can be found in the [tests](https://github.com/{{ site.github.author }}/{{ site.github.project }}/tree/master/src/test/scala/io/github/scamandrill/client).
