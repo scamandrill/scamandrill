@@ -28,7 +28,7 @@ libraryDependencies ++= {
     "com.typesafe.play" %% "play-ws"          % playVersion,
     "org.slf4j"         % "slf4j-api"         % "1.7.21"
   ) ++ Seq(
-    "org.scalatest"            %%  "scalatest"       % "2.2.6"     % "test->*",
+    "org.scalatest"            %%  "scalatest"       % "2.2.6"     % "test",
     "com.typesafe.play"        %%  "play-test"       % playVersion % "test",
     "org.slf4j"                %   "slf4j-simple"    % "1.7.21"    % "test",
     "de.leanovate.play-mockws" %%  "play-mockws"     % "2.5.0"     % "test"
