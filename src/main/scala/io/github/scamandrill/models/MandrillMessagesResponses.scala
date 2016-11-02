@@ -11,7 +11,7 @@ import play.api.libs.json.Json
   * @param location - the approximate region and country that the opening IP is located
   * @param ua       - the email client or browser data of the open
   */
-case class MOpenDetail(ts: Int, ip: String, location: String, ua: String)
+case class MOpenDetail(ts: Int, ip: String, location: Option[String], ua: Option[String])
 case object MOpenDetail {
   implicit val reads = Json.reads[MOpenDetail]
 }
@@ -25,7 +25,7 @@ case object MOpenDetail {
   * @param ua       - the email client or browser data of the open
   * @param url      - the email client or browser data of the click
   */
-case class MClickDetails(ts: Int, ip: String, location: String, ua: String, url: String)
+case class MClickDetails(ts: Int, ip: String, location: Option[String], ua: Option[String], url: String)
 case object MClickDetails {
   implicit val reads = Json.reads[MClickDetails]
 }

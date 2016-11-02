@@ -131,16 +131,16 @@ class MessageCallsTest extends MandrillSpec {
           opens_detail = List(MOpenDetail(
             ts = 1365190001,
             ip = "55.55.55.55",
-            location = "Georgia, US",
-            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+            location = "Georgia, US".?,
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53".?
           )).?,
           clicks = 42,
           clicks_detail = List(MClickDetails(
             ts = 1365190001,
             url = "http://www.example.com",
             ip = "55.55.55.55",
-            location = "Georgia, US",
-            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+            location = "Georgia, US".?,
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53".?
           )).?,
           state = "sent"
         )))
@@ -198,8 +198,8 @@ class MessageCallsTest extends MandrillSpec {
           MOpenDetail(
             ts = 1365190001,
             ip = "55.55.55.55",
-            location = "Georgia, US",
-            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+            location = "Georgia, US".?,
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53".?
           )
         ),
         clicks = 42,
@@ -208,8 +208,8 @@ class MessageCallsTest extends MandrillSpec {
             ts = 1365190001,
             url = "http://www.example.com",
             ip = "55.55.55.55",
-            location = "Georgia, US",
-            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53"
+            location = "Georgia, US".?,
+            ua = "Linux/Ubuntu/Chrome/Chrome 28.0.1500.53".?
           )
         ),
         state = "sent",
