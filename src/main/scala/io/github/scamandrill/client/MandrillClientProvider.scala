@@ -4,14 +4,14 @@ import javax.inject.Provider
 
 import com.typesafe.config.ConfigFactory
 import io.github.scamandrill.utils.SimpleLogger
-import play.api.Configuration
-import play.api.libs.ws.WSClient
 import play.api.libs.json.{JsString, JsValue, Writes}
+import play.api.libs.ws.StandaloneWSClient
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 trait MandrillClientProvider extends SimpleLogger with Provider[MandrillClient] {
-  val ws: WSClient
+  val ws: StandaloneWSClient
   val onShutdown: () => Future[Unit]
 
   /**
@@ -40,15 +40,17 @@ trait MandrillClientProvider extends SimpleLogger with Provider[MandrillClient] 
 }
 
 case class APIKey(key: String = APIKey.defaultKey)
-case object APIKey extends SimpleLogger{
+case object APIKey extends SimpleLogger {
   implicit val writes = new Writes[APIKey] {
     override def writes(key: APIKey): JsValue = JsString(key.key)
   }
 
-  def defaultKey = {
-    Configuration(ConfigFactory.load("application.conf")).getString("mandrill.key").getOrElse {
-      logger.error("Unable to locate mandrill.key in application.conf")
-      ""
+  def defaultKey: String = {
+    Try {
+      ConfigFactory.load("application.conf").getString("mandrill.key")
+    }.getOrElse {
+        logger.error("Unable to locate mandrill.key in application.conf")
+        ""
     }
   }
 }

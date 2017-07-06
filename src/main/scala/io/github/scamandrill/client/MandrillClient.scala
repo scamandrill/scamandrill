@@ -1,17 +1,17 @@
 package io.github.scamandrill.client
 
 import io.github.scamandrill.models.JsScalar.{JsScalarBoolean, JsScalarNumber, JsScalarString}
-import play.api.libs.ws.WSClient
 import io.github.scamandrill.models._
 import org.joda.time.DateTime
+import play.api.libs.ws.StandaloneWSClient
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 case class MandrillClient(
-  ws: WSClient,
-  key: APIKey = APIKey(),
-  onShutdown: () => Future[Unit] = () => Future.successful(())
+                           ws: StandaloneWSClient,
+                           key: APIKey = APIKey(),
+                           onShutdown: () => Future[Unit] = () => Future.successful(())
 )(implicit val ec: ExecutionContext) extends ScamandrillSendReceive with MandrillClientProvider {
   import MandrillClient.Endpoints._
 
