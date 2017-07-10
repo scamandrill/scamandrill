@@ -23,13 +23,9 @@ trait ScamandrillSendReceive extends SimpleLogger {
   val key: APIKey
   implicit val ec: ExecutionContext
 
-  private def authenticatedWriter[T](ow: Writes[T]): Writes[T] = {
-    new Writes[T] {
-      override def writes(o: T): JsValue = ow.writes(o) match {
-        case js: JsObject => js + ("key" -> Json.toJson(key))
-        case value => value
-      }
-    }
+  private def authenticatedWriter[T](ow: Writes[T]): Writes[T] = (o: T) => ow.writes(o) match {
+    case js: JsObject => js + ("key" -> Json.toJson(key))
+    case value => value
   }
 
   /**
@@ -44,7 +40,7 @@ trait ScamandrillSendReceive extends SimpleLogger {
     def handleError(res: StandaloneWSResponse, error: Option[JsValue]): Try[Res] = {
       res.body[JsValue].validate[MandrillError].fold(
         invalid = _ => Failure(new UnsuccessfulResponseException(res, error)),
-        valid = me => Failure(new MandrillResponseException(res, me))
+        valid = me => Failure(MandrillResponseException(res, me))
       )
     }
     ws.url(s"$serviceRoot$endpoint").withFollowRedirects(true).post(Json.toJson(model)(authenticatedWriter(writes))) map {

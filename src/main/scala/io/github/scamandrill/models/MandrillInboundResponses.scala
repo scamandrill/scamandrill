@@ -1,7 +1,7 @@
 package io.github.scamandrill.models
 
 import org.joda.time.DateTime
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, Reads}
 
 /**
   * Information about the inbound domain
@@ -15,7 +15,7 @@ case class MInboundDomainResponse(domain: String,
                                   valid_mx: Boolean)
 case object MInboundDomainResponse {
   implicit val dt = MandrillDateFormats.DATETIME_FORMAT
-  implicit val reads = Json.reads[MInboundDomainResponse]
+  implicit val reads: Reads[MInboundDomainResponse] = Json.reads[MInboundDomainResponse]
 }
 
 /**
@@ -29,7 +29,7 @@ case class MInboundRouteResponse(id: String,
                                  pattern: String,
                                  url: String)
 case object MInboundRouteResponse {
-  implicit val reads = Json.reads[MInboundRouteResponse]
+  implicit val reads: Reads[MInboundRouteResponse] = Json.reads[MInboundRouteResponse]
 }
 
 /**
@@ -41,7 +41,7 @@ case object MInboundRouteResponse {
   */
 case class MInboundRawResponse(email: String,
                                pattern: String,
-                               url: Boolean)
+                               url: String)
 case object MInboundRawResponse {
-  implicit val reads = Json.reads[MInboundRawResponse]
+  implicit val reads: Reads[MInboundRawResponse] = Json.reads[MInboundRawResponse]
 }

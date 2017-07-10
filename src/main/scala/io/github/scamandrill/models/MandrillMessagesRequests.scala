@@ -25,7 +25,12 @@ case object MAttachmetOrImage {
   */
 case class MVars(name: String, content: JsValue)
 case object MVars extends ((String, JsValue) => MVars) {
-  implicit val writes: Writes[MVars] = Json.writes[MVars]
+  implicit val writes: Writes[MVars] = (o: MVars) => {
+    Json.obj(
+      "name" -> o.name,
+      "content" -> o.content
+    )
+  }
 
   def apply[T](name: String, content: T)(implicit cw: Writes[T]): MVars = new MVars(name, Json.toJson(content))
 }
@@ -55,8 +60,8 @@ case object MTo {
 
 case class MHeaders(underlying: Map[String, String]) extends Optional[MHeaders]
 case object MHeaders extends (Map[String,String] => MHeaders) {
-  implicit val writes: Writes[MHeaders] = new Writes[MHeaders] {
-    override def writes(o: MHeaders): JsValue = Json.toJson(o.underlying)
+  implicit val writes: Writes[MHeaders] = (o: MHeaders) => {
+    Json.toJson(o.underlying)
   }
   def apply(entries: (String, String)*): MHeaders = MHeaders(Map(entries:_*))
   def apply(entries: TraversableOnce[MHeader]): MHeaders = MHeaders(entries.map(e => (e.name, e.value)).toSeq:_*)
@@ -81,8 +86,8 @@ case class MMetadataEntry(key: String, value: JsScalar)
   */
 case class MMetadata(entries: MMetadataEntry*) extends Optional[MMetadata] {}
 case object MMetadata {
-  implicit val writes: Writes[MMetadata] = new Writes[MMetadata] {
-    override def writes(o: MMetadata): JsValue = Json.toJson(Map(o.entries.map(e => (e.key, e.value)):_*))
+  implicit val writes: Writes[MMetadata] = (o: MMetadata) => {
+    Json.toJson(Map(o.entries.map(e => (e.key, e.value)):_*))
   }
 }
 
@@ -230,7 +235,7 @@ class MSendMsg(val html: String,
       images)
   }
 
-  override def equals(other: Any) = other match {
+  override def equals(other: Any): Boolean = other match {
     case o: MSendMsg =>
       o.html == this.html &&
         o.html == this.html &&
@@ -268,42 +273,40 @@ class MSendMsg(val html: String,
   }
 }
 object MSendMsg {
-  implicit val writes = new Writes[MSendMsg] {
-    override def writes(msg: MSendMsg): JsValue = Json.obj(
-      "html" -> msg.html,
-      "text" -> msg.text,
-      "subject" -> msg.subject,
-      "from_email" -> msg.from_email,
-      "from_name" -> msg.from_name,
-      "to" -> msg.to,
-      "headers" -> msg.headers,
-      "important" -> msg.important,
-      "track_opens" -> msg.track_opens,
-      "track_clicks" -> msg.track_clicks,
-      "auto_text" -> msg.auto_text,
-      "auto_html" -> msg.auto_html,
-      "inline_css" -> msg.inline_css,
-      "url_strip_qs" -> msg.url_strip_qs,
-      "preserve_recipients" -> msg.preserve_recipients,
-      "view_content_link" -> msg.view_content_link,
-      "bcc_address" -> msg.bcc_address,
-      "tracking_domain" -> msg.tracking_domain,
-      "signing_domain" -> msg.signing_domain,
-      "return_path_domain" -> msg.return_path_domain,
-      "merge" -> msg.merge,
-      "global_merge_vars" -> msg.global_merge_vars,
-      "merge_vars" -> msg.merge_vars,
-      "tags" -> msg.tags,
-      "subaccount" -> msg.subaccount,
-      "google_analytics_domains" -> msg.google_analytics_domains,
-      "google_analytics_campaign" -> msg.google_analytics_campaign,
-      "metadata" -> msg.metadata,
-      "recipient_metadata" -> msg.recipient_metadata,
-      "attachments" -> msg.attachments,
-      "images" -> msg.images,
-      "merge_language" -> msg.merge_language
-    )
-  }
+  implicit val writes: Writes[MSendMsg] = (msg: MSendMsg) => Json.obj(
+    "html" -> msg.html,
+    "text" -> msg.text,
+    "subject" -> msg.subject,
+    "from_email" -> msg.from_email,
+    "from_name" -> msg.from_name,
+    "to" -> msg.to,
+    "headers" -> msg.headers,
+    "important" -> msg.important,
+    "track_opens" -> msg.track_opens,
+    "track_clicks" -> msg.track_clicks,
+    "auto_text" -> msg.auto_text,
+    "auto_html" -> msg.auto_html,
+    "inline_css" -> msg.inline_css,
+    "url_strip_qs" -> msg.url_strip_qs,
+    "preserve_recipients" -> msg.preserve_recipients,
+    "view_content_link" -> msg.view_content_link,
+    "bcc_address" -> msg.bcc_address,
+    "tracking_domain" -> msg.tracking_domain,
+    "signing_domain" -> msg.signing_domain,
+    "return_path_domain" -> msg.return_path_domain,
+    "merge" -> msg.merge,
+    "global_merge_vars" -> msg.global_merge_vars,
+    "merge_vars" -> msg.merge_vars,
+    "tags" -> msg.tags,
+    "subaccount" -> msg.subaccount,
+    "google_analytics_domains" -> msg.google_analytics_domains,
+    "google_analytics_campaign" -> msg.google_analytics_campaign,
+    "metadata" -> msg.metadata,
+    "recipient_metadata" -> msg.recipient_metadata,
+    "attachments" -> msg.attachments,
+    "images" -> msg.images,
+    "merge_language" -> msg.merge_language
+  )
 }
 
 

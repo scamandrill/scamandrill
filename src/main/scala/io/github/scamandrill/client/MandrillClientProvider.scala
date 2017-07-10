@@ -41,9 +41,7 @@ trait MandrillClientProvider extends SimpleLogger with Provider[MandrillClient] 
 
 case class APIKey(key: String = APIKey.defaultKey)
 case object APIKey extends SimpleLogger {
-  implicit val writes = new Writes[APIKey] {
-    override def writes(key: APIKey): JsValue = JsString(key.key)
-  }
+  implicit val writes: Writes[APIKey] = (key: APIKey) => JsString(key.key)
 
   def defaultKey: String = {
     Try {

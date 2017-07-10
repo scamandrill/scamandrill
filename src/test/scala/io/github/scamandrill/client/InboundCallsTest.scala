@@ -178,5 +178,24 @@ class InboundCallsTest extends MandrillSpec {
     }
   }
 
+  "InboundSendRaw" should "successfully send a raw message to hook" in {
+    withMockClient("/inbound/send-raw.json"){ wc =>
+      val instance = new MandrillClient(wc)
+      whenReady(instance.inboundSendRaw(MInboundRaw(
+        raw_message = "From: sender@example.com\nTo: mailbox-123@inbound.example.com\nSubject: Some Subject\n\nSome content.",
+        to = List("mailbox-123@inbound.example.com"),
+        mail_from = "sender@example.com",
+        helo = "example.com",
+        client_address = "127.0.0.1"
+      )), defaultTimeout)(_ shouldBe Success(List(
+        MInboundRawResponse(
+          email = "mailbox-123@inbound.example.com",
+          pattern = "mailbox-*",
+          url = "http://example.com/webhook-url"
+        )
+      )))
+    }
+  }
+
 }
 
