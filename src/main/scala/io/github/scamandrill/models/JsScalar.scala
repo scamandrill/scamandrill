@@ -11,12 +11,16 @@ object JsScalar {
   case class JsScalarNumber(n: BigDecimal) extends JsScalar { override def underlying = JsNumber(n) }
   case class JsScalarBoolean(b: Boolean) extends JsScalar { override def underlying = JsBoolean(b) }
 
-  implicit val writes: Writes[JsScalar] = (o: JsScalar) => o.underlying
+  implicit val writes: Writes[JsScalar] = new Writes[JsScalar] {
+    override def writes(o: JsScalar): JsValue = o.underlying
+  }
 
-  implicit val reads: Reads[JsScalar] = {
-    case s: JsString => JsSuccess(JsScalarString(s.value))
-    case b: JsBoolean => JsSuccess(JsScalarBoolean(b.value))
-    case n: JsNumber => JsSuccess(JsScalarNumber(n.value))
-    case _ => JsError("JsScalar must be a String, Boolean or Number")
+  implicit val reads: Reads[JsScalar] = new Reads[JsScalar] {
+    override def reads(json: JsValue): JsResult[JsScalar] = json match {
+      case s: JsString => JsSuccess(JsScalarString(s.value))
+      case b: JsBoolean => JsSuccess(JsScalarBoolean(b.value))
+      case n: JsNumber => JsSuccess(JsScalarNumber(n.value))
+      case _ => JsError("JsScalar must be a String, Boolean or Number")
+    }
   }
 }

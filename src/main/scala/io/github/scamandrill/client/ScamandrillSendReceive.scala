@@ -23,9 +23,11 @@ trait ScamandrillSendReceive extends SimpleLogger {
   val key: APIKey
   implicit val ec: ExecutionContext
 
-  private def authenticatedWriter[T](ow: Writes[T]): Writes[T] = (o: T) => ow.writes(o) match {
-    case js: JsObject => js + ("key" -> Json.toJson(key))
-    case value => value
+  private def authenticatedWriter[T](ow: Writes[T]): Writes[T] = new Writes[T] {
+    override def writes(o: T): JsValue = ow.writes(o) match {
+      case js: JsObject => js + ("key" -> Json.toJson(key))
+      case value => value
+    }
   }
 
   /**
