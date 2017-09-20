@@ -174,16 +174,16 @@ case object MToResponse {
 /**
   * The content of the message
   *
-  * @param ts         - the Unix timestamp from when this message was sent
-  * @param _id        - the message's unique id
-  * @param from_email - the email address of the sender
-  * @param from_name  - the alias of the sender (if any)
-  * @param subject    - the message's subject line
-  * @param to         - the message recipient's information
-  * @param tags       - list of tags on this message
-  * @param text       - the text part of the message, if any
-  * @param html       - the HTML part of the message, if any
-  * @param attachemnt - an array of any attachments that can be found in the message
+  * @param ts          - the Unix timestamp from when this message was sent
+  * @param _id         - the message's unique id
+  * @param from_email  - the email address of the sender
+  * @param from_name   - the alias of the sender (if any)
+  * @param subject     - the message's subject line
+  * @param to          - the message recipient's information
+  * @param tags        - list of tags on this message
+  * @param text        - the text part of the message, if any
+  * @param html        - the HTML part of the message, if any
+  * @param attachments - an array of any attachments that can be found in the message
   */
 case class MContentResponse(ts: Int,
                             _id: String,

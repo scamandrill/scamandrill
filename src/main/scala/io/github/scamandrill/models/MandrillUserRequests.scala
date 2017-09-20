@@ -8,7 +8,7 @@ import play.api.libs.json.{JsObject, JsValue, Writes}
   */
 case class MVoid()
 case object MVoid {
-  implicit val writes = new Writes[MVoid] {
+  implicit val writes: Writes[MVoid] = new Writes[MVoid] {
     override def writes(o: MVoid): JsValue = JsObject(Map[String, JsValue]())
   }
 }

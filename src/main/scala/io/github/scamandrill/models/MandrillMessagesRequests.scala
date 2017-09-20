@@ -13,8 +13,8 @@ import play.api.libs.json._
   */
 case class MAttachmetOrImage(`type`: String, name: String, content: String)
 case object MAttachmetOrImage {
-  implicit val writes = Json.writes[MAttachmetOrImage]
-  implicit val reads = Json.reads[MAttachmetOrImage]
+  implicit val writes: Writes[MAttachmetOrImage] = Json.writes[MAttachmetOrImage]
+  implicit val reads: Reads[MAttachmetOrImage] = Json.reads[MAttachmetOrImage]
 }
 
 /**
@@ -25,7 +25,14 @@ case object MAttachmetOrImage {
   */
 case class MVars(name: String, content: JsValue)
 case object MVars extends ((String, JsValue) => MVars) {
-  implicit val writes = Json.writes[MVars]
+  implicit val writes: Writes[MVars] = new Writes[MVars]() {
+    override def writes(o: MVars): JsValue = {
+      Json.obj(
+        "name" -> o.name,
+        "content" -> o.content
+      )
+    }
+  }
 
   def apply[T](name: String, content: T)(implicit cw: Writes[T]): MVars = new MVars(name, Json.toJson(content))
 }
@@ -38,7 +45,7 @@ case object MVars extends ((String, JsValue) => MVars) {
   */
 case class MMergeVars(rcpt: String, vars: List[MVars])
 case object MMergeVars {
-  implicit val writes = Json.writes[MMergeVars]
+  implicit val writes: Writes[MMergeVars] = Json.writes[MMergeVars]
 }
 
 /**
@@ -50,12 +57,12 @@ case object MMergeVars {
   */
 case class MTo(email: String, name: Option[String] = None, `type`: String = "to")
 case object MTo {
-  implicit val writes = Json.writes[MTo]
+  implicit val writes: Writes[MTo] = Json.writes[MTo]
 }
 
 case class MHeaders(underlying: Map[String, String]) extends Optional[MHeaders]
 case object MHeaders extends (Map[String,String] => MHeaders) {
-  implicit val writes = new Writes[MHeaders] {
+  implicit val writes: Writes[MHeaders] = new Writes[MHeaders] {
     override def writes(o: MHeaders): JsValue = Json.toJson(o.underlying)
   }
   def apply(entries: (String, String)*): MHeaders = MHeaders(Map(entries:_*))
@@ -69,7 +76,7 @@ case object MHeaders extends (Map[String,String] => MHeaders) {
   */
 case class MHeader(name: String, value: String)
 case object MHeader {
-  implicit val writes = Json.writes[MHeader]
+  implicit val writes: Writes[MHeader] = Json.writes[MHeader]
 }
 
 case class MMetadataEntry(key: String, value: JsScalar)
@@ -81,7 +88,7 @@ case class MMetadataEntry(key: String, value: JsScalar)
   */
 case class MMetadata(entries: MMetadataEntry*) extends Optional[MMetadata] {}
 case object MMetadata {
-  implicit val writes = new Writes[MMetadata] {
+  implicit val writes: Writes[MMetadata] = new Writes[MMetadata] {
     override def writes(o: MMetadata): JsValue = Json.toJson(Map(o.entries.map(e => (e.key, e.value)):_*))
   }
 }
@@ -94,7 +101,7 @@ case object MMetadata {
   */
 case class MRecipientMetadata(rcpt: String, values: MMetadata)
 case object MRecipientMetadata {
-  implicit val writes = Json.writes[MRecipientMetadata]
+  implicit val writes: Writes[MRecipientMetadata] = Json.writes[MRecipientMetadata]
 }
 
 /**
@@ -230,7 +237,7 @@ class MSendMsg(val html: String,
       images)
   }
 
-  override def equals(other: Any) = other match {
+  override def equals(other: Any): Boolean = other match {
     case o: MSendMsg =>
       o.html == this.html &&
         o.html == this.html &&
@@ -268,7 +275,7 @@ class MSendMsg(val html: String,
   }
 }
 object MSendMsg {
-  implicit val writes = new Writes[MSendMsg] {
+  implicit val writes: Writes[MSendMsg] = new Writes[MSendMsg] {
     override def writes(msg: MSendMsg): JsValue = Json.obj(
       "html" -> msg.html,
       "text" -> msg.text,
@@ -322,7 +329,7 @@ case class MSendMessage(message: MSendMsg,
 
 case object MSendMessage {
   implicit val dt = MandrillDateFormats.DATETIME_FORMAT
-  implicit val writes = Json.writes[MSendMessage]
+  implicit val writes: Writes[MSendMessage] = Json.writes[MSendMessage]
 }
 
 /**
@@ -343,7 +350,7 @@ case class MSendTemplateMessage(template_name: String,
                                 send_at: Option[DateTime] = None)
 case object MSendTemplateMessage {
   implicit val dt = MandrillDateFormats.DATETIME_FORMAT
-  implicit val writes = Json.writes[MSendTemplateMessage]
+  implicit val writes: Writes[MSendTemplateMessage] = Json.writes[MSendTemplateMessage]
 }
 
 /**
@@ -366,7 +373,7 @@ case class MSearch(query: Option[String] = None,
                    limit: Int = 100)
 case object MSearch {
   implicit val d = MandrillDateFormats.DATE_FORMAT
-  implicit val writes = Json.writes[MSearch]
+  implicit val writes: Writes[MSearch] = Json.writes[MSearch]
 }
 
 /**
@@ -385,7 +392,7 @@ case class MSearchTimeSeries(query: String,
                              senders: List[String] = List.empty)
 case object MSearchTimeSeries {
   implicit val d = MandrillDateFormats.DATE_FORMAT
-  implicit val writes = Json.writes[MSearchTimeSeries]
+  implicit val writes: Writes[MSearchTimeSeries] = Json.writes[MSearchTimeSeries]
 }
 
 /**
@@ -395,7 +402,7 @@ case object MSearchTimeSeries {
   */
 case class MMessageInfo(id: String)
 case object MMessageInfo {
-  implicit val writes = Json.writes[MMessageInfo]
+  implicit val writes: Writes[MMessageInfo] = Json.writes[MMessageInfo]
 }
 
 /**
@@ -405,7 +412,7 @@ case object MMessageInfo {
   */
 case class MParse(raw_message: String)
 case object MParse {
-  implicit val writes = Json.writes[MParse]
+  implicit val writes: Writes[MParse] = Json.writes[MParse]
 }
 
 /**
@@ -430,7 +437,7 @@ case class MSendRaw(raw_message: String,
                     return_path_domain: Option[String] = None)
 case object MSendRaw {
   implicit val dt = MandrillDateFormats.DATETIME_FORMAT
-  implicit val writes = Json.writes[MSendRaw]
+  implicit val writes: Writes[MSendRaw] = Json.writes[MSendRaw]
 }
 
 /**
@@ -440,7 +447,7 @@ case object MSendRaw {
   */
 case class MListSchedule(to: String)
 case object MListSchedule {
-  implicit val writes = Json.writes[MListSchedule]
+  implicit val writes: Writes[MListSchedule] = Json.writes[MListSchedule]
 }
 
 /**
@@ -450,7 +457,7 @@ case object MListSchedule {
   */
 case class MCancelSchedule(id: String)
 case object MCancelSchedule {
-  implicit val writes = Json.writes[MCancelSchedule]
+  implicit val writes: Writes[MCancelSchedule] = Json.writes[MCancelSchedule]
 }
 
 /**
@@ -462,5 +469,5 @@ case object MCancelSchedule {
 case class MReSchedule(id: String, send_at: DateTime)
 case object MReSchedule {
   implicit val d = MandrillDateFormats.DATETIME_FORMAT
-  implicit val writes = Json.writes[MReSchedule]
+  implicit val writes: Writes[MReSchedule] = Json.writes[MReSchedule]
 }
