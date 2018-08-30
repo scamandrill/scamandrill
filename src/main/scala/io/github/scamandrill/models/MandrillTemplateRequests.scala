@@ -15,11 +15,11 @@ import play.api.libs.json.Json
   * @param labels     - an optional array of up to 10 labels to use for filtering templates
   */
 case class MTemplate(name: String,
-                     from_email: String,
-                     from_name: String,
-                     subject: String,
+                     from_email: Option[String],
+                     from_name: Option[String],
+                     subject: Option[String],
                      code: String,
-                     text: String,
+                     text: Option[String],
                      publish: Boolean,
                      labels: List[String])
 case object MTemplate {

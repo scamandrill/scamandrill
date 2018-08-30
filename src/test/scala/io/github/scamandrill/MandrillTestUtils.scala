@@ -58,11 +58,11 @@ object MandrillTestUtils {
 
   val validNonPublishedTemplate = MTemplate(
     name = "templatetest",
-    from_email = "from_email@example.com",
-    from_name = "Example Name",
-    subject = "example subject",
+    from_email = Some("from_email@example.com"),
+    from_name = Some("Example Name"),
+    subject = Some("example subject"),
     code = "<div>example code</div>",
-    text = "Example text content",
+    text = Some("Example text content"),
     publish = false,
     labels = List("templatetest")
   )

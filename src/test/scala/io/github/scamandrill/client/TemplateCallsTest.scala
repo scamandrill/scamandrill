@@ -14,11 +14,11 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.templateAdd(MTemplate(
         name = "Example Template",
-        from_email = "from_email@example.com",
-        from_name = "Example Name",
-        subject = "example subject",
+        from_email = "from_email@example.com".?,
+        from_name = "Example Name".?,
+        subject = "example subject".?,
         code = "<div>example code</div>",
-        text = "Example text content",
+        text = "Example text content".?,
         publish = false,
         labels = List(
           "example-label"
@@ -30,10 +30,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
@@ -59,10 +59,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
@@ -88,10 +88,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
@@ -117,10 +117,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
@@ -139,11 +139,11 @@ class TemplateCallsTest extends MandrillSpec {
       val instance = new MandrillClient(wc)
       whenReady(instance.templateUpdate(MTemplate(
         name = "Example Template",
-        from_email = "from_email@example.com",
-        from_name = "Example Name",
-        subject = "example subject",
+        from_email = "from_email@example.com".?,
+        from_name = "Example Name".?,
+        subject = "example subject".?,
         code = "<div>new example code</div>",
-        text = "Example text content",
+        text = "Example text content".?,
         publish = false,
         labels = List(
           "example-label"
@@ -155,10 +155,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
@@ -225,10 +225,10 @@ class TemplateCallsTest extends MandrillSpec {
           "example-label"
         ),
         code = "<div mc:edit=\"editable\">editable content</div>",
-        subject = "example subject",
+        subject = "example subject".?,
         from_email = "from.email@example.com".?,
         from_name = "Example Name".?,
-        text = "Example text",
+        text = "Example text".?,
         publish_name = "Example Template",
         publish_code = "<div mc:edit=\"editable\">different than draft content</div>".?,
         publish_subject = "example publish_subject".?,
